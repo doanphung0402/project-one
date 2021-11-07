@@ -8,12 +8,18 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Routers } from "react-router-dom";
 import theme from "./app/theme"
 import { ThemeProvider } from "@material-ui/core";
+import { CookiesProvider } from "react-cookie";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme ={theme}>
       <Routers>
         <Provider store={store}>
-          <App />
+          <CookiesProvider>
+            <App/>
+            <ToastContainer />
+         </CookiesProvider>
         </Provider>
       </Routers>
     </ThemeProvider>

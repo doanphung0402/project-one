@@ -2,33 +2,33 @@ import React from "react";
 import "./App.css";
 import {Router} from "./Constaint/Router";
 import DashBoard from "./Container/DashBoard";
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Router1 } from "./Constaint/Router";
-import { Route } from "react-router-dom";
+import { ProtectedRoute } from "./Config/Protected.router";
+
 const renderRouterPageWithoutDB =(Router) =>{
   let xml =null ; 
   xml = Router.map((route,index) =>{
-    const YourComponent = route.component ; 
+    const AuthenComponent = route.component; 
     return (<Route key ={index} 
                            path={route.path}
                            exact= {route.exact}
-                           render={()=>{
-                              return <YourComponent/>
+                           render ={(routeProps)=>{
+                              return (<AuthenComponent {...routeProps}/>  )
                            }}
-                           />)
+                          />)
   })
   return xml;    
 }
 const renderRouterPageWithDB =(Router1) =>{
   let xml =null ; 
   xml = Router1.map((route,index) =>{
-    const YourComponent1 = route.component ; 
-    return (<Route key ={index} 
+
+    return (<ProtectedRoute key ={index} 
                            path={route.path}
                            exact= {route.exact}
-                           render={()=>{
-                              return <DashBoard><YourComponent1/></DashBoard>
-                           }}
+                           component={route.component}
+                           parentComponent= {DashBoard}
                            />)
   })
   return xml;    

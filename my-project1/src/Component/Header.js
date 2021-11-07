@@ -171,8 +171,9 @@ const Header = () => {
   );
 
   return (
-    <div style={{ marginBottom: "50px" }}>
-      <Fragment className={classes.grow}>
+    <Fragment >
+    <div style={{ marginBottom: "50px" }} className={classes.grow}>
+   
         <AppBar position="static" style={{ background: "#2E3B55" }}>
           <Toolbar>
             <IconButton
@@ -247,8 +248,8 @@ const Header = () => {
           </Toolbar>
         </AppBar>
         {renderMenu}
-      </Fragment>
     </div>
+    </Fragment>
   );
-};
+}
 export default Header;

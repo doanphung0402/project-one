@@ -1,4 +1,4 @@
-import Servey from '../Component/Servey'
+import Survey from '../Component/Survey'
 import SignIn from '../Component/SignIn'
 import SignUp from '../Component/SignUp'
 import home from '../page/home'
@@ -27,8 +27,8 @@ export const Router1 = [
         component: home
     }, 
     {
-         name:'servey', 
-         path:'/my-servey', 
-         component: Servey
+         name:'survey', 
+         path:'/my-survey', 
+         component: Survey
     }
 ]

@@ -9,7 +9,7 @@ let RandomColor =()=>{
      return color[randomColor]; 
 }
 
-const ServeyItems = () => {
+const SurveyItems = () => {
     return (
             <Button>
             <Card style={{height:"150px",width:"500px" ,border:"1px solid"}}>
@@ -19,11 +19,11 @@ const ServeyItems = () => {
                  </Box>   
                 <Box style={{marginTop:"20px",marginLeft:"5px"}} display="flex">
                     <DateRangeIcon/> 
-                    <Typography style={{marginLeft:"5px"}} variant="subtitle">3 options</Typography>
+                    <Typography style={{marginLeft:"5px"}} variant="subtitle2">3 options</Typography>
                 </Box>
                 <Box display="flex" style={{marginTop:"20px",marginLeft:"5px"}}>
                   <GroupIcon/>
-                   <Typography  style={{marginLeft:"5px"}} variant='subtitle'>2 out of 3 votes </Typography>
+                   <Typography style={{marginLeft:"5px"}} variant='subtitle2'>2 out of 3 votes </Typography>
                 </Box>
                       
              </Card>
@@ -31,4 +31,4 @@ const ServeyItems = () => {
     );
 };
 
-export default ServeyItems;
+export default SurveyItems;

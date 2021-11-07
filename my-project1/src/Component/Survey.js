@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { ArrowDropDownCircleOutlined } from "@material-ui/icons";
 import React from "react";
-import ServeyItems from "./ServeyItems";
+import SurveyItems from "./SurveyItems";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi", "Tất cả"];
@@ -53,7 +53,6 @@ const SplitButton = () => {
       direction="column"
       alignItems="center"
       color="#FFFFFF"
-      Zindex="1"
     >
       <Grid item xs={12}>
         <ButtonGroup
@@ -118,7 +117,7 @@ const CreateServey =()=>{
   <Button startIcon={<AddBoxIcon/>} variant="contained" color="secondary">Tạo khảo sát mới </Button>
   )
 }
-const Servey = () => {
+const Survey = () => {
   return (
     <div>
       <Container>
@@ -129,7 +128,6 @@ const Servey = () => {
             marginTop: "33px",
             marginLeft: "188px",
             marginRight: "188px",
-            zIndex: "1",
           }}
         >
           <Typography variant="h4" style={{ margin: "33px" }}>
@@ -181,19 +179,19 @@ const Servey = () => {
                     wrap="nowrap"
                   >
                     <Grid item xs={12}>
-                      <ServeyItems />
+                      <SurveyItems />
                     </Grid>
                     <Grid item xs={12}>
-                      <ServeyItems />
+                      <SurveyItems />
                     </Grid>
                     <Grid item xs={12}>
-                      <ServeyItems />
+                      <SurveyItems />
                     </Grid>
                     <Grid item xs={12}>
-                      <ServeyItems />
+                      <SurveyItems />
                     </Grid>
                     <Grid item xs={12}>
-                      <ServeyItems />
+                      <SurveyItems  />
                     </Grid>
                   </Grid>
                 </Grid>
@@ -210,4 +208,4 @@ const Servey = () => {
   );
 };
 
-export default Servey;
+export default Survey;
