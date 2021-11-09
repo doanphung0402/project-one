@@ -4,7 +4,7 @@ import hash_password from '../helper/bcriptPassword';
 import HttpCode from '../helper/HttpCode';
 import * as AccountService from "../Service/AccountService"
 import jwt from 'jsonwebtoken'
- function SignupRouter(props){  //SignupService
+ function SignupRouter(){  //SignupService
   var router = express.Router();
   router.post("/",async(req,res)=>{
    let user = req.body ; 

@@ -30,5 +30,11 @@ export const Router1 = [
          name:'survey', 
          path:'/my-survey', 
          component: Survey
+    }, 
+    {
+        name :"", 
+        path:'/', 
+        exact:true,
+        component:home 
     }
 ]

@@ -12,7 +12,7 @@ import { CookiesProvider } from "react-cookie";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 ReactDOM.render(
-  <React.StrictMode>
+ 
     <ThemeProvider theme ={theme}>
       <Routers>
         <Provider store={store}>
@@ -22,8 +22,7 @@ ReactDOM.render(
          </CookiesProvider>
         </Provider>
       </Routers>
-    </ThemeProvider>
-  </React.StrictMode>,
+    </ThemeProvider>,
   document.getElementById("root")
 );
 

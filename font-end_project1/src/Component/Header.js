@@ -13,6 +13,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import Cookies from "universal-cookie";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import HomeIcon from '@material-ui/icons/Home';
 import {
   Divider,
   Drawer,
@@ -21,8 +26,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import InboxIcon from "@material-ui/icons/Inbox";
 import clsx from "clsx";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -94,14 +99,19 @@ const useStyles = makeStyles((theme) => ({
     width: "auto",
   },
 }));
-
 const Header = () => {
+  const history = useHistory(); 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [state, setState] = React.useState({
     left: false,
   });
-
+  const onHandleSurvey =()=>{
+     history.push("/my-survey")
+  };
+  const onHandleGoBack = () =>{
+     history.push("/home"); 
+  }
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -124,23 +134,25 @@ const Header = () => {
       <List>
         {["Khảo sát của tôi"].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon></ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemIcon><PlaylistAddCheckIcon/></ListItemIcon>
+            <ListItemText primary={text} onClick={onHandleSurvey} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
-        {["Quản lí Công việc ", "Lịch của tôi ", "Trang chủ"].map(
-          (text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          )
-        )}
+               <ListItem button key={"Quản lí công việc"}>
+                  <ListItemIcon>
+                    <CalendarTodayIcon/>
+                  </ListItemIcon>
+                    <ListItemText primary={"Quản lí công việc"} />
+               </ListItem>
+               <ListItem button key={"Go back home"}>
+                  <ListItemIcon>
+                   <HomeIcon/>
+                  </ListItemIcon>
+                    <ListItemText primary={"Trang chủ"} onClick={onHandleGoBack}/>
+               </ListItem>
       </List>
     </div>
   );
@@ -152,7 +164,12 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
+  const handleLogout =() =>{
+    setAnchorEl(null);
+    const cookies = new Cookies();
+    cookies.remove("user","/"); 
+    history.push("/login"); 
+  }
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -164,9 +181,9 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleMenuClose}>Setting</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout <ExitToAppIcon/></MenuItem> 
     </Menu>
   );
 

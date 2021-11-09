@@ -15,12 +15,12 @@ import {
   Box,
 } from "@material-ui/core";
 import { ArrowDropDownCircleOutlined } from "@material-ui/icons";
-import React from "react";
+import React,{useState,useEffect } from "react";
 import SurveyItems from "./SurveyItems";
 import AddBoxIcon from '@material-ui/icons/AddBox';
-
+import axios from 'axios'; 
+import URL from "../Config/URL";
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi", "Tất cả"];
-/////////////////////////////////////////////////////////////
 const SplitButton = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -118,6 +118,16 @@ const CreateServey =()=>{
   )
 }
 const Survey = () => {
+  
+   const [survey,setSurvey] = useState([]); 
+   useEffect(()=>{
+      axios({
+         method :"post", 
+         url:URL.getAllSurvey
+      }).then(data=>{
+          console.log(data)
+      })
+   })
   return (
     <div>
       <Container>

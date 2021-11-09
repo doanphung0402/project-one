@@ -5,18 +5,19 @@ mongoose.connect("mongodb://localhost/project1", {
 });
 const { Schema } = mongoose;
 
-const serveySchema =new Schema({
-      id_user : Number ,
+const surveySchema =new Schema({
+      email_user :String  ,
       title:String , 
       options:[String] , 
       voted_number :Number , 
-      received_to : String , 
-      senn_to : [String], 
-      user_voted :[{email : String, option:Number}], 
+      received_to :[String], 
+      send_to : [String], 
+      user_voted :[{email:String,option:Number}], 
       timeout:Date, 
+      status:String
 },{
     collection :"servey"
 }); 
-const ServeyModel = mongoose.model("ServeyModel",serveySchema); 
+const SurveyModel = mongoose.model("SurveyModel",surveySchema); 
 
-export default ServeyModel ; 
+export default SurveyModel ; 

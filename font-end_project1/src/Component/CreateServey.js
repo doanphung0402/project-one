@@ -1,4 +1,4 @@
-import { Box, Card, Grid } from '@material-ui/core';
+import { Box, Card, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 
 const CreateServey = () => {
@@ -6,8 +6,12 @@ const CreateServey = () => {
          <Box>
             <Card>
                 <Grid container>
-                    <Grid item>
-                        
+                    <Grid item xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant="h2">
+                                 
+                            </Typography>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Card>
