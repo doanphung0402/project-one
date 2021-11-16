@@ -20,12 +20,13 @@ import SurveyItems from "./SurveyItems";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import axios from 'axios'; 
 import URL from "../Config/URL";
+import { useHistory } from "react-router-dom";
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi", "Tất cả"];
 const SplitButton = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+  const history = useHistory(); 
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
   };
@@ -112,13 +113,9 @@ const SplitButton = () => {
   );
 };
 
-const CreateServey =()=>{
-  return (
-  <Button startIcon={<AddBoxIcon/>} variant="contained" color="secondary">Tạo khảo sát mới </Button>
-  )
-}
+
 const Survey = () => {
-  
+   const history = useHistory();
    const [survey,setSurvey] = useState([]); 
    useEffect(()=>{
       axios({
@@ -128,6 +125,9 @@ const Survey = () => {
           console.log(data)
       })
    })
+   const handleCreateSurvey =()=>{
+    history.push("/survey/create-survey")
+ }
   return (
     <div>
       <Container>
@@ -177,7 +177,7 @@ const Survey = () => {
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="h4">
-                      <CreateServey />
+                    <Button onClick={handleCreateSurvey} startIcon={<AddBoxIcon/>} variant="contained" color="secondary">Tạo khảo sát mới </Button>
                     </Typography>
                   </Grid>
 

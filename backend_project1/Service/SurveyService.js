@@ -1,6 +1,6 @@
 import q from "q";
 import UserModel from '../models/userModel'; 
-import SurveyModel from "../models/survelModel";
+import SurveyModel from "../models/surveyModel";
 export function getAllSurvey(){
      const defer = q.defer(); 
      SurveyModel.find({},(error,data)=>{

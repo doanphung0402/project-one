@@ -7,6 +7,7 @@ footer : {
         color: "white", 
         textAlign: "center", 
         marginTop : "75px"
-    }
+    }, 
+ 
 }
 export default FooterStyle ; 

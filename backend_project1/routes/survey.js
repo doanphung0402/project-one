@@ -1,6 +1,6 @@
 import express from 'express'; 
 import HttpCode from '../helper/HttpCode';
-import SurveyModel from '../models/survelModel';
+import SurveyModel from '../models/surveyModel';
 import UserModel from '../models/userModel';
 import * as SurveyService from '../Service/SurveyService'; 
 function SurveyRoute(){

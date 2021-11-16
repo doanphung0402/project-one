@@ -10,6 +10,7 @@ const surveySchema =new Schema({
       title:String , 
       options:[String] , 
       voted_number :Number , 
+      decription:String,
       received_to :[String], 
       send_to : [String], 
       user_voted :[{email:String,option:Number}], 

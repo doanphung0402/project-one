@@ -2,6 +2,7 @@ import Survey from '../Component/Survey'
 import SignIn from '../Component/SignIn'
 import SignUp from '../Component/SignUp'
 import home from '../page/home'
+import CreateSurvey from '../Component/CreateSurvey'
 export const Router = [
     {
              name :"Đăng nhập",
@@ -36,5 +37,11 @@ export const Router1 = [
         path:'/', 
         exact:true,
         component:home 
+    },
+    {
+         name :"create-survey", 
+         exact:false ,
+         path:"/survey/create-survey", 
+         component:CreateSurvey
     }
 ]
