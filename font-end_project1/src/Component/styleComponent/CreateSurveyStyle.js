@@ -2,19 +2,25 @@ const CreateSurveyStyle = {
      survey: { 
          textAlign : "center"
      },
+     surveyContainer :{
+        marginTop:"30px", 
+        textAlign:"center"
+     }, 
     container: {
         backgroundColor:"white", 
-        border : "1px solid 1px"
+        border : "1px solid 1px", 
+        margin : "30px"
     },
     gridContainer:{
-         marginTop :"20px", 
+         
          textAlign:"center", 
+         backgroundColor:"#E3F2FD"
     }, 
     box:{
         textAlign:"center", 
         display :"flex", 
         flexDirection:"column", 
-        
+        marginLeft:"20px"
     },
     textField :{
          fontSize:"20px",

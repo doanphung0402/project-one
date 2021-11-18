@@ -9,16 +9,17 @@ const ListItemOption = (props) => {
     const history =useHistory(); 
     const dispath = useDispatch(); 
     const onDeleteOption = (index) =>{
+      console.log(index);
       dispath(deleteOption(index)); 
-  
+     
     }
   return (
     <Fragment>
       <ListItem button>
-        <ListItemIcon>{position}</ListItemIcon>
+        <ListItemIcon>{position+1}</ListItemIcon>
         <ListItemText primary={option} />
         <ListItemIcon>
-          <DeleteIcon onClick={()=>onDeleteOption(position-1)}  />
+          <DeleteIcon onClick={()=>onDeleteOption(position)}  />
         </ListItemIcon>
       </ListItem>
     </Fragment>

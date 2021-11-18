@@ -1,17 +1,13 @@
 import {
   Box,
   Divider,
-  Fab,
   Grid,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CreateSurveyStyle from "./styleComponent/CreateSurveyStyle";
 import TitleIcon from "@material-ui/icons/Title";
 import SubjectIcon from "@material-ui/icons/Subject";
@@ -19,14 +15,13 @@ import NoteIcon from "@material-ui/icons/Note";
 import { useSelector } from "react-redux";
 import OptionModal from "./ModalOption";
 import ListItemOption from "./ListItemOption";
-import DeleteIcon from "@material-ui/icons/Delete";
 const CreateSurvey = (props) => {
   const classes = props.classes;
   const optionList = useSelector((state) => state.listOption.ListOption);
   const renderListItem = (listOption) => {
     const xml = listOption.map((option, index) => {
       return (
-        <ListItemOption key={index} position={index + 1} option={option} />
+        <ListItemOption key={index} position={index} option={option} />
       );
     });
     return xml 
@@ -36,7 +31,7 @@ const CreateSurvey = (props) => {
   });
   return (
     <Grid container className={classes.gridContainer}>
-      <Grid item xs={3}></Grid>
+     <Grid item xs={3}></Grid>
       <Grid item xs={6} className={classes.container}>
         <Typography variant="h3">Tạo khảo sát của bạn </Typography>
         <Box className={classes.box}>

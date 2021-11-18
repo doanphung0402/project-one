@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Button, Fab, TextField } from '@material-ui/core';
 import AddIcon from "@material-ui/icons/Add";
-import { useSelector,useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {addListOption} from '../features/ListOption/ListOption'
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -72,7 +72,7 @@ export default function OptionModal() {
 
   return (
     <div>
-      <Fab style={{ float: "right" }} color="primary" aria-label="add">
+      <Fab style={{ float: "right" }} color="secondary" aria-label="add">
          <AddIcon onClick={handleOpen}/>
       </Fab>
       <Modal

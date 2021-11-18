@@ -107,7 +107,7 @@ export default function SignUp(props) {
                 }
               })
               .catch((error) => console.log(error));
-          }}
+          }} 
           validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}

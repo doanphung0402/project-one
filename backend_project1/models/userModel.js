@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-mongoose.connect("mongodb://localhost/project1", {
+import Url from '../constaint/UrlConnect'; 
+mongoose.connect(Url.DbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

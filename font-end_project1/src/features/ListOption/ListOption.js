@@ -10,8 +10,7 @@ const listOption = createSlice({
          state.ListOption.push(action.payload) ; 
       }, 
       deleteOption :(state,action)=>{
-          state.ListOption.splice(action.payload.index,1)
-      }
+          state.ListOption.splice(action.payload,1); }
      }
 })
 
