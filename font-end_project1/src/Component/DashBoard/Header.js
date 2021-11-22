@@ -107,7 +107,7 @@ const Header = () => {
     left: false,
   });
   const onHandleSurvey =()=>{
-     history.push("/my-survey")
+     history.push("/survey/my-survey")
   };
   const onHandleGoBack = () =>{
      history.push("/home"); 

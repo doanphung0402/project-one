@@ -13,20 +13,32 @@ import {
   ClickAwayListener,
   MenuList,
   Box,
+  makeStyles,
 } from "@material-ui/core";
 import { ArrowDropDownCircleOutlined } from "@material-ui/icons";
-import React,{useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SurveyItems from "./SurveyItems";
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import axios from 'axios'; 
-import URL from "../Config/URL";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import axios from "axios";
+import URL from "../../Config/URL";
 import { useHistory } from "react-router-dom";
+import { Pagination } from "@material-ui/lab";
+import HttpCode from "../../Constaint/HttpCode";
+import { toast } from "react-toastify";
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi", "Tất cả"];
+const useStyles = makeStyles((theme) => ({
+  root: { 
+      marginTop:"50px", 
+      
+      width:"100%"
+    
+  },
+}));
 const SplitButton = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const history = useHistory(); 
+
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
   };
@@ -44,17 +56,11 @@ const SplitButton = () => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      color="#FFFFFF"
-    >
+    <Grid container direction="column" alignItems="center" color="#FFFFFF">
       <Grid item xs={12}>
         <ButtonGroup
           variant="contained"
@@ -112,22 +118,36 @@ const SplitButton = () => {
     </Grid>
   );
 };
-
-
+///////////////////////////////////////////
 const Survey = () => {
-   const history = useHistory();
-   const [survey,setSurvey] = useState([]); 
-   useEffect(()=>{
-      axios({
-         method :"post", 
-         url:URL.getAllSurvey
-      }).then(data=>{
-          console.log(data)
-      })
-   })
-   const handleCreateSurvey =()=>{
-    history.push("/survey/create-survey")
- }
+  const history = useHistory();
+  const classes = useStyles();
+  const [page,setPage] = useState(1); 
+  const [totalPage,setTotalPage] = useState(1); 
+  const [survey,setSurvey] = useState([]); 
+  useEffect(() => {
+    axios({
+      url : `${URL.getPaginationPage}?page=${page}`,
+      method : "GET", 
+   }).then(data=>{
+       if(data.data.message===HttpCode.ERROR){
+          toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
+       }else{
+          setSurvey(data.data.payload.data.survey); 
+          setTotalPage(data.data.payload.totalPage); 
+          console.log(survey)
+       }
+    })
+  },[]);
+  const handleCreateSurvey = () => {
+    history.push("/survey/create-survey");
+  };
+  const handleChange =(event,page)=>{
+      setPage(page); 
+  }; 
+  const renderSurveyItem =(survey) =>{
+    // const   xml = 
+  }
   return (
     <div>
       <Container>
@@ -177,7 +197,14 @@ const Survey = () => {
                   </Grid>
                   <Grid item xs={4}>
                     <Typography variant="h4">
-                    <Button onClick={handleCreateSurvey} startIcon={<AddBoxIcon/>} variant="contained" color="secondary">Tạo khảo sát mới </Button>
+                      <Button
+                        onClick={handleCreateSurvey}
+                        startIcon={<AddBoxIcon />}
+                        variant="contained"
+                        color="secondary"
+                      >
+                        Tạo khảo sát mới{" "}
+                      </Button>
                     </Typography>
                   </Grid>
 
@@ -188,30 +215,21 @@ const Survey = () => {
                     alignItems="flex-start"
                     wrap="nowrap"
                   >
+                   
                     <Grid item xs={12}>
                       <SurveyItems />
                     </Grid>
-                    <Grid item xs={12}>
-                      <SurveyItems />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <SurveyItems />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <SurveyItems />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <SurveyItems  />
-                    </Grid>
+                    {/* {renderSurveyItem(page)} */}
                   </Grid>
+                  <Box className={classes.root}>
+                     <Pagination  onChange={handleChange} count={totalPage} color="primary" />
+                  </Box>
                 </Grid>
               </Card>
               <CssBaseline />
             </Box>
           </Grid>
-          <Grid item xs={4}>
-            hello
-          </Grid>
+          <Grid item xs={4}></Grid>
         </Grid>
       </Container>
     </div>

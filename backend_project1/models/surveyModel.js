@@ -8,18 +8,17 @@ const { Schema } = mongoose;
 
 const surveySchema =new Schema({
       email_user :String  ,
-      title:String , 
-      options:[String] , 
-      voted_number :Number , 
-      decription:String,
-      received_to :[String], 
-      send_to : [String], 
-      user_voted :[{email:String,option:Number}], 
-      timeout:Date, 
-      status:String
+      survey_send : [{
+        title:String , 
+        option:[String] , 
+        voted_number :Number , 
+        decription:String,
+        send_to : [String], 
+        user_voted :[{email:String,option:Number}], 
+      }]
 },{
-    collection :"servey"
+    collection : "survey_send"
 }); 
-const SurveyModel = mongoose.model("SurveyModel",surveySchema); 
+const SurveyModelSend = mongoose.model("SurveyModelSend",surveySchema); 
 
-export default SurveyModel ; 
+export default SurveyModelSend ; 

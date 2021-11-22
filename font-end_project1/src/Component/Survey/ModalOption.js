@@ -4,7 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import { Button, Fab, TextField } from '@material-ui/core';
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch } from "react-redux";
-import {addListOption} from '../features/ListOption/ListOption'
+import {addListOption} from '../../features/ListOption/ListOption'
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }

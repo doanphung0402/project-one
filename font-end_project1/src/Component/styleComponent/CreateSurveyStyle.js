@@ -44,6 +44,11 @@ const CreateSurveyStyle = {
     },
     textOption:{
          color : "red"
+    },
+    buttonContinue :{
+        textAlign:"right", 
+        marginRight:"90px", 
+        marginBottom :"80px"
     }
 }
 export default CreateSurveyStyle ; 

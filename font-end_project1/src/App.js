@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import {Router} from "./Constaint/Router";
 import DashBoard from "./Container/DashBoard";
 import { Route, Switch } from "react-router-dom";
-import { Router1 } from "./Constaint/Router";
+import { Router1 } from "./Constaint/Router" ; 
 import { ProtectedRoute } from "./Config/Protected.router";
+import {updateUserInfo} from './features/auth/authSlice'; 
+import { useDispatch, useSelector } from "react-redux";
 
 const renderRouterPageWithoutDB =(Router) =>{
   let xml =null ; 
@@ -34,6 +36,19 @@ const renderRouterPageWithDB =(Router1) =>{
   return xml;    
 }
 function App() {
+  const dispath = useDispatch(); 
+  useEffect(()=>{
+     const email = sessionStorage.getItem("email"); 
+     const first_name = sessionStorage.getItem("first_name"); 
+     const last_name = sessionStorage.getItem("last_name"); 
+     const userInfo1 = {
+        email : email ,
+        first_name : first_name , 
+        last_name : last_name, 
+     }
+     dispath(updateUserInfo(userInfo1)); 
+    
+  },[])  
   return (
       <div className="App">
          <Switch>

@@ -14,12 +14,12 @@ import Container from "@material-ui/core/Container";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Link } from "react-router-dom";
-import URL from "../Config/URL";
+import URL from "../../Config/URL";
 import { Form, ErrorMessage } from "formik";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
-import { signupFailse, signupSuccess } from "../features/auth/authSlice";
+import { signupFailse, signupSuccess } from "../../features/auth/authSlice";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -97,12 +97,20 @@ export default function SignUp(props) {
               url: URL.signup,
             })
               .then((data) => {
+                console.log(data);
                 if (data.data.payload.token) {
                   const cookies = new Cookies();
                   cookies.set("user", data.data.payload.token, { path: "/" });
-                  dispath(signupSuccess("Tạo thành công !"));
+                  dispath(signupSuccess(data.data.payload.userInfo));
+               
+                  const user =data.data.payload.userInfo; 
+                  console.log(user);
+                  sessionStorage.setItem("email",user.email); 
+                  sessionStorage.setItem("first_name",user.first_name); 
+                  sessionStorage.setItem("last_name",user.last_name); 
                   history.push("/home");
                 } else {
+                  console.log(data);
                   dispath(signupFailse(data.data.payload.error));
                 }
               })

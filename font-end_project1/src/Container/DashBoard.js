@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import Header from '../Component/Header';
-import Footer from '../Component/Footer';
+import Header from '../Component/DashBoard/Header'
+import Footer from '../Component/DashBoard/Footer';
 const DashBoard = (props) => {
     const {children} =props; 
     return (

@@ -29,6 +29,11 @@ import jwt from 'jsonwebtoken'
        if(data !=null){
          res.json({message:HttpCode.FAILSE,payload:{error:"Account đã tồn tại"}}) 
        }else{
+            const userInfo =   {
+               email : user.email , 
+               first_name:user.first_name, 
+               last_name:user.last_name
+           } ; 
             AccountService.createAdmin(createUser).then(data =>{
                jwt.sign(
                   {
@@ -37,11 +42,12 @@ import jwt from 'jsonwebtoken'
                       last_name:data.last_name
                   },
                   "ak47",{ expiresIn: '1h' } ,(error,token)=>{
+                      console.log("token:");
                       if(error){
-                         console.log("error token :"+error)
                         res.json({message:HttpCode.FAILSE,payload:{error:"Lỗi hệ thống , vui lòng thử lại"}})
+                       
                       }else {
-                        res.json({message:HttpCode.SUCCESS,payload:{token:token}}); 
+                        res.json({message:HttpCode.SUCCESS,payload:{token:token,userInfo}}); 
                       }
                   }
                 )
@@ -51,6 +57,7 @@ import jwt from 'jsonwebtoken'
             })
           }
    }).catch(error=>{
+      console.log(error); 
       res.json({message:HttpCode.FAILSE,payload:{error:"Lỗi hệ thống , vui lòng thử lại"}}) 
    })
 })

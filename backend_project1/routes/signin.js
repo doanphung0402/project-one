@@ -15,6 +15,11 @@ function SigninRouter() {
             if(data==null){
                   res.json({message:HttpCode.FAILSE,payload:{error:"Email không tồn tại!..."}})
             }else{
+               const userInfo =   {
+                  email : data.email , 
+                  first_name:data.first_name, 
+                  last_name:data.last_name
+             };
                bcrypt.compare(user.password,data.password,function(err, result) {
                     if(result ==true){
                         jwt.sign(
@@ -27,7 +32,7 @@ function SigninRouter() {
                                   if(error){
                                     res.json({message:HttpCode.FAILSE,payload:{error:"Lỗi hệ thống , vui lòng thử lại"}})
                                   }else {
-                                    res.json({message:HttpCode.SUCCESS,payload:{token:token}}); 
+                                    res.json({message:HttpCode.SUCCESS,payload:{token:token,userInfo:userInfo}}); 
                                   }
                               }
                             )

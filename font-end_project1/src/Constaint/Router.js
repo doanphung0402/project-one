@@ -1,8 +1,10 @@
-import Survey from '../Component/Survey'
-import SignIn from '../Component/SignIn'
-import SignUp from '../Component/SignUp'
+import Survey from '../Component/Survey/Survey'
+import SignIn from '../Component/Auth/SignIn'
+import SignUp from '../Component/Auth/SignUp'
 import home from '../page/home'
-import CreateSurvey from '../Component/CreateSurvey'
+import CreateSurvey from '../Component/Survey/CreateSurvey'
+import UserSend from '../Component/Survey/UserSend'; 
+import SendSucessSurvey from '../Component/Survey/SendSucessSurvey'
 export const Router = [
     {
              name :"Đăng nhập",
@@ -29,7 +31,7 @@ export const Router1 = [
     }, 
     {
          name:'survey', 
-         path:'/my-survey', 
+         path:'/survey/my-survey', 
          component: Survey
     }, 
     {
@@ -43,5 +45,17 @@ export const Router1 = [
          exact:false ,
          path:"/survey/create-survey", 
          component:CreateSurvey
+    }, 
+    {
+        name :"create-survey", 
+        exact : true , 
+        path :"/survey/create-survey-send-to", 
+        component : UserSend
+    }, 
+    {
+         name :"send-survey-success", 
+         exact : true , 
+         path : "/survey/send-survey-success", 
+         component : SendSucessSurvey
     }
 ]

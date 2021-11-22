@@ -1,43 +1,39 @@
 import express from 'express'; 
 import HttpCode from '../helper/HttpCode';
-import SurveyModel from '../models/surveyModel';
-import UserModel from '../models/userModel';
 import * as SurveyService from '../Service/SurveyService'; 
 function SurveyRoute(){
     const route = express.Router(); 
-    route.get("/get-all-survey",(req,res)=>{
-       const surveyResultPromise = SurveyService.getAllSurvey(); 
-        surveyResultPromise.then(data=>{
-             if(data==null) {
-                  res.json({message:HttpCode.NOT_FOUND})
-             }else{
-                  console.log(data);
-                  res.json(data)
-             }
+    route.get("/get-survey",(req,res)=>{
+        const page = req.query.page; 
+        const paginationPage = SurveyService.paginationPage(page); 
+        paginationPage.then(data=>{
+           res.json({message:HttpCode.SUCCESS,payload:{data}}); 
         }).catch(error=>{
-             console.log("survey:"+error); 
-             res.json({message:HttpCode.NOT_FOUND})
+          console.log("error survey:"+error)
+          res.json({message:HttpCode.ERROR}); 
         })
     });
     
-    route.post("/create-survey",(req,res)=>{
+    route.post("/create-send-survey",(req,res)=>{
          const resultReq = req.body;  
-         let newSurvey = {
-              email_user : resultReq.email_user, 
+         let newSurvey = {          
               title : resultReq.title , 
-              options : resultReq.options, 
-              voted_number : resultReq.voted_number,
-              received_to : resultReq.received_to, 
-              send_to : resultReq.send_to , 
-              user_voted : resultReq.user_voted , 
-              timeout : resultReq.timeout,
-              status : resultReq.status
+              option : resultReq.option, 
+              voted_number: 0,
+              decription : resultReq.decription , 
+              send_to : resultReq.send_to ,  
+              note:resultReq.note,       
          }; 
-         const rs =  SurveyService.createSurvey(newSurvey); 
+         const surveySend = {
+            email_user : resultReq.email_user, 
+            survey_send : newSurvey   
+         }
+         const rs =  SurveyService.updateUserSendSurvey(surveySend); 
          rs.then(data=>{
-             res.json({status:HttpCode.SUCCESS,payload:data}); 
+             console.log(data);
+             res.json({status:HttpCode.SUCCESS});           
          }).catch(error=>{
-             console.log(error)
+          res.json({message:HttpCode.FAILSE})
          })
     })
 

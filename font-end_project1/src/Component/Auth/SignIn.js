@@ -13,17 +13,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import URL from "../Config/URL";
+import URL from "../../Config/URL";
 import { Form } from "formik";
 import { Formik } from 'formik';
 import Cookies from 'universal-cookie';
 import { useDispatch } from "react-redux";
-import { login,loginFailse } from "../features/auth/authSlice";
+import { login,loginFailse } from "../../features/auth/authSlice";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link to="https://mui.com/">Your Website</Link> {new Date().getFullYear()}
+      <Link to="">Your Website</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -79,7 +79,11 @@ export default function SignIn(props) {
               if(data.data.payload.token){
                 const cookies = new Cookies();
                 cookies.set('user', data.data.payload.token, { path: '/' });
-                dispath(login());
+                const user = data.data.payload.userInfo; 
+                sessionStorage.setItem("email",user.email); 
+                sessionStorage.setItem("first_name",user.first_name); 
+                sessionStorage.setItem("last_name",user.last_name); 
+                dispath(login(data.data.payload.userInfo));
                 history.push("/home")
               }else {
                  console.log(data.data.payload.error);

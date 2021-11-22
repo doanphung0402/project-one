@@ -4,7 +4,7 @@ import Container from '@material-ui/core/Container';
 import Grid from "@material-ui/core/Grid"; 
 import Link from "@material-ui/core/Link"
 import { withStyles } from '@material-ui/core/styles';
-import FooterStyle from './styleComponent/FooterStyle';
+import FooterStyle from '../styleComponent/FooterStyle';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import { Fab } from '@material-ui/core';
 import YouTubeIcon from '@material-ui/icons/YouTube';
