@@ -110,7 +110,7 @@ export default function SignUp(props) {
                   sessionStorage.setItem("last_name",user.last_name); 
                   history.push("/home");
                 } else {
-                  console.log(data);
+                  console.log("error");
                   dispath(signupFailse(data.data.payload.error));
                 }
               })

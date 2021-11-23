@@ -13,7 +13,7 @@ const surveySchema =new Schema({
       option:[String] , 
       voted_number :Number , 
       decription:String,
-      received_to :[{email:String,option:Number}],
+      received_to :String,
       user_voted :[{email:String,option:Number}], 
       }]
 },{

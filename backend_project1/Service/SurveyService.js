@@ -1,6 +1,7 @@
 import q, { defer } from "q";
 import UserModel from "../models/userModel";
 import SurveyModelSend from "../models/surveyModel";
+import SurveyModelReceived from "../models/surveyReceivedModel";
 export function getAllSurvey() {
   const defer = q.defer();
   SurveyModelSend.find({}, (error, data) => {
@@ -25,46 +26,99 @@ export function findSurveyByEmail(email) {
   return defer.promise;
 }
 
+export async function updateUserReceivedSurvey(ListUserSend,surveySend){
+     let surveyReceived ;
+     let rsSend ; 
+     try {
+           rsSend= ListUserSend.map(async(user,index)=>{
+               surveyReceived = await SurveyModelReceived.findOne({
+                    email_user : user
+          });         
+          if (!surveyReceived){
+              return false; 
+          }else {      
+               surveyReceived.survey_received.push(surveySend)
+                await SurveyModelReceived.updateOne(
+                     {   email_user: user },
+                     {
+                        survey_received: surveyReceived.survey_received
+                     }
+                );
+
+                return true; 
+          }
+      })
+             
+     } catch (error) {
+          return error ; 
+     }
+     return rsSend; 
+}
 export async function updateUserSendSurvey(newSurvey) {
+  //update khao sat gui di vao csdl nguoi gui
   try {
     let surveySend = await SurveyModelSend.findOne({
       email_user: newSurvey.email_user
     });
-    if (surveySend==null) {
-     surveySend = await SurveyModelSend.create({
-        email_user: newSurvey.email_user,
-        survey_send: [],
-      });  
+    if (!surveySend) {
+      return error;
     }
-     surveySend.survey_send.push(newSurvey.survey_send);
-     const rsCreateSurveySend = await SurveyModelSend.updateOne({email_user:newSurvey.email_user},{
-          survey_send: surveySend.survey_send 
-    });
-    console.log("user_email :"+newSurvey.email_user);
-    return rsCreateSurveySend ;
+
+    surveySend.survey_send.push(newSurvey.survey_send);
+    await SurveyModelSend.updateOne(
+      { email_user: newSurvey.email_user },
+      {
+        survey_send : surveySend.survey_send
+      }
+    );
+  
   } catch (error) {
     return error;
   }
 }
+export async function createDefaultReceivedSurvey(email_user){
+     try {
+          const rscreateDefaultReceivedSurvey = await SurveyModelSend.create({
+            email_user: email_user,
+            survey_received: [], 
+          });
+          return rscreateDefaultReceivedSurvey;
+        } catch (error) {
+          return error;
+        }
+}
+export async function createDefaultSendSurvey(email_user) {
+  try {
+    const rsCreateDefaultSendSurvey = await SurveyModelReceived.create({
+      email_user: email_user,
+      survey_send: [],
+    });
+    return rsCreateDefaultSendSurvey;
+  } catch (error) {
+    return error;
+  }
+}
+
 export async function paginationPage(page, email_user) {
-  const defer = q.defer();
-  let perPage = 5;
+  let perPage = 2;
   let totalSurvey;
-  SurveyModelSend.find({ email_user: email_user }, (error, data) => {
-    if (!error) {
-      if(data){
-          totalSurvey = data.survey_send.length;
-          const totalPage = Math.ceil(totalSurvey/perPage);
-          const ListSurveySend = data.survey;
-          const startSurvey = perPage*(page-1);
-          const currentListSurveySend = ListSurveySend.slice(startSurvey,startSurvey+perPage+1);
-          defer.resolve({survey:currentListSurveySend,totalPage:totalPage});       
-      } else{
-          defer.resolve({survey:[],totalPage:1}); 
-      }
+  try {
+    const data = await SurveyModelSend.findOne({ email_user: email_user });
+    console.log(data.survey_send);
+    if (data) {
+      totalSurvey = data.survey_send.length;
+      const totalPage = Math.ceil(totalSurvey / perPage);
+      const ListSurveySend = data.survey_send;
+      const startSurvey = perPage * (page - 1);
+      const currentListSurveySend = ListSurveySend.slice(
+        startSurvey,
+        startSurvey + perPage + 1
+      );
+      return { survey: currentListSurveySend, totalPage: totalPage };
     } else {
-      defer.reject(error);
+      return { survey: [], totalPage: 1 };
     }
-  });
-  return defer.promise;
+  } catch (error) {
+    return error;
+  }
 }

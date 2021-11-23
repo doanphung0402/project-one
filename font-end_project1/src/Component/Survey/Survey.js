@@ -24,8 +24,10 @@ import URL from "../../Config/URL";
 import { useHistory } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
 import HttpCode from "../../Constaint/HttpCode";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi", "Tất cả"];
+
 const useStyles = makeStyles((theme) => ({
   root: { 
       marginTop:"50px", 
@@ -125,17 +127,21 @@ const Survey = () => {
   const [page,setPage] = useState(1); 
   const [totalPage,setTotalPage] = useState(1); 
   const [survey,setSurvey] = useState([]); 
+  const userInfo = useSelector(state=>state.auth.userInfo); 
   useEffect(() => {
     axios({
       url : `${URL.getPaginationPage}?page=${page}`,
-      method : "GET", 
+      method : "post", 
+      data : {
+        email :userInfo.email 
+      }
    }).then(data=>{
        if(data.data.message===HttpCode.ERROR){
           toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
        }else{
           setSurvey(data.data.payload.data.survey); 
-          setTotalPage(data.data.payload.totalPage); 
-          console.log(survey)
+          setTotalPage(data.data.payload.data.totalPage); 
+          console.log(data.data.payload.data.survey)
        }
     })
   },[]);

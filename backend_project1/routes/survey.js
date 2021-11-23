@@ -1,20 +1,19 @@
 import express from 'express'; 
 import HttpCode from '../helper/HttpCode';
 import * as SurveyService from '../Service/SurveyService'; 
-function SurveyRoute(){
+function  SurveyRoute(){
     const route = express.Router(); 
-    route.get("/get-survey",(req,res)=>{
+    route.post("/get-survey",async(req,res)=>{
         const page = req.query.page; 
-        const paginationPage = SurveyService.paginationPage(page); 
-        paginationPage.then(data=>{
-           res.json({message:HttpCode.SUCCESS,payload:{data}}); 
-        }).catch(error=>{
-          console.log("error survey:"+error)
+        const email_user = req.body.email;
+      try {
+          const data =await SurveyService.paginationPage(page,email_user); 
+           res.json({message:HttpCode.SUCCESS,payload:{data}});       
+        } catch (error) {
           res.json({message:HttpCode.ERROR}); 
-        })
+        }
     });
-    
-    route.post("/create-send-survey",(req,res)=>{
+    route.post("/create-send-survey", async(req,res)=>{
          const resultReq = req.body;  
          let newSurvey = {          
               title : resultReq.title , 
@@ -28,13 +27,22 @@ function SurveyRoute(){
             email_user : resultReq.email_user, 
             survey_send : newSurvey   
          }
-         const rs =  SurveyService.updateUserSendSurvey(surveySend); 
-         rs.then(data=>{
-             console.log(data);
-             res.json({status:HttpCode.SUCCESS});           
-         }).catch(error=>{
-          res.json({message:HttpCode.FAILSE})
-         })
+         let resultSend ; 
+          try {
+              await SurveyService.updateUserSendSurvey(surveySend); 
+              const surveySendTo = {
+                title : newSurvey.title, 
+                option:newSurvey.option , 
+                voted_number:0, 
+                decription:newSurvey.decription, 
+                received_to : resultReq.email_user
+              }
+          
+              resultSend =  await SurveyService.updateUserReceivedSurvey(newSurvey.send_to,surveySendTo) ;    
+              res.json({status:HttpCode.SUCCESS,payload:resultSend}); 
+          } catch (error) {
+               res.json({message:HttpCode.FAILSE});
+          }
     })
 
     return route

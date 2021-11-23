@@ -46,6 +46,7 @@ const UserSend = (props) => {
         data: Survey,
       }).then((data) => {
         if (data.data.status === HttpCode.SUCCESS){
+          console.log("🚀 ~ file: UserSend.js ~ line 49 ~ onSendSurvey ~ data.data", data.data)
           history.push("/survey/send-survey-success");
           toast.success("Gửi thành công !"); 
         }else{
