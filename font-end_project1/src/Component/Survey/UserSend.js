@@ -4,7 +4,7 @@ import React, { Fragment, useEffect } from "react";
 import CreateSurveyStyle from "../styleComponent/CreateSurveyStyle";
 import Button from "@material-ui/core/Button";
 import ListUserItem from "./ListUserItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalUserSend from "./ModalUserSend";
 import axios from "axios";
 import HttpCode from "../../Constaint/HttpCode";
@@ -13,9 +13,12 @@ import { toast } from "react-toastify";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { useHistory } from "react-router-dom";
+import { addResultSend } from "../../features/resultSend/resultSend";
+import { unwrapResult } from "@reduxjs/toolkit";
 const UserSend = (props) => {
   const classes = props.classes;
   const history = useHistory();
+  const dispath = useDispatch(); 
   const ListUserSend = useSelector((state) => state.UserSendList.ListUser);
   const SurveyInfo = useSelector((state) => state.SurveyInfo.SurveyInfo);
   const ListOption = useSelector((state) => state.listOption.ListOption);
@@ -46,9 +49,11 @@ const UserSend = (props) => {
         data: Survey,
       }).then((data) => {
         if (data.data.status === HttpCode.SUCCESS){
-          console.log("🚀 ~ file: UserSend.js ~ line 49 ~ onSendSurvey ~ data.data", data.data)
+          const resultSend =  data.data.payload ;
+          console.log("🚀 ~ file: UserSend.js ~ line 53 ~ onSendSurvey ~ data.data.payload",resultSend)
+          dispath(addResultSend(resultSend)); 
           history.push("/survey/send-survey-success");
-          toast.success("Gửi thành công !"); 
+         
         }else{
           toast.error("Có lỗi thử lại sau!")
         }

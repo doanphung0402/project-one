@@ -26,39 +26,42 @@ export function findSurveyByEmail(email) {
   return defer.promise;
 }
 
-export async function updateUserReceivedSurvey(ListUserSend,surveySend){
-     let surveyReceived ;
-     let rsSend ; 
-     try {
-           rsSend= ListUserSend.map(async(user,index)=>{
-               surveyReceived = await SurveyModelReceived.findOne({
-                    email_user : user
-          });         
-          if (!surveyReceived){
-              return false; 
-          }else {      
-               surveyReceived.survey_received.push(surveySend)
-                await SurveyModelReceived.updateOne(
-                     {   email_user: user },
-                     {
-                        survey_received: surveyReceived.survey_received
-                     }
-                );
-
-                return true; 
+export async function updateUserReceivedSurvey(ListUserSend, surveySend) {
+  let surveyReceived;
+  let resultFindEmail = [];
+  try {
+    for (let k1 = 0; k1 < ListUserSend.length; k1++) {
+      surveyReceived = await SurveyModelReceived.findOne({
+        email_user: ListUserSend[k1],
+      });
+      if (!surveyReceived) {
+        resultFindEmail.push(false);
+      } else {
+        surveyReceived.survey_received.push(surveySend);
+        await SurveyModelReceived.updateOne(
+          { email_user: ListUserSend[k1] },
+          {
+            survey_received: surveyReceived.survey_received,
           }
-      })
-             
-     } catch (error) {
-          return error ; 
-     }
-     return rsSend; 
+        );
+        resultFindEmail.push(true);
+      }
+    }
+  } catch (error) {
+    return error;
+  }
+  console.log(
+    "🚀 ~ file: SurveyService.js ~ line 69 ~ updateUserReceivedSurvey ~ resultFindEmail",
+    resultFindEmail
+  );
+  return resultFindEmail ; 
 }
+
 export async function updateUserSendSurvey(newSurvey) {
   //update khao sat gui di vao csdl nguoi gui
   try {
     let surveySend = await SurveyModelSend.findOne({
-      email_user: newSurvey.email_user
+      email_user: newSurvey.email_user,
     });
     if (!surveySend) {
       return error;
@@ -68,24 +71,23 @@ export async function updateUserSendSurvey(newSurvey) {
     await SurveyModelSend.updateOne(
       { email_user: newSurvey.email_user },
       {
-        survey_send : surveySend.survey_send
+        survey_send: surveySend.survey_send,
       }
     );
-  
   } catch (error) {
     return error;
   }
 }
-export async function createDefaultReceivedSurvey(email_user){
-     try {
-          const rscreateDefaultReceivedSurvey = await SurveyModelSend.create({
-            email_user: email_user,
-            survey_received: [], 
-          });
-          return rscreateDefaultReceivedSurvey;
-        } catch (error) {
-          return error;
-        }
+export async function createDefaultReceivedSurvey(email_user) {
+  try {
+    const rscreateDefaultReceivedSurvey = await SurveyModelSend.create({
+      email_user: email_user,
+      survey_received: [],
+    });
+    return rscreateDefaultReceivedSurvey;
+  } catch (error) {
+    return error;
+  }
 }
 export async function createDefaultSendSurvey(email_user) {
   try {
@@ -104,7 +106,6 @@ export async function paginationPage(page, email_user) {
   let totalSurvey;
   try {
     const data = await SurveyModelSend.findOne({ email_user: email_user });
-    console.log(data.survey_send);
     if (data) {
       totalSurvey = data.survey_send.length;
       const totalPage = Math.ceil(totalSurvey / perPage);

@@ -37,8 +37,9 @@ function  SurveyRoute(){
                 decription:newSurvey.decription, 
                 received_to : resultReq.email_user
               }
-          
-              resultSend =  await SurveyService.updateUserReceivedSurvey(newSurvey.send_to,surveySendTo) ;    
+              resultSend = await SurveyService.updateUserReceivedSurvey(newSurvey.send_to,surveySendTo) ;    
+
+
               res.json({status:HttpCode.SUCCESS,payload:resultSend}); 
           } catch (error) {
                res.json({message:HttpCode.FAILSE});
