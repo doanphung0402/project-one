@@ -30,9 +30,9 @@ const auth = createSlice({
                state.isAuthenticed =false ; 
                toast.error(`${action.payload}`)
           }, 
-      updateUserInfo :(state,action)=>{
-            state.userInfo = action.payload ; 
-      }
+          updateUserInfo :(state,action)=>{
+               state.userInfo = action.payload ; 
+          }
      }
 })
 

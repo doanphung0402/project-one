@@ -5,6 +5,8 @@ const URL ={
    authorization:`${url}/authorization`,
    getAllSurvey : `${url}/survey/get-all-survey`,
    sendSurvey : `${url}/survey/create-send-survey`, 
-   getPaginationPage :`${url}/survey/get-survey`
+   getPaginationPage :`${url}/survey/get-survey`, 
+   getAllSurveyReceived : `${url}/survey/get-all-survey-received`, 
+   getAllSurveySend :`${url}/survey/get-all-survey-send`
 }
 export default URL; 

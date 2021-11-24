@@ -1,6 +1,6 @@
 import { Box, Grid, List, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import CreateSurveyStyle from "../styleComponent/CreateSurveyStyle";
 import Button from "@material-ui/core/Button";
 import ListUserItem from "./ListUserItem";
@@ -14,7 +14,6 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { useHistory } from "react-router-dom";
 import { addResultSend } from "../../features/resultSend/resultSend";
-import { unwrapResult } from "@reduxjs/toolkit";
 const UserSend = (props) => {
   const classes = props.classes;
   const history = useHistory();
@@ -38,7 +37,7 @@ const UserSend = (props) => {
         email_user: UserInfo.userInfo.email,
         title: SurveyInfo.title,
         option: ListOption,
-        voted_number: 0,
+        vote_number: ListUser.length,
         decription: SurveyInfo.decription,
         note: SurveyInfo.note,      
         send_to: ListUser,      
@@ -50,7 +49,6 @@ const UserSend = (props) => {
       }).then((data) => {
         if (data.data.status === HttpCode.SUCCESS){
           const resultSend =  data.data.payload ;
-          console.log("🚀 ~ file: UserSend.js ~ line 53 ~ onSendSurvey ~ data.data.payload",resultSend)
           dispath(addResultSend(resultSend)); 
           history.push("/survey/send-survey-success");
          

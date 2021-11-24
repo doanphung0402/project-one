@@ -66,7 +66,6 @@ const CreateSurvey = (props) => {
                   toast.error("Nhập ít nhất 1 lựa chon để tiếp tục ! ")
                 }else{
                   dispath(addSurveyInfo(values));
-                  console.log(ListOption);
                   history.push("/survey/create-survey-send-to");
                 }
               }}

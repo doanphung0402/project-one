@@ -5,6 +5,7 @@ import home from '../page/home'
 import CreateSurvey from '../Component/Survey/CreateSurvey'
 import UserSend from '../Component/Survey/UserSend'; 
 import SendSucessSurvey from '../Component/Survey/SendSucessSurvey'
+import ChooseSurvey from '../Component/Survey/ChooseSurvey'
 export const Router = [
     {
              name :"Đăng nhập",
@@ -57,5 +58,11 @@ export const Router1 = [
          exact : true , 
          path : "/survey/send-survey-success", 
          component : SendSucessSurvey
+    }, 
+    { 
+        name :"detail-survey-item", 
+        exact : true , 
+        path :"/survey/get-detail-survey-item", 
+        component: ChooseSurvey
     }
 ]

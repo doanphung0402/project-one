@@ -37,15 +37,14 @@ const SendSucessSurvey = () => {
         }      
    } 
     if(ListUserSendFalse.length >0){
-         toast.error("Không thể gửi tới một số email !")
+        toast.error(`Gửi thành công tới ${(ListUserSend.length-ListUserSendFalse.length)}/${ListUserSend.length} email !`); 
     }else{
-        toast.success("Gửi thành công !"); 
+        toast.success("Gửi thành công ! ")
     }
    setListFalse(ListUserSendFalse); 
   },[]);
 
   const renderResultSend = (listFalse)=>{ 
-   console.log("🚀 ~ file: SendSucessSurvey.js ~ line 40 ~ renderResultSend ~ listFalse", resultSend)
    const xml = listFalse.map((data,index)=>{
         return (
             <Typography key={index} variant="p" style={{color:"red",marginRight:"10px"}}>{ListUserSend[data]},</Typography>
@@ -53,7 +52,6 @@ const SendSucessSurvey = () => {
    })
    return xml ; 
   }
-
   return (
     <Fragment>
       <Grid container>
@@ -63,7 +61,7 @@ const SendSucessSurvey = () => {
         <Grid item xs={12} style={{ marginTop: "50px" }}>
           <Typography variant="h3">Gửi khảo sát thành công !</Typography>
            <Box style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:"50px"}}>
-                <Typography style={{marginRight:"10px"}} variant="p">Không thể gửi cho :</Typography>
+                {(listFalse.length ===0)?"":<Typography style={{marginRight:"10px"}} variant="p">Không thể gửi cho :</Typography>}
                 {renderResultSend(listFalse)}
            </Box>
           <Grid container style={{ textAlign: "right", marginTop: "50px" }}>

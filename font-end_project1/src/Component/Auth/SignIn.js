@@ -75,7 +75,6 @@ export default function SignIn(props) {
                data : values, 
                url :URL.login
             }).then(data =>{
-              console.log(data); 
               if(data.data.payload.token){
                 const cookies = new Cookies();
                 cookies.set('user', data.data.payload.token, { path: '/' });

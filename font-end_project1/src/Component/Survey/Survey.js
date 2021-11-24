@@ -24,9 +24,11 @@ import URL from "../../Config/URL";
 import { useHistory } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
 import HttpCode from "../../Constaint/HttpCode";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-const options = ["Khảo sát đã nhận", "Khảo sát đã gửi", "Tất cả"];
+import { getListSurvey } from "../../features/survey/ListSurveyItem"; 
+import { changeSplitButton } from "../../features/survey/SplitButton";
+const options = ["Khảo sát đã nhận", "Khảo sát đã gửi"];
 
 const useStyles = makeStyles((theme) => ({
   root: { 
@@ -40,7 +42,9 @@ const SplitButton = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+   const userInfo = useSelector(state=>state.auth.userInfo); 
+   const dispath = useDispatch();
+     
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
   };
@@ -48,6 +52,7 @@ const SplitButton = () => {
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
     setOpen(false);
+    dispath(changeSplitButton(index)); 
   };
 
   const handleToggle = () => {
@@ -71,7 +76,6 @@ const SplitButton = () => {
         >
           <Button onClick={handleClick}>{options[selectedIndex]}</Button>
           <Button
-            // color="primary"
             size="small"
             aria-controls={open ? "split-button-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
@@ -124,27 +128,14 @@ const SplitButton = () => {
 const Survey = () => {
   const history = useHistory();
   const classes = useStyles();
+  const dispath =useDispatch();
   const [page,setPage] = useState(1); 
   const [totalPage,setTotalPage] = useState(1); 
-  const [survey,setSurvey] = useState([]); 
+  const [survey,setSurvey] =useState([]); 
+  console.log("🚀 ~ file: Survey.js ~ line 136 ~ Survey ~ survey", survey)
   const userInfo = useSelector(state=>state.auth.userInfo); 
-  useEffect(() => {
-    axios({
-      url : `${URL.getPaginationPage}?page=${page}`,
-      method : "post", 
-      data : {
-        email :userInfo.email 
-      }
-   }).then(data=>{
-       if(data.data.message===HttpCode.ERROR){
-          toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
-       }else{
-          setSurvey(data.data.payload.data.survey); 
-          setTotalPage(data.data.payload.data.totalPage); 
-          console.log(data.data.payload.data.survey)
-       }
-    })
-  },[]);
+  console.log("🚀 ~ file: Survey.js ~ line 137 ~ Survey ~ userInfo", userInfo)
+  const status = useSelector(state=>state.SplitButton.SplitButton);
   const handleCreateSurvey = () => {
     history.push("/survey/create-survey");
   };
@@ -152,8 +143,33 @@ const Survey = () => {
       setPage(page); 
   }; 
   const renderSurveyItem =(survey) =>{
-    // const   xml = 
+    const xml= survey.map((survey,index)=>{
+      return <SurveyItems key={index} index={index} survey={survey} />
+  })
+        return xml 
   }
+  useEffect(() => { 
+    async function fetchData(){
+     await axios({
+        url : `${URL.getPaginationPage}?page=${page}`,
+        method : "post", 
+        data : {
+          email :userInfo.email, 
+          status: status===0?'RECEIVED':'SEND'
+        }
+     }).then(data=>{
+          console.log("🚀 ~ file: Survey.js ~ line 147 ~ useEffect ~ data", data)
+         if(data.data.message===HttpCode.ERROR){
+            toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
+         }else{
+            setSurvey(data.data.payload.data.survey); 
+            setTotalPage(data.data.payload.data.totalPage); 
+         }
+      })
+    }
+     fetchData()
+  },[page,status,userInfo]);
+  
   return (
     <div>
       <Container>
@@ -221,11 +237,7 @@ const Survey = () => {
                     alignItems="flex-start"
                     wrap="nowrap"
                   >
-                   
-                    <Grid item xs={12}>
-                      <SurveyItems />
-                    </Grid>
-                    {/* {renderSurveyItem(page)} */}
+                    {renderSurveyItem(survey)}
                   </Grid>
                   <Box className={classes.root}>
                      <Pagination  onChange={handleChange} count={totalPage} color="primary" />
