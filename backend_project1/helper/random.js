@@ -1,4 +1,4 @@
-export class Random {
+ class Random {
     SET = {
         ALPHABET : "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
         NUMBER : "0123456789",
@@ -26,3 +26,4 @@ export class Random {
         return this.randomString(l, this.SET.UPPERCASE);
     }
 }
+export default new Random(); 

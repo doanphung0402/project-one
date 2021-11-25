@@ -2,6 +2,7 @@ import express from 'express';
 import HttpCode from '../helper/HttpCode';
 import SurveyModelReceived from '../models/surveyReceivedModel';
 import * as SurveyService from '../Service/SurveyService'; 
+import  Random  from '../helper/random';
 function  SurveyRoute(){
     const route = express.Router(); 
     route.post("/get-survey",async(req,res)=>{
@@ -19,13 +20,16 @@ function  SurveyRoute(){
     });
     route.post("/create-send-survey", async(req,res)=>{
          const resultReq = req.body;  
+         const id = Random.alphabet(8); 
+         console.log("🚀 ~ file: survey.js ~ line 24 ~ route.post ~ id", id)
          let newSurvey = {          
               title : resultReq.title , 
               option : resultReq.option, 
               vote_number: resultReq.vote_number,
               decription : resultReq.decription , 
               send_to : resultReq.send_to ,  
-              note:resultReq.note,       
+              note:resultReq.note, 
+              id_survey_send : id    
          }; 
          const surveySend = {
             email_user : resultReq.email_user, 
@@ -40,7 +44,8 @@ function  SurveyRoute(){
                 note : newSurvey.note , 
                 vote_number:newSurvey.vote_number, 
                 decription:newSurvey.decription, 
-                received_to : resultReq.email_user
+                received_to : resultReq.email_user, 
+                id_survey_send : newSurvey.id_survey_send
               }
               resultSend = await SurveyService.updateUserReceivedSurvey(newSurvey.send_to,surveySendTo) ;    
               res.json({status:HttpCode.SUCCESS,payload:resultSend}); 
@@ -66,6 +71,11 @@ function  SurveyRoute(){
 //           res.json({status:HttpCode.FAILSE}); 
 //      }
 // })
+   route.post("/survey-choose/update-survey-user-choose",async (req,res)=>{
+         const surveyCheck = req.body ; 
+         await SurveyService.updateSurveyChoose(surveyCheck);     
+         res.json(surveyCheck);    
+   })
     return route
 }
 export default SurveyRoute()

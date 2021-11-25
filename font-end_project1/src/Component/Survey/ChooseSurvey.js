@@ -1,5 +1,12 @@
 import React, { Fragment } from "react";
-import { Grid, Typography, Box, Container, Card } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Box,
+  Container,
+  Card,
+  Button,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 import GradeIcon from "@material-ui/icons/Grade";
@@ -48,26 +55,42 @@ const ChooseSurvey = () => {
       );
     } else {
       xml = (
-        <Box style={{ marginTop: "15px", display: "flex",justifyContent: "center", }}>
+        <Box
+          style={{
+            marginTop: "15px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Typography variant="subtitle1">
-             Nhận được từ :{survey.received_to} *
+            Nhận được từ :{survey.received_to} *
           </Typography>
           <GradeIcon style={{ marginLeft: "6px", marginRight: "6px" }} />
           <Typography variant="subtitle1">
-             Nhận được lúc : {survey.create_at}
+            Nhận được lúc : {survey.create_at}
           </Typography>
         </Box>
       );
     }
     return xml;
   };
-
+  const handleSendSurvey =()=>{
+       
+  }
   return (
     <Fragment>
-      <Container style={{backgroundColor:"#33eaff"}}>
+      <Container style={{ backgroundColor: "#33eaff" }}>
         <Grid container>
           <Grid item xs={1}></Grid>
-          <Grid item xs={10} style={{ backgroundColor: "#FFFFFF" , marginTop:"30px", marginBottom:"20px" }}>
+          <Grid
+            item
+            xs={10}
+            style={{
+              backgroundColor: "#FFFFFF",
+              marginTop: "30px",
+              marginBottom: "20px",
+            }}
+          >
             <Card>
               <Typography variant="h3">{survey.title}</Typography>
               {infoSurvey(survey)}
@@ -78,7 +101,13 @@ const ChooseSurvey = () => {
                   fontSize: "20px",
                 }}
               >
-                <Box style={{ marginTop: "25px", float: "left" , marginBottom:"75px" }}>
+                <Box
+                  style={{
+                    marginTop: "25px",
+                    float: "left",
+                    marginBottom: "75px",
+                  }}
+                >
                   <Box style={{ display: "flex", alignItems: "baseline" }}>
                     <SubjectIcon className={classes.iconSurvey} />
                     <Typography
@@ -111,10 +140,17 @@ const ChooseSurvey = () => {
                     </Typography>
                   </Box>
                 </Box>
-                 <div style={{textAlign:"center",marginBottom:"75px",marginRight:"20px"}}>
-                   <DataTable style={{marginTop:"50px"}} survey={survey} />
-                 </div>
+                <div
+                  style={{
+                    textAlign: "center",
+                    marginBottom: "30px",
+                    marginRight: "20px",
+                  }}
+                >
+                  <DataTable style={{ marginTop: "50px" }} survey={survey} />
+                </div>
               </Box>
+             
             </Card>
           </Grid>
           <Grid xs={1} item></Grid>

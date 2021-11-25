@@ -11,12 +11,13 @@ const surveySchema =new Schema({
       survey_send : [{
         title:String , 
         option:[String] , 
-        vote_number :Number , 
+        vote_number :Number ,   
         decription:String,
         send_to : [String], 
         note :String,
         user_voted :[{email:String,option:Number}], 
         create_at: { type: Date, default: Date.now },
+        id_survey_send : String  
       }]
 },{
     collection : "survey_send"

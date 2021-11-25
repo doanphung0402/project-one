@@ -32,6 +32,23 @@ const SurveyItems = (props) => {
      dispath(addSurveyDetail(survey))
      history.push(`/survey/get-detail-survey-item?item=${index}`)
   }
+  const showNumberPersonVote =(survey)=>{ 
+     let xml = "hello";  
+     if(survey.user_voted) {
+          xml =(
+            <Typography style={{ marginLeft: "5px" }} variant="subtitle2">
+                {survey.user_voted.length}/{survey.vote_number}  voted
+            </Typography>
+          )
+     }else{
+          xml = (
+                <Typography style={{ marginLeft: "5px" }} variant="subtitle2">
+                    {survey.vote_number} person vote 
+                </Typography>
+          )
+     }
+     return xml; 
+  }
    
   return (
     <Button onClick={()=>detailSurvey(survey)}>
@@ -62,9 +79,7 @@ const SurveyItems = (props) => {
         </Box>
         <Box display="flex" style={{ marginTop: "20px", marginLeft: "5px" }}>
           <GroupIcon />
-          <Typography style={{ marginLeft: "5px" }} variant="subtitle2">
-            {survey.user_voted.length}/{survey.vote_number} voted{" "}
-          </Typography>
+              {showNumberPersonVote(survey)}
         </Box>
       </Card>
     </Button>

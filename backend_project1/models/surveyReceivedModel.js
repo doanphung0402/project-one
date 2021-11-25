@@ -11,11 +11,12 @@ const surveySchema =new Schema({
       survey_received : [{
       title:String , 
       option:[String] , 
-      vote_number :Number , 
+      vote_number :Number ,    //so luong nguoi da vote 
       note :String , 
       decription:String,
       received_to :String,
-      user_voted :Number, 
+      id_survey_send : String , 
+      user_voted :String, //option chon 
       create_at: { type: Date, default: Date.now },
       }]
 },{
