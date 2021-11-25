@@ -140,10 +140,7 @@ export async function getSurveyReceived(email_user) {
       email_user: email_user,
     });
     const listSurveyReceived = userSurveyReceived.survey_received;
-    console.log(
-      "🚀 ~ file: SurveyService.js ~ line 126 ~ getSurveyReceived ~ listSurveyReceived",
-      listSurveyReceived
-    );
+   
     return listSurveyReceived;
   } catch (error) {
     return error;
@@ -161,11 +158,9 @@ export async function getSurveySend(email_user) {
         }
 }
 export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi dung chon 1 option
-   console.log("🚀 ~ file: SurveyService.js ~ line 165 ~ updateSurveyChoose ~ chooseSurvey", surveyCheck); 
    const {email_received,option,email_send,id_survey_send} = surveyCheck; 
    try {
-       const surveySend = await SurveyModelSend.findOne({email_user:email_send}); 
-       console.log("🚀 ~ file: SurveyService.js ~ line 168 ~ updateSurveyChoose ~ surveySend", surveySend)
+       const surveySend = await SurveyModelSend.findOne({email_user:email_send}); //cap nhat cho nguoi gui
        if(!surveySend) {
              throw error
        }else {
@@ -179,7 +174,7 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
                 }
           } 
           const user_voted = surveySendItem.user_voted ; 
-          console.log("🚀 ~ file: SurveyService.js ~ line 181 ~ updateSurveyChoose ~ user_voted", user_voted)
+       
           let user_voted_exist_index = user_voted.findIndex((data,index)=>{
                return data.email === email_received
           })
@@ -197,12 +192,34 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
          
           surveySendItem.user_voted = user_voted; 
           survey_send[positionSurveySendItem] = surveySendItem ; 
-          console.log("🚀 ~ file: SurveyService.js ~ line 195 ~ updateSurveyChoose ~   survey_send[positionSurveySendItem]",   survey_send[positionSurveySendItem])
          
            await SurveyModelSend.updateOne({email_user:email_send},{
                 survey_send : survey_send 
           })
        }
+       //cap nhan cho nguoi nhan 
+        const surveyReceived =await SurveyModelReceived.findOne({
+           email_user : email_received 
+        }); 
+       
+        if(surveyReceived){
+          const survey_received = surveyReceived.survey_received ; 
+          const surveyReceivedItem = survey_received.find((data,index)=>{
+                 return data.id_survey_send === id_survey_send 
+          })
+          const positionSurveyReceivedItem = survey_received.findIndex((data,index)=>{
+                 return data.id_survey_send === id_survey_send 
+          })
+          surveyReceivedItem.user_voted = option ; 
+          survey_received[positionSurveyReceivedItem].user_voted =option ;
+          await SurveyModelReceived.updateOne({
+               email_user : email_received
+          },{
+              survey_received : survey_received   
+          })
+        }else{
+          throw error ; 
+        }
    } catch (error) {
       console.log("🚀 ~ file: SurveyService.js ~ line 175 ~ updateSurveyChoose ~ error", error)
    }
