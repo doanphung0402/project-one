@@ -163,6 +163,7 @@ const Survey = () => {
             toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
          }else{
             setSurvey(data.data.payload.data.survey); 
+          
             setTotalPage(data.data.payload.data.totalPage); 
          }
       })

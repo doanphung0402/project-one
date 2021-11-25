@@ -15,7 +15,7 @@ const surveySchema =new Schema({
       note :String , 
       decription:String,
       received_to :String,
-      user_voted :[{email:String,option:Number}], 
+      user_voted :Number, 
       create_at: { type: Date, default: Date.now },
       }]
 },{
