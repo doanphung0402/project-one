@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { Box, Button, Checkbox } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { addSurveyAfterChoose } from "../../features/survey/surveyAfterChoose";
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 import {
   addSurveyChooseSend,
   addSurveyChooseReceived,
@@ -19,7 +19,7 @@ import {
 import axios from "axios";
 import URL from "../../Config/URL";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 export default function DataTable(props) {
   const classes = useStyles();
   const survey = props.survey;
-  const history = useHistory();
+  
   console.log("🚀 ~ file: DataTable.js ~ line 23 ~ DataTable ~ survey", survey);
   const renderOption = (survey) => {
     const option = survey.option;
@@ -48,6 +48,7 @@ export default function DataTable(props) {
   useEffect(() => {
     const option = survey.option;
     dispath(cancerSurveyChoose());
+    
     if (survey.send_to) {
       for (let k = 0; k < survey.send_to.length; k++) {
         let email = survey.send_to[k];
@@ -70,16 +71,22 @@ export default function DataTable(props) {
         }
       }
     } else {
+      
       const emailReceivedTo = userInfo.email;
       let optionChoose = [];
       for (let k = 0; k < option.length; k++) {
-        optionChoose.push(false);
+         if(survey.user_voted === k+1){
+          optionChoose.push(true);
+         }else{
+          optionChoose.push(false);
+         }
       }
-      const createData = { email: emailReceivedTo, resultOption: optionChoose };
+      const createData = {email: emailReceivedTo, resultOption: optionChoose };
       dispath(addSurveyChooseReceived([createData]));
     }
   }, []);
   const [checked, setChecked] = useState([]);
+  const [isChecked,setIsChecked] = useState(true);
   const Check = (props) => {
     const status = props.status;
     const index = props.index;
@@ -87,7 +94,7 @@ export default function DataTable(props) {
     if (status === true) {
       return (
         <Checkbox
-          checked
+          defaultChecked ={isChecked}
           color="secondary"
           inputProps={{ "aria-label": "secondary checkbox" }}
           value={index}
@@ -111,6 +118,7 @@ export default function DataTable(props) {
 
   const handleChange = (event) => {
     const value = event.target;
+    setIsChecked(false)
     let checked = survey.option.map((value) => {
       return false;
     });
@@ -123,12 +131,15 @@ export default function DataTable(props) {
     };
     dispath(addSurveyAfterChoose(SurveyChoose));
   };
+
   const rows = useSelector((state) => state.SurveyChoose.SurveyChoose);
   console.log("🚀 ~ file: DataTable.js ~ line 80 ~ DataTable ~ rows", rows);
   const SurveyAfterChoose = useSelector(
     (state) => state.SurveyAfterChoose.SurveyAfterChoose
   );
   const showChooseItem = (row) => {
+    console.log("🚀 ~ file: DataTable.js ~ line 134 ~ showChooseItem ~ row", row)
+   
     const xml = row.resultOption.map((option, index) => {
       if (option === true) {
         return (
@@ -168,10 +179,6 @@ export default function DataTable(props) {
       id_survey_send: survey.id_survey_send,
     };
 
-    console.log(
-      "🚀 ~ file: DataTable.js ~ line 163 ~ handleSendSurvey ~ SurveySendAfterCheck",
-      SurveySendAfterCheck
-    );
     axios({
       url: URL.updateSurveyCheck,
       method: "Post",
@@ -181,10 +188,6 @@ export default function DataTable(props) {
     });
   };
   const renderButtonSend = (survey) => {
-    console.log(
-      "🚀 ~ file: DataTable.js ~ line 172 ~ renderButtonSend ~ survey",
-      survey
-    );
     let xml;
     if (survey.send_to) {
       xml = "";
@@ -204,9 +207,7 @@ export default function DataTable(props) {
     }
     return xml;
   };
-  const goBack =()=>{
-     history.push("/survey/my-survey"); 
-  }
+ 
   return (
     <>
       <TableContainer component={Paper}>
@@ -221,11 +222,7 @@ export default function DataTable(props) {
         </Table>
       </TableContainer>
       {renderButtonSend(survey)}
-      <Box style={{ float: "left", marginTop: "50px" , marginBottom:"60px" }}>
-        <Button variant="contained" color="secondary" startIcon={<ArrowBackIosIcon/>} onClick={goBack}>
-           Quay lại 
-        </Button>
-      </Box>
+     
     </>
   );
 }

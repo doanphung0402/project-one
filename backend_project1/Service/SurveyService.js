@@ -134,7 +134,7 @@ export async function paginationPage(page,email_user,status) {
   }
 }
 export async function getSurveyReceived(email_user) {
-  //lay survey nhan duoc
+  //lay list survey nhan duoc
   try {
     const userSurveyReceived = await SurveyModelReceived.findOne({
       email_user: email_user,
@@ -223,4 +223,25 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
    } catch (error) {
       console.log("🚀 ~ file: SurveyService.js ~ line 175 ~ updateSurveyChoose ~ error", error)
    }
+}
+// export async function getSurveyReceivedById(id_survey_send ,email){
+//       try {
+//            const SurveyReceived = await SurveyModelReceived.findOne({
+//                  email_user : email
+//            }); 
+//            if(survey_received){
+//                  const survey_received = SurveyReceived.survey_received; 
+//                  const survey = survey_received.find((data,index)=>{
+//                        return  data.id_survey_send = id_survey_send  
+//                  })
+//                   return survey ; 
+//            }else{
+//                  throw error 
+//            }
+//       } catch (error) {
+//            return error ; 
+//       }
+// }
+export async function handleCheckSurvey (){ 
+   await Survey
 }

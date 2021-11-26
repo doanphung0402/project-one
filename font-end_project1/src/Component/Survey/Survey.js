@@ -14,6 +14,7 @@ import {
   MenuList,
   Box,
   makeStyles,
+  Badge,
 } from "@material-ui/core";
 import { ArrowDropDownCircleOutlined } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
@@ -128,13 +129,12 @@ const SplitButton = () => {
 const Survey = () => {
   const history = useHistory();
   const classes = useStyles();
-  const dispath =useDispatch();
   const [page,setPage] = useState(1); 
   const [totalPage,setTotalPage] = useState(1); 
   const [survey,setSurvey] =useState([]); 
-  console.log("🚀 ~ file: Survey.js ~ line 136 ~ Survey ~ survey", survey)
+  console.log("🚀 ~ file: Survey.js ~ line 134 ~ Survey ~ survey", survey)
+ 
   const userInfo = useSelector(state=>state.auth.userInfo); 
-  console.log("🚀 ~ file: Survey.js ~ line 137 ~ Survey ~ userInfo", userInfo)
   const status = useSelector(state=>state.SplitButton.SplitButton);
   const handleCreateSurvey = () => {
     history.push("/survey/create-survey");
@@ -144,7 +144,13 @@ const Survey = () => {
   }; 
   const renderSurveyItem =(survey) =>{
     const xml= survey.map((survey,index)=>{
-      return <SurveyItems key={index} index={index} survey={survey} />
+       if (survey.is_checked === true){
+           return <SurveyItems key={index} index={index} survey={survey} status={true} />
+       }else{
+         return (       
+           <SurveyItems key={index} index={index} survey={survey}  status ={false}/>
+         )
+       }
   })
         return xml 
   }
@@ -158,12 +164,10 @@ const Survey = () => {
           status: status===0?'RECEIVED':'SEND'
         }
      }).then(data=>{
-          console.log("🚀 ~ file: Survey.js ~ line 147 ~ useEffect ~ data", data)
          if(data.data.message===HttpCode.ERROR){
             toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
          }else{
-            setSurvey(data.data.payload.data.survey); 
-          
+            setSurvey(data.data.payload.data.survey);       
             setTotalPage(data.data.payload.data.totalPage); 
          }
       })

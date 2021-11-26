@@ -14,6 +14,9 @@ import SubjectIcon from "@material-ui/icons/Subject";
 import NoteIcon from "@material-ui/icons/Note";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import DataTable from "./DataTable";
+import ChartSurvey from "./ChartSurvey";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -29,10 +32,24 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
-
+const renderChartSurvey = (survey) =>{
+  let xml ; 
+   if (survey.send_to){
+      xml = (
+        <Box style={{marginTop:"30px"}}>
+           <ChartSurvey style ={{marginTop:"20px"}} survey={survey} />
+        </Box>
+      )
+   }else{
+      xml = ""
+   }
+   return xml ; 
+}
 const ChooseSurvey = () => {
   const classes = useStyles();
-  const survey = useSelector((state) => state.DetailSurvey.DetailSurvey);
+  const history = useHistory();
+  let survey = useSelector((state) => state.DetailSurvey.DetailSurvey);
+  console.log("🚀 ~ file: ChooseSurvey.js ~ line 40 ~ ChooseSurvey ~ survey", survey)
   const infoSurvey = (survey) => {
     let xml;
     if (survey.send_to) {
@@ -74,12 +91,12 @@ const ChooseSurvey = () => {
     }
     return xml;
   };
-  const handleSendSurvey =()=>{
-       
-  }
+  const goBack =()=>{
+    history.push("/survey/my-survey"); 
+ }
   return (
     <Fragment>
-      <Container style={{ backgroundColor: "#33eaff" }}>
+      <Container style={{ backgroundColor: "",padding:"20px" }}>
         <Grid container>
           <Grid item xs={1}></Grid>
           <Grid
@@ -149,7 +166,25 @@ const ChooseSurvey = () => {
                 >
                   <DataTable style={{ marginTop: "50px" }} survey={survey} />
                 </div>
+                <Box
+                  style={{
+                    float: "left",
+                    marginTop: "50px",
+                    marginBottom: "60px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<ArrowBackIosIcon />}
+                    onClick={goBack}
+                  >
+                    Quay lại
+                  </Button>
+                </Box> 
               </Box>
+
+            {renderChartSurvey(survey)}
              
             </Card>
           </Grid>

@@ -76,6 +76,17 @@ function  SurveyRoute(){
          await SurveyService.updateSurveyChoose(surveyCheck);     
          res.json(surveyCheck);    
    })
+//    route.post("/fetch-survey-received",async(req,res)=>{
+//          const survey_received_info = req.body ; 
+//          console.log("🚀 ~ file: survey.js ~ line 81 ~ route.post ~ survey_received_info", survey_received_info)
+//          const {email,id_survey_send} = survey_received_info ; 
+//          const rsFetchSurveyReceived =  await SurveyService.getSurveyReceivedById(id_survey_send, email); 
+//          if(rsFetchSurveyReceived){
+//                res.json({message:HttpCode.SUCCESS},{payload:rsFetchSurveyReceived}); 
+//          } else{ 
+//               res.json({message:HttpCode.ERROR})
+//          }
+//    })
     return route
 }
 export default SurveyRoute()
