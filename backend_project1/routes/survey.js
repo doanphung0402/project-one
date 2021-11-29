@@ -87,6 +87,11 @@ function  SurveyRoute(){
 //               res.json({message:HttpCode.ERROR})
 //          }
 //    })
+  route.post("/change-status-survey",async(req,res)=>{
+     const data = req.body ; 
+     const rsUpdate = await SurveyService.handleCheckSurvey(data); 
+     console.log("🚀 ~ file: survey.js ~ line 93 ~ route.post ~ rsUpdate", rsUpdate)  
+  })
     return route
 }
 export default SurveyRoute()

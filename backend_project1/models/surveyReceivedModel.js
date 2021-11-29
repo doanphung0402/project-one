@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Url from '../constaint/UrlConnect'; 
+import StatusSurveyItem from '../constaint/StatusSurveyItem'
 mongoose.connect(Url.DbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -18,7 +19,7 @@ const surveySchema =new Schema({
       id_survey_send : String , 
       user_voted :{type : Number , default : 0} , //option chon 
       create_at: { type: Date, default: Date.now },
-      is_check : {type:Boolean,default : false} //kiem tra da xem chua 
+      is_check : {type:String,default :StatusSurveyItem.NOT_DONE } //kiem tra da xem chua //NOT SEEN //SEEN // NOT DONE 
       }]
 },{
     collection : "survey_received"

@@ -2,6 +2,7 @@ import q, { defer } from "q";
 import UserModel from "../models/userModel";
 import SurveyModelSend from "../models/surveyModel";
 import SurveyModelReceived from "../models/surveyReceivedModel";
+import HttpCode from "../helper/HttpCode";
 export function getAllSurvey() {
   const defer = q.defer();
   SurveyModelSend.find({}, (error, data) => {
@@ -242,6 +243,39 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
 //            return error ; 
 //       }
 // }
-export async function handleCheckSurvey (){ 
-   await Survey
+export async function handleCheckSurvey(data){ 
+  console.log("🚀 ~ file: SurveyService.js ~ line 247 ~ handleCheckSurvey ~ data", data)
+  const {status,email,id_survey_send} = data ; 
+  try {
+    let survey =await SurveyModelReceived.findOne({
+      email_user : email 
+   })
+   if(survey){
+      if(survey==null){
+         return HttpCode.NOT_FOUND
+      }else{
+         let survey_received = survey.survey_received; 
+         let updateSurveyPosititon =survey_received.findIndex((survey_item)=>{
+             return survey_item.id_survey_send === id_survey_send 
+          });
+
+         let updateSurvey = survey_received.find((survey_item)=>{
+             return survey_item.id_survey_send === id_survey_send 
+         })
+         updateSurvey.is_check = status ; 
+         survey_received[updateSurveyPosititon] = updateSurvey ; 
+         const rsUpdate =  await SurveyModelReceived.updateOne({
+            email_user : email
+         }, {
+            survey_received : survey_received
+         })
+         console.log("🚀 ~ file: SurveyService.js ~ line 271 ~ handleCheckSurvey ~ rsUpdate", rsUpdate)
+         return rsUpdate ; 
+      }
+   }else {
+      throw error; 
+   }
+  } catch (error) {
+    return error ; 
+  }
 }

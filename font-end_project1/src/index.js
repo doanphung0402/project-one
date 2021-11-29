@@ -11,6 +11,7 @@ import { ThemeProvider } from "@material-ui/core";
 import { CookiesProvider } from "react-cookie";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GlobalLoading from "./Component/GlobalLoading/GlobalLoading"
 ReactDOM.render(
  
     <ThemeProvider theme ={theme}>
@@ -18,6 +19,7 @@ ReactDOM.render(
         <Provider store={store}>
           <CookiesProvider>
             <App/>
+            <GlobalLoading/>
             <ToastContainer />
          </CookiesProvider>
         </Provider>

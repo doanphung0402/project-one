@@ -9,6 +9,7 @@ const URL ={
    getPaginationPage :`${url}/survey/get-survey`, 
    getAllSurveyReceived : `${url}/survey/get-all-survey-received`, 
    getAllSurveySend :`${url}/survey/get-all-survey-send`, 
-   updateSurveyCheck :`${url}/survey/survey-choose/update-survey-user-choose`
+   updateSurveyCheck :`${url}/survey/survey-choose/update-survey-user-choose`, 
+   changeStatusSurveyItem :`${url}/survey/change-status-survey`
 }
 export default URL; 

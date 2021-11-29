@@ -10,12 +10,13 @@ import Paper from "@material-ui/core/Paper";
 import { Box, Button, Checkbox } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { addSurveyAfterChoose } from "../../features/survey/surveyAfterChoose";
-
+import StatusSurveyItem from "../../Constaint/StatusSurveyItem";
 import {
   addSurveyChooseSend,
   addSurveyChooseReceived,
   cancerSurveyChoose,
 } from "../../features/survey/SurveyChoose";
+import {showLoading,disableShowLoading} from "../../features/loading/loading"
 import axios from "axios";
 import URL from "../../Config/URL";
 import { toast } from "react-toastify";
@@ -178,13 +179,37 @@ export default function DataTable(props) {
       email_send: survey.received_to,
       id_survey_send: survey.id_survey_send,
     };
-
+     dispath(showLoading())
     axios({
       url: URL.updateSurveyCheck,
       method: "Post",
       data: SurveySendAfterCheck,
     }).then((data) => {
-      toast.success("Gửi thành công lựa chon của bạn !");
+      
+       if(data.status===200){
+            axios({
+              url : URL.changeStatusSurveyItem,
+              data :{
+                      status:StatusSurveyItem.DONE, 
+                      email : userInfo.email, 
+                      id_survey_send : survey.id_survey_send
+                    },  
+              method : "post"
+            }).then(data=>{
+               console.log("🚀 ~ file: DataTable.js ~ line 198 ~ handleSendSurvey ~ data", data)
+               dispath(disableShowLoading())
+               toast.success("Thay đổi lựa chon của bạn!"); 
+            }).catch(error=>{
+              dispath(disableShowLoading())
+              toast.error("Lỗi hệ thống , thử lại !")
+            })  
+       }
+       dispath(disableShowLoading())
+       toast.success("Thay đổi lựa chon của bạn !"); 
+      
+    }).catch(error=>{
+      dispath(disableShowLoading())
+      toast.error("Có lỗi thử lại !"); 
     });
   };
   const renderButtonSend = (survey) => {

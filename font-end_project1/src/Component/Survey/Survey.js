@@ -27,25 +27,23 @@ import { Pagination } from "@material-ui/lab";
 import HttpCode from "../../Constaint/HttpCode";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getListSurvey } from "../../features/survey/ListSurveyItem"; 
+import { getListSurvey } from "../../features/survey/ListSurveyItem";
 import { changeSplitButton } from "../../features/survey/SplitButton";
-const options = ["Khảo sát đã nhận", "Khảo sát đã gửi"];
+const options = ["Khảo sát đã nhận","Khảo sát đã gửi"];
 
 const useStyles = makeStyles((theme) => ({
-  root: { 
-      marginTop:"50px", 
-      
-      width:"100%"
-    
+  root: {
+    marginTop: "50px",
+
+    width: "100%",
   },
 }));
 const SplitButton = () => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-   const userInfo = useSelector(state=>state.auth.userInfo); 
-   const dispath = useDispatch();
-     
+  const dispath = useDispatch();
+
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
   };
@@ -53,7 +51,7 @@ const SplitButton = () => {
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
     setOpen(false);
-    dispath(changeSplitButton(index)); 
+    dispath(changeSplitButton(index));
   };
 
   const handleToggle = () => {
@@ -129,52 +127,70 @@ const SplitButton = () => {
 const Survey = () => {
   const history = useHistory();
   const classes = useStyles();
-  const [page,setPage] = useState(1); 
-  const [totalPage,setTotalPage] = useState(1); 
-  const [survey,setSurvey] =useState([]); 
-  console.log("🚀 ~ file: Survey.js ~ line 134 ~ Survey ~ survey", survey)
- 
-  const userInfo = useSelector(state=>state.auth.userInfo); 
-  const status = useSelector(state=>state.SplitButton.SplitButton);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [survey, setSurvey] = useState([]);
+  console.log("🚀 ~ file: Survey.js ~ line 134 ~ Survey ~ survey", survey);
+
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const status = useSelector((state) => state.SplitButton.SplitButton);
   const handleCreateSurvey = () => {
     history.push("/survey/create-survey");
   };
-  const handleChange =(event,page)=>{
-      setPage(page); 
-  }; 
-  const renderSurveyItem =(survey) =>{
-    const xml= survey.map((survey,index)=>{
-       if (survey.is_checked === true){
-           return <SurveyItems key={index} index={index} survey={survey} status={true} />
-       }else{
-         return (       
-           <SurveyItems key={index} index={index} survey={survey}  status ={false}/>
-         )
-       }
-  })
-        return xml 
-  }
-  useEffect(() => { 
-    async function fetchData(){
-     await axios({
-        url : `${URL.getPaginationPage}?page=${page}`,
-        method : "post", 
-        data : {
-          email :userInfo.email, 
-          status: status===0?'RECEIVED':'SEND'
+  const handleChange = (event, page) => {
+    setPage(page);
+  };
+  const renderSurveyItem = (survey) => {
+    let xml;
+    if (survey) {
+      xml = survey.map((survey, index) => {
+        if (survey.is_checked === true) {
+          return (
+            <SurveyItems
+              key={index}
+              index={index}
+              survey={survey}
+              status={true}
+            />
+          );
+        } else {
+          return (
+            <SurveyItems
+              key={index}
+              index={index}
+              survey={survey}
+              status={false}
+            />
+          );
         }
-     }).then(data=>{
-         if(data.data.message===HttpCode.ERROR){
-            toast.error("Lỗi hệ thống .Vui lòng thử lại ! ")
-         }else{
-            setSurvey(data.data.payload.data.survey);       
-            setTotalPage(data.data.payload.data.totalPage); 
-         }
-      })
+      });
+    } else {
+      xml = [];
     }
-     fetchData()
-  },[page,status,userInfo]);
-  
+
+    return xml;
+  };
+  useEffect(() => {
+    async function fetchData() {
+      await axios({
+        url: `${URL.getPaginationPage}?page=${page}`,
+        method: "post",
+        data: {
+          email: userInfo.email,
+          status: status === 0 ? "RECEIVED" : "SEND",
+        },
+      }).then((data) => {
+        if (data.data.message === HttpCode.ERROR) {
+          toast.error("Lỗi hệ thống .Vui lòng thử lại ! ");
+        } else {
+          setSurvey(data.data.payload.data.survey);
+          setTotalPage(data.data.payload.data.totalPage);
+        }
+      });
+    }
+    fetchData();
+  }, [page, status, userInfo]);
+
   return (
     <div>
       <Container>
@@ -245,7 +261,11 @@ const Survey = () => {
                     {renderSurveyItem(survey)}
                   </Grid>
                   <Box className={classes.root}>
-                     <Pagination  onChange={handleChange} count={totalPage} color="primary" />
+                    <Pagination
+                      onChange={handleChange}
+                      count={totalPage}
+                      color="primary"
+                    />
                   </Box>
                 </Grid>
               </Card>

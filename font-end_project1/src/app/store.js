@@ -8,7 +8,9 @@ import resultSend from '../features/resultSend/resultSend';
 import SplitButton from '../features/survey/SplitButton';
 import DetailSurvey from '../features/survey/detailSurvey'; 
 import SurveyChoose from '../features/survey/SurveyChoose'; 
-import SurveyAfterChoose from '../features/survey/surveyAfterChoose'
+import SurveyAfterChoose from '../features/survey/surveyAfterChoose'; 
+import SurveyStatusItem from '../features/survey/changeStatusSurveyItem'; 
+import Loading from '../features/loading/loading'; 
 const rootReducer = {
   auth : authSlice, 
   listOption : listOption, 
@@ -19,7 +21,9 @@ const rootReducer = {
   SplitButton:SplitButton,
   DetailSurvey:DetailSurvey,
   SurveyChoose:SurveyChoose,
-  SurveyAfterChoose :SurveyAfterChoose
+  SurveyAfterChoose :SurveyAfterChoose,
+  SurveyStatusItem : SurveyStatusItem,
+  Loading:Loading
 }
 export const store = configureStore({
   reducer: rootReducer
