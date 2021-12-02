@@ -7,10 +7,10 @@ import { useHistory } from "react-router-dom";
 import Random from "../../Config/random";
 import { addSurveyDetail } from "../../features/survey/detailSurvey";
 import StatusSurveyItem from "../../Constaint/StatusSurveyItem";
-
 import TimeAgo from "javascript-time-ago";
 import vi from "javascript-time-ago/locale/vi.json";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+
 TimeAgo.addDefaultLocale(vi);
 let RandomColor = () => {
   const color = ["orange", "yellow", "blue", "pink", "red", "green"];
@@ -20,7 +20,7 @@ let RandomColor = () => {
 
 const SurveyItems = (props) => {
   const dispath = useDispatch();
- 
+  const color = ["orange", "yellow", "blue", "pink", "red", "green"];
   let survey = props.survey;
   console.log(
     "🚀 ~ file: SurveyItems.js ~ line 18 ~ SurveyItems ~ survey",
@@ -28,7 +28,14 @@ const SurveyItems = (props) => {
   );
   const index = props.index;
   const history = useHistory();
-  const avataTitle = Random.uppercase(2);
+  let title = survey.title; 
+  const titleLength = title.length; 
+  const indexColor = Math.ceil(titleLength/color.length); 
+  const colorAvatar = color[indexColor]; 
+  title = title.trim(); 
+  const str1 = title.substring(title.length-1,title.length); 
+  const str2 = title.substring(0,1); 
+  const avataTitle = str2.concat(str1); 
   const detailSurvey = (survey) => {
     dispath(addSurveyDetail(survey));
     history.push(`/survey/get-detail-survey-item?item=${index}`);
@@ -77,14 +84,13 @@ const SurveyItems = (props) => {
               color: "blue",
             }}
           >
-            {" "}
             ĐÃ Hoàn Thành
           </Typography>
         );
       }
     }
   };
-  const showTime = (survey) => {
+  const showTime = (survey) => {  //ham tgian 
     let xml;
    
     const timeAgo = new TimeAgo('vn')
@@ -105,7 +111,7 @@ const SurveyItems = (props) => {
         <Box style={{ margin: "5px" }} display="flex">
           <Box style={{ display: "flex" }}>
             <Avatar
-              style={{ marginRight: "2px", backgroundColor: RandomColor() }}
+              style={{ marginRight: "2px", backgroundColor: colorAvatar }}
             >
               {avataTitle}
             </Avatar>

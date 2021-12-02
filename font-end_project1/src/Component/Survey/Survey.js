@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getListSurvey } from "../../features/survey/ListSurveyItem";
 import { changeSplitButton } from "../../features/survey/SplitButton";
-const options = ["Khảo sát đã nhận","Khảo sát đã gửi"];
+const options = ["Khảo sát đã nhận", "Khảo sát đã gửi"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,7 +106,6 @@ const SplitButton = () => {
                     {options.map((option, index) => (
                       <MenuItem
                         key={option}
-                        // disabled={index === 2}
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index)}
                       >
@@ -208,7 +207,7 @@ const Survey = () => {
           </Typography>
           <Typography variant="h5">
             Tạo lịch cho các cuộc họp, tạo lượt đặt chỗ và quản lý lịch biểu của
-            bạn - tất cả đều có trong Project1 .
+            bạn
           </Typography>
         </Card>
         <CssBaseline />

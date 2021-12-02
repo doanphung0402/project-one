@@ -14,7 +14,6 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { useHistory } from "react-router-dom";
 import { addResultSend } from "../../features/resultSend/resultSend";
-import Random from "../../Config/random";
 const UserSend = (props) => {
   const classes = props.classes;
   const history = useHistory();

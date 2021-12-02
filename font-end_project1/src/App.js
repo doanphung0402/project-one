@@ -6,7 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import { Router1 } from "./Constaint/Router" ; 
 import { ProtectedRoute } from "./Config/Protected.router";
 import {updateUserInfo} from './features/auth/authSlice'; 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const renderRouterPageWithoutDB =(Router) =>{
   let xml =null ; 

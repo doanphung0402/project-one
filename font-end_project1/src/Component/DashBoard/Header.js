@@ -112,6 +112,9 @@ const Header = () => {
   const onHandleGoBack = () =>{
      history.push("/home"); 
   }
+  const goToCalendarManager =()=>{
+     history.push("/calendar/my-calendar")
+  }
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -133,15 +136,15 @@ const Header = () => {
     >
       <List>
         {["Khảo sát của tôi"].map((text, index) => (
-          <ListItem button key={text}>
+          <ListItem button key={text} onClick={onHandleSurvey} >
             <ListItemIcon><PlaylistAddCheckIcon/></ListItemIcon>
-            <ListItemText primary={text} onClick={onHandleSurvey} />
+            <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
-               <ListItem button key={"Quản lí công việc"}>
+               <ListItem button key={"Quản lí công việc"} onClick={goToCalendarManager}>
                   <ListItemIcon>
                     <CalendarTodayIcon/>
                   </ListItemIcon>

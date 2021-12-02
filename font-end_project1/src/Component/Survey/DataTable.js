@@ -140,7 +140,6 @@ export default function DataTable(props) {
   );
   const showChooseItem = (row) => {
     console.log("🚀 ~ file: DataTable.js ~ line 134 ~ showChooseItem ~ row", row)
-   
     const xml = row.resultOption.map((option, index) => {
       if (option === true) {
         return (
