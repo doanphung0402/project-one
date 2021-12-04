@@ -5,14 +5,14 @@ import * as SurveyService from '../Service/SurveyService';
 import  Random  from '../helper/random';
 function  SurveyRoute(){
     const route = express.Router(); 
-    route.post("/get-survey",async(req,res)=>{
+    route.post("/get-survey",async(req,res)=>{  //get survey //email // page  // status : string
         const page = req.query.page; 
         const email_user = req.body.email;
         console.log("🚀 ~ file: survey.js ~ line 10 ~ route.post ~ email_user", email_user)
-        const status = req.body.status ; 
+        const status = req.body.status ;   // SEND || RECEIVED 
         console.log("🚀 ~ file: survey.js ~ line 11 ~ route.post ~ status", status)
-      try {
-           const data =await SurveyService.paginationPage(page,email_user,status); 
+       try {
+           const data =await SurveyService.paginationPage(page,email_user,status); //data is array
            res.json({message:HttpCode.SUCCESS,payload:{data}});       
         } catch (error) {
           res.json({message:HttpCode.ERROR}); 
@@ -37,8 +37,8 @@ function  SurveyRoute(){
          }
          let resultSend ; 
           try {
-              await SurveyService.updateUserSendSurvey(surveySend); 
-              const surveySendTo = {
+              await SurveyService.updateUserSendSurvey(surveySend);  // 
+              const surveySendTo = {  
                 title : newSurvey.title, 
                 option:newSurvey.option , 
                 note : newSurvey.note , 
@@ -71,8 +71,8 @@ function  SurveyRoute(){
 //           res.json({status:HttpCode.FAILSE}); 
 //      }
 // })
-   route.post("/survey-choose/update-survey-user-choose",async (req,res)=>{
-         const surveyCheck = req.body ; 
+   route.post("/survey-choose/update-survey-user-choose",async (req,res)=>{   
+         const surveyCheck = req.body ; //
          await SurveyService.updateSurveyChoose(surveyCheck);     
          res.json(surveyCheck);    
    })

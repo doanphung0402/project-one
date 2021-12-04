@@ -11,6 +11,7 @@ import SurveyChoose from '../features/survey/SurveyChoose';
 import SurveyAfterChoose from '../features/survey/surveyAfterChoose'; 
 import SurveyStatusItem from '../features/survey/changeStatusSurveyItem'; 
 import Loading from '../features/loading/loading'; 
+import StatusButtonShare from '../features/Calendar/StatusButtonShare'
 const rootReducer = {
   auth : authSlice, 
   listOption : listOption, 
@@ -23,7 +24,8 @@ const rootReducer = {
   SurveyChoose:SurveyChoose,
   SurveyAfterChoose :SurveyAfterChoose,
   SurveyStatusItem : SurveyStatusItem,
-  Loading:Loading
+  Loading:Loading, 
+  StatusButtonShare : StatusButtonShare 
 }
 export const store = configureStore({
   reducer: rootReducer

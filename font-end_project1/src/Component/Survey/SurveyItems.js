@@ -9,14 +9,14 @@ import { addSurveyDetail } from "../../features/survey/detailSurvey";
 import StatusSurveyItem from "../../Constaint/StatusSurveyItem";
 import TimeAgo from "javascript-time-ago";
 import vi from "javascript-time-ago/locale/vi.json";
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
 
 TimeAgo.addDefaultLocale(vi);
-let RandomColor = () => {
-  const color = ["orange", "yellow", "blue", "pink", "red", "green"];
-  let randomColor = Math.floor(Math.random() * color.length);
-  return color[randomColor];
-};
+// let RandomColor = () => {
+//   const color = ["orange", "yellow", "blue", "pink", "red", "green"];
+//   let randomColor = Math.floor(Math.random() * color.length);
+//   return color[randomColor];
+// };
 
 const SurveyItems = (props) => {
   const dispath = useDispatch();
@@ -28,14 +28,14 @@ const SurveyItems = (props) => {
   );
   const index = props.index;
   const history = useHistory();
-  let title = survey.title; 
-  const titleLength = title.length; 
-  const indexColor = Math.ceil(titleLength/color.length); 
-  const colorAvatar = color[indexColor]; 
-  title = title.trim(); 
-  const str1 = title.substring(title.length-1,title.length); 
-  const str2 = title.substring(0,1); 
-  const avataTitle = str2.concat(str1); 
+  let title = survey.title;
+  const titleLength = title.length;
+  const indexColor = Math.ceil(titleLength / color.length);
+  const colorAvatar = color[indexColor];
+  title = title.trim();
+  const str1 = title.substring(title.length - 1, title.length);
+  const str2 = title.substring(0, 1);
+  const avataTitle = str2.concat(str1);
   const detailSurvey = (survey) => {
     dispath(addSurveyDetail(survey));
     history.push(`/survey/get-detail-survey-item?item=${index}`);
@@ -90,19 +90,23 @@ const SurveyItems = (props) => {
       }
     }
   };
-  const showTime = (survey) => {  //ham tgian 
+  const showTime = (survey) => {
+    //ham tgian
     let xml;
-   
-    const timeAgo = new TimeAgo('vn')
-   
-    const d =new Date();
-    
-    const t  = new Date(survey.create_at);    
-    console.log("🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ t", t.getTime())
-     let now = d.getTime() - t.getTime() ; 
-    xml = timeAgo.format(new Date() -now)
-    console.log("🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ xml", xml)
-    return xml ;
+
+    const timeAgo = new TimeAgo("vn");
+
+    const d = new Date();
+
+    const t = new Date(survey.create_at);
+    console.log(
+      "🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ t",
+      t.getTime()
+    );
+    let now = d.getTime() - t.getTime();
+    xml = timeAgo.format(new Date() - now);
+    console.log("🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ xml", xml);
+    return xml;
   };
   return (
     <Button onClick={() => detailSurvey(survey)}>
@@ -136,12 +140,9 @@ const SurveyItems = (props) => {
           <GroupIcon />
           {showNumberPersonVote(survey)}
         </Box>
-        <Box  style={{ marginTop: "20px", marginLeft: "5px" }} display="flex">
-           <AccessTimeIcon/>
-           <Typography
-            variant="subtitle2"
-            style={{marginLeft :"5px"}}
-           >
+        <Box style={{ marginTop: "20px", marginLeft: "5px" }} display="flex">
+          <AccessTimeIcon />
+          <Typography variant="subtitle2" style={{ marginLeft: "5px" }}>
             {showTime(survey)}
           </Typography>
         </Box>

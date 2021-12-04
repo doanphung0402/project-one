@@ -47,14 +47,14 @@ function App() {
         last_name : last_name, 
      }
      dispath(updateUserInfo(userInfo1)); 
-    
-  },[])  
+    }); 
   return (
       <div className="App">
          <Switch>
              {renderRouterPageWithDB(Router1)}
              {renderRouterPageWithoutDB(Router)}
          </Switch>
+         
       </div>
   );
 }

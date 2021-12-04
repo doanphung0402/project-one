@@ -6,12 +6,12 @@ mongoose.connect(Url.DbUrl, {
 });
 const { Schema } = mongoose;
 
-const surveySchema =new Schema({
+const surveySchema =new Schema({ //khao sat gui di 
       email_user :String  ,
       survey_send : [{
         title:String , 
         option:[String] , 
-        vote_number :Number ,   
+        vote_number :Number,   
         decription:String,
         send_to : [String], 
         note :String,
