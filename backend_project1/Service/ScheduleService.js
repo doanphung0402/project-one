@@ -1,7 +1,17 @@
 import CalendarModel from "../models/Calendar/Calendar";
 import Calendar from "../routes/Calendar";
 
- 
+export async function createDefaultSchedule(email){
+    try { 
+      const rsCreate =  await CalendarModel.create({
+            email_user : email, 
+            scheduler : []
+       })
+      return rsCreate ; 
+    } catch (error) {
+        return error  
+    }
+}
 export function addSchedule(schedule){
      try {
          const email_user = schedule.email_user ; 
@@ -20,4 +30,6 @@ export function addSchedule(schedule){
          return error 
      }
 }
- 
+export function shareSchedule(schedule){
+     
+}

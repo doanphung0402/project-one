@@ -3,7 +3,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Calendar from "./Calendar";
 const CalendarContainer = () => {
-  const status = useSelector(state=>state.StatusButtonShare.status); 
   return (
     <>
       <Grid container>

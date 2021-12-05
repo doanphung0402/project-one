@@ -11,7 +11,7 @@ import SurveyChoose from '../features/survey/SurveyChoose';
 import SurveyAfterChoose from '../features/survey/surveyAfterChoose'; 
 import SurveyStatusItem from '../features/survey/changeStatusSurveyItem'; 
 import Loading from '../features/loading/loading'; 
-import StatusButtonShare from '../features/Calendar/StatusButtonShare'
+import EmailUserSendSchedule from '../features/Calendar/EmailUserSendSchedule'
 const rootReducer = {
   auth : authSlice, 
   listOption : listOption, 
@@ -25,7 +25,7 @@ const rootReducer = {
   SurveyAfterChoose :SurveyAfterChoose,
   SurveyStatusItem : SurveyStatusItem,
   Loading:Loading, 
-  StatusButtonShare : StatusButtonShare 
+  EmailUserSendSchedule : EmailUserSendSchedule 
 }
 export const store = configureStore({
   reducer: rootReducer
