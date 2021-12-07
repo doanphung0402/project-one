@@ -1,25 +1,32 @@
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Box, Button, Grid, TextField } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmailUserSendItem } from "../../features/Calendar/EmailUserSendSchedule";
+import { addEmailUserSendItem, changeListEmailUserSend } from "../../features/Calendar/EmailUserSendSchedule";
 import ChipsShareButton from "./ChipsShareButton";
 
+import ClearAllIcon from '@material-ui/icons/ClearAll';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 const UserSendSchedule = () => {
   console.log("render");
   const dispath = useDispatch();
-  const [email, setEmail] = useState({});
+  const [user, setEmail] = useState({email:"",key:null});
   console.log(
     "🚀 ~ file: ChipsShareButton.js ~ line 70 ~ UserSendSchedule ~ email",
-    email
+    user
   );
   const handleChangeInput = (event) => {
     const emailEvent = event.target.value;
-    setEmail({ email: emailEvent, key: email });
+    setEmail({ email: emailEvent, key: emailEvent });
   };
-  const addEmail = (email) => {
-    dispath(addEmailUserSendItem(email));
+  const addEmail = (user) => {
+    dispath(addEmailUserSendItem(user));
+    setEmail({email:"",key:null}); 
   };
+  const handleClearChip = ()=>{
+     setEmail({email:"",key:null}); 
+     dispath(changeListEmailUserSend([])); 
+  }
   return (
     <>
       <Grid container style={{marginTop :"20px"}}>
@@ -38,17 +45,28 @@ const UserSendSchedule = () => {
             id="input-with-icon-grid"
             label="Enter email : "
             name="email"
+            value={user.email}
             onChange={handleChangeInput}
           />
-
+          
           <Button
-            variant="contained"
-            color="primary"
-            style={{ marginTop: "15px", marginLeft: "30px" }}
-            onClick={() => addEmail(email)}
+            variant="contained"      
+            style={{ marginTop: "15px", marginLeft: "50px",backgroundColor:"#43A047",color:"white"}}
+            onClick={() => addEmail(user)}
+            startIcon={<AddCircleOutlineIcon/>}
           >
-            Thêm
+            Add
           </Button>
+           <Button
+              variant="contained"
+              color="secondary"
+              startIcon={<ClearAllIcon/>}
+              style={{ marginTop: "15px", marginLeft: "30px"}}
+              onClick={handleClearChip}
+            >
+             Clear
+           </Button>
+
         </Grid>
       </Grid>
     </>

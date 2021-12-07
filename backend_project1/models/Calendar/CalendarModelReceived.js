@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Url from '../constaint/UrlConnect'; 
+import Url from '../../constaint/UrlConnect'; 
 mongoose.connect(Url.DbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -12,11 +12,14 @@ const SchedulerSchema =new Schema({
           {
                title : {type:String , default : "Không có tiêu đề "} , 
                startDate : Date, 
+               received_to :String , 
+               status : Boolean,   // true or false : dong y || tu choi cuoc hen
                endDate : Date , 
                allDay : Boolean, 
                id : String,
                notes : String , 
-               create_at: { type: Date, default: Date.now },
+               create_at: { type: Date, default: Date.now },    
+               total_number_user_send : Number 
           }
      ]
     

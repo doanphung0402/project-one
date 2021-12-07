@@ -142,7 +142,7 @@ const SurveyItems = (props) => {
         </Box>
         <Box style={{ marginTop: "20px", marginLeft: "5px" }} display="flex">
           <AccessTimeIcon />
-          <Typography variant="subtitle2" style={{ marginLeft: "5px" }}>
+              <Typography variant="subtitle2" style={{ marginLeft: "5px" }}>
             {showTime(survey)}
           </Typography>
         </Box>

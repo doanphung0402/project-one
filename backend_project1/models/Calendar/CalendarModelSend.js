@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Url from '../constaint/UrlConnect'; 
+import Url from '../../constaint/UrlConnect'; 
 mongoose.connect(Url.DbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -17,6 +17,8 @@ const SchedulerSchema =new Schema({
                id : String , 
                create_at: { type: Date, default: Date.now },
                notes : String , 
+               send_to :[String], 
+               result_send :[Boolean]
           }
      ]
     

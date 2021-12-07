@@ -10,6 +10,9 @@ const URL ={
    getAllSurveyReceived : `${url}/survey/get-all-survey-received`, 
    getAllSurveySend :`${url}/survey/get-all-survey-send`, 
    updateSurveyCheck :`${url}/survey/survey-choose/update-survey-user-choose`, 
-   changeStatusSurveyItem :`${url}/survey/change-status-survey`
+   changeStatusSurveyItem :`${url}/survey/change-status-survey`, 
+   createSchedule : `${url}/scheduler/create-schedule`, 
+   getAllScheduleSend:`${url}/scheduler/get-all-schedule-send`
+
 }
 export default URL; 

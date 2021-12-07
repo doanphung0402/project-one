@@ -6,6 +6,7 @@ import * as AccountService from "../Service/AccountService";
 import  * as SurveyService from '../Service/SurveyService'; 
 import jwt from "jsonwebtoken";
 import SurveyModelReceived from "../models/surveyReceivedModel";
+import * as ScheduleService from '../Service/ScheduleService'
 function SignupRouter() {
   //SignupService
   var router = express.Router();
@@ -52,6 +53,7 @@ function SignupRouter() {
         const data =await AccountService.createAdmin(createUser);
         await SurveyService.createDefaultSendSurvey(userInfo.email); 
         await SurveyService.createDefaultReceivedSurvey(userInfo.email); 
+        await ScheduleService.createDefaultSchedule(userInfo.email);
         const token =await jwt.sign(
           {
             email: data.email,
