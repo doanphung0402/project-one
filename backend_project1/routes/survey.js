@@ -92,6 +92,8 @@ function  SurveyRoute(){
      const rsUpdate = await SurveyService.handleCheckSurvey(data); 
      console.log("🚀 ~ file: survey.js ~ line 93 ~ route.post ~ rsUpdate", rsUpdate)  
   })
+  
+ 
     return route
 }
 export default SurveyRoute()

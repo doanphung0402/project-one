@@ -13,6 +13,7 @@ import SurveyStatusItem from '../features/survey/changeStatusSurveyItem';
 import Loading from '../features/loading/loading'; 
 import EmailUserSendSchedule from '../features/Calendar/EmailUserSendSchedule'; 
 import ListScheduleSend from '../features/Calendar/ListScheduleSend'
+import ListScheduleReceived from '../features/Calendar/ListScheduleReceived'
 const rootReducer = {
   auth : authSlice, 
   listOption : listOption, 
@@ -27,7 +28,8 @@ const rootReducer = {
   SurveyStatusItem : SurveyStatusItem,
   Loading:Loading, 
   EmailUserSendSchedule : EmailUserSendSchedule , 
-  ListScheduleSend :ListScheduleSend
+  ListScheduleSend :ListScheduleSend,
+  ListScheduleReceived:ListScheduleReceived
 }
 export const store = configureStore({
   reducer: rootReducer

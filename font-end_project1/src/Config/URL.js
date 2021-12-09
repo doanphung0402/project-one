@@ -12,7 +12,9 @@ const URL ={
    updateSurveyCheck :`${url}/survey/survey-choose/update-survey-user-choose`, 
    changeStatusSurveyItem :`${url}/survey/change-status-survey`, 
    createSchedule : `${url}/scheduler/create-schedule`, 
-   getAllScheduleSend:`${url}/scheduler/get-all-schedule-send`
-
+   getAllScheduleSend:`${url}/scheduler/get-all-schedule-send`, 
+   getAllScheduleReceived : `${url}/scheduler/get-all-schedule-received`, 
+   getAllMySchedule :`${url}/scheduler/get-all-my-schedule`, 
+   changeStatusSchedule : `${url}/scheduler/change-status-schedule-received`
 }
 export default URL; 

@@ -18,7 +18,9 @@ const SchedulerSchema =new Schema({
                create_at: { type: Date, default: Date.now },
                notes : String , 
                send_to :[String], 
-               result_send :[Boolean]
+               result_send :[Boolean],
+               accept : [String],  //true : tham gia , false : khong tham gia  
+              
           }
      ]
     

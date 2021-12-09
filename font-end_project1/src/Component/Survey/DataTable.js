@@ -16,7 +16,10 @@ import {
   addSurveyChooseReceived,
   cancerSurveyChoose,
 } from "../../features/survey/SurveyChoose";
-import {showLoading,disableShowLoading} from "../../features/loading/loading"
+import {
+  showLoading,
+  disableShowLoading,
+} from "../../features/loading/loading";
 import axios from "axios";
 import URL from "../../Config/URL";
 import { toast } from "react-toastify";
@@ -29,7 +32,7 @@ const useStyles = makeStyles({
 export default function DataTable(props) {
   const classes = useStyles();
   const survey = props.survey;
-  
+
   console.log("🚀 ~ file: DataTable.js ~ line 23 ~ DataTable ~ survey", survey);
   const renderOption = (survey) => {
     const option = survey.option;
@@ -49,7 +52,7 @@ export default function DataTable(props) {
   useEffect(() => {
     const option = survey.option;
     dispath(cancerSurveyChoose());
-    
+
     if (survey.send_to) {
       for (let k = 0; k < survey.send_to.length; k++) {
         let email = survey.send_to[k];
@@ -72,22 +75,21 @@ export default function DataTable(props) {
         }
       }
     } else {
-      
       const emailReceivedTo = userInfo.email;
       let optionChoose = [];
       for (let k = 0; k < option.length; k++) {
-         if(survey.user_voted === k+1){
+        if (survey.user_voted === k + 1) {
           optionChoose.push(true);
-         }else{
+        } else {
           optionChoose.push(false);
-         }
+        }
       }
-      const createData = {email: emailReceivedTo, resultOption: optionChoose };
+      const createData = { email: emailReceivedTo, resultOption: optionChoose };
       dispath(addSurveyChooseReceived([createData]));
     }
   }, []);
   const [checked, setChecked] = useState([]);
-  const [isChecked,setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(true);
   const Check = (props) => {
     const status = props.status;
     const index = props.index;
@@ -95,7 +97,7 @@ export default function DataTable(props) {
     if (status === true) {
       return (
         <Checkbox
-          defaultChecked ={isChecked}
+          defaultChecked={isChecked}
           color="secondary"
           inputProps={{ "aria-label": "secondary checkbox" }}
           value={index}
@@ -119,7 +121,7 @@ export default function DataTable(props) {
 
   const handleChange = (event) => {
     const value = event.target;
-    setIsChecked(false)
+    setIsChecked(false);
     let checked = survey.option.map((value) => {
       return false;
     });
@@ -139,7 +141,10 @@ export default function DataTable(props) {
     (state) => state.SurveyAfterChoose.SurveyAfterChoose
   );
   const showChooseItem = (row) => {
-    console.log("🚀 ~ file: DataTable.js ~ line 134 ~ showChooseItem ~ row", row)
+    console.log(
+      "🚀 ~ file: DataTable.js ~ line 134 ~ showChooseItem ~ row",
+      row
+    );
     const xml = row.resultOption.map((option, index) => {
       if (option === true) {
         return (
@@ -178,38 +183,43 @@ export default function DataTable(props) {
       email_send: survey.received_to,
       id_survey_send: survey.id_survey_send,
     };
-     dispath(showLoading())
+    dispath(showLoading());
     axios({
       url: URL.updateSurveyCheck,
       method: "Post",
       data: SurveySendAfterCheck,
-    }).then((data) => {
-      
-       if(data.status===200){
-            axios({
-              url : URL.changeStatusSurveyItem,
-              data :{
-                      status:StatusSurveyItem.DONE, 
-                      email : userInfo.email, 
-                      id_survey_send : survey.id_survey_send
-                    },  
-              method : "post"
-            }).then(data=>{
-               console.log("🚀 ~ file: DataTable.js ~ line 198 ~ handleSendSurvey ~ data", data)
-               dispath(disableShowLoading())
-               toast.success("Thay đổi lựa chon của bạn!"); 
-            }).catch(error=>{
-              dispath(disableShowLoading())
-              toast.error("Lỗi hệ thống , thử lại !")
-            })  
-       }
-       dispath(disableShowLoading())
-       toast.success("Thay đổi lựa chon của bạn !"); 
-      
-    }).catch(error=>{
-      dispath(disableShowLoading())
-      toast.error("Có lỗi thử lại !"); 
-    });
+    })
+      .then((data) => {
+        if (data.status === 200) {
+          axios({
+            url: URL.changeStatusSurveyItem,
+            data: {
+              status: StatusSurveyItem.DONE,
+              email: userInfo.email,
+              id_survey_send: survey.id_survey_send,
+            },
+            method: "post",
+          })
+            .then((data) => {
+              console.log(
+                "🚀 ~ file: DataTable.js ~ line 198 ~ handleSendSurvey ~ data",
+                data
+              );
+              dispath(disableShowLoading());
+              toast.success("Thay đổi lựa chon của bạn!");
+            })
+            .catch((error) => {
+              dispath(disableShowLoading());
+              toast.error("Lỗi hệ thống , thử lại !");
+            });
+        }
+        dispath(disableShowLoading());
+        toast.success("Thay đổi lựa chon của bạn !");
+      })
+      .catch((error) => {
+        dispath(disableShowLoading());
+        toast.error("Có lỗi thử lại !");
+      });
   };
   const renderButtonSend = (survey) => {
     let xml;
@@ -231,7 +241,6 @@ export default function DataTable(props) {
     }
     return xml;
   };
- 
   return (
     <>
       <TableContainer component={Paper}>
@@ -246,7 +255,6 @@ export default function DataTable(props) {
         </Table>
       </TableContainer>
       {renderButtonSend(survey)}
-     
     </>
   );
 }

@@ -22,6 +22,30 @@ function  CalendarRoute(){
        
          res.json(ListSchedule) ; 
     })
+    route.post("/get-all-my-schedule",async(req,res)=>{
+         const email_user = req.body.email ; 
+         const ListSchedule = await ScheduleService.getAllMySchedule(email_user); 
+        //  console.log("🚀 ~ file: Calendar.js ~ line 28 ~ route.post ~ ListSchedule", ListSchedule)
+         res.status(200).json(ListSchedule); 
+    })
+    route.post("/get-all-schedule-received",async(req,res)=>{
+        const email = req.body.email ; 
+        const scheduler = await ScheduleService.getAllScheduleReceived(email); 
+        if(scheduler){
+             res.status(200).json(scheduler); 
+        }else {
+             res.status(400); 
+        }
+     })
+    route.post("/change-status-schedule-received",async(req,res)=>{
+         const {schedule,status,email_user} = req.body ; 
+         try {
+            await ScheduleService.changeStatusScheduleRecieved(schedule,status,email_user)
+            res.status(200).json("SUCCESS"); 
+         } catch (error) {
+             res.status(400); 
+         }
+    })
     return route
 }
 export default CalendarRoute(); 

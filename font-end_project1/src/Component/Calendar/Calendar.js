@@ -45,18 +45,16 @@ import { toast } from "react-toastify";
 const Calendar = (props) => {
   const dispath = useDispatch();
   const userInfo = useSelector((state) => state.auth.userInfo);
-  console.log("🚀 ~ file: Calendar.js ~ line 48 ~ Calendar ~ userInfo", userInfo.email)
   const [data, setData] = useState([]);
-  console.log("🚀 ~ file: Calendar.js ~ line 50 ~ Calendar ~ data", data)
   const [datadis,setDataDis] = useState([]); 
   useEffect(()=>{
       const fetchData = async()=>{
         await axios({
-          url : URL.getAllScheduleSend, 
+          url : URL.getAllMySchedule, 
           method:"Post", 
           data: {email:userInfo.email}
        }).then(data=>{
-          console.log("🚀 ~ file: Calendar.js ~ line 57 ~ useEffect ~ data", data.data)
+          console.log("🚀 ~ file: Calendar.js ~ line 57 ~ useEffect ~ data", data)
           setData(data.data)
        }).catch(error=>{
           toast.error(error)
@@ -171,7 +169,7 @@ const Calendar = (props) => {
           data: schedule,
         })
         .then((data) => {
-        
+            console.log("🚀 ~ file: Calendar.js ~ line 174 ~ .then ~ data", data)   
         })
         .catch((error) => {
           console.log(
@@ -179,11 +177,6 @@ const Calendar = (props) => {
             error
           );
         });
-      
-      console.log(
-        "🚀 ~ file: Calendar.js ~ line 168 ~ commitChanges ~ schedule1",
-        schedule
-      );
     }
     if (changed) {
       console.log(

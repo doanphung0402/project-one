@@ -36,12 +36,7 @@ export default function ChipsShareButton() {
   
     let chipData1 = ListEmailSend.filter((chip) => chip.key !== indexKey)
     dispath(changeListEmailUserSend(chipData1)); 
-    let rsList = chipData1.map((data,index)=>{
-        return data.email 
-    })
-    console.log("🚀 ~ file: ChipsShareButton.js ~ line 43 ~ rsList ~ rsList", rsList)
-    dispath(changeListEmailUserSend(rsList)); 
-
+    
   };
   const color =["primary","secondary","GREEN","YELLOW"]; 
 

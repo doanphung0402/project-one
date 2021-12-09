@@ -13,13 +13,13 @@ const SchedulerSchema =new Schema({
                title : {type:String , default : "Không có tiêu đề "} , 
                startDate : Date, 
                received_to :String , 
-               status : Boolean,   // true or false : dong y || tu choi cuoc hen
+               status : {type:String,default:"RECEIVED"},   // RECEIVED ACCEPT CANCER
                endDate : Date , 
                allDay : Boolean, 
                id : String,
                notes : String , 
                create_at: { type: Date, default: Date.now },    
-               total_number_user_send : Number 
+               total_number_user_send : {type:Number,default: 0} 
           }
      ]
     
