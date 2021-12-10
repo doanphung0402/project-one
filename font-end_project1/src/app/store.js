@@ -14,6 +14,7 @@ import Loading from '../features/loading/loading';
 import EmailUserSendSchedule from '../features/Calendar/EmailUserSendSchedule'; 
 import ListScheduleSend from '../features/Calendar/ListScheduleSend'
 import ListScheduleReceived from '../features/Calendar/ListScheduleReceived'
+import DetailSchedule from '../features/Calendar/DetailSchedule'
 const rootReducer = {
   auth : authSlice, 
   listOption : listOption, 
@@ -29,7 +30,8 @@ const rootReducer = {
   Loading:Loading, 
   EmailUserSendSchedule : EmailUserSendSchedule , 
   ListScheduleSend :ListScheduleSend,
-  ListScheduleReceived:ListScheduleReceived
+  ListScheduleReceived:ListScheduleReceived,
+  DetailSchedule:DetailSchedule
 }
 export const store = configureStore({
   reducer: rootReducer

@@ -8,6 +8,7 @@ import SendSucessSurvey from '../Component/Survey/SendSucessSurvey'
 import ChooseSurvey from '../Component/Survey/ChooseSurvey'
 import CalendarContainer from '../Component/Calendar/CalendarContainer'
 import CalendarManager from '../Component/Calendar/CalendarManager'
+import DetailScheduleSend from '../Component/Calendar/DetailScheduleSend'
 export const Router = [
     {
              name :"Đăng nhập",
@@ -78,5 +79,11 @@ export const Router1 = [
          exact : true , 
          path : "/calendar/manager", 
          component:CalendarManager
+    }, 
+    {
+         name :"detail-schedule-send", 
+         exact : true , 
+         path : "/scheduder/detail-schedule-send", 
+         component :DetailScheduleSend
     }
 ]

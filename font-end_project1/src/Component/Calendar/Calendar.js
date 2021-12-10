@@ -33,6 +33,8 @@ import {
   Grid,
   withStyles,
 } from "@material-ui/core";
+import {Link} from 'react-router-dom'; 
+import PersonIcon from '@material-ui/icons/Person';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatus } from "../../features/Calendar/StatusButtonShare";
@@ -41,7 +43,9 @@ import { green } from "@material-ui/core/colors";
 import UserSendSchedule from "./UserSendSchedule";
 import axios from "axios";
 import URL from "../../Config/URL";
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { toast } from "react-toastify";
+import { addDetailSchedule } from "../../features/Calendar/DetailSchedule";
 const Calendar = (props) => {
   const dispath = useDispatch();
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -205,6 +209,27 @@ const Calendar = (props) => {
     date.getMonth() + 1
   },${date.getDate()}`;
 
+  const renderShowPersonSend =(appointmentData) =>{
+    dispath(addDetailSchedule(appointmentData)); 
+    let xml =""; 
+     if(appointmentData.send_to  &&  appointmentData.send_to.length !== 0){
+            xml = (
+               <>
+                 <GroupAddIcon style={{ marginRight: "20px", color: "#707070" }} />
+                 <span>Chia sẻ với {appointmentData.send_to.length} người khác </span>
+                 <Link to="/scheduder/detail-schedule-send">     Xem chi tiết ...</Link>
+                </>
+            )
+     }else{
+        xml = (
+            <>
+               <PersonIcon style={{ marginRight: "20px", color: "#707070" }} />
+               <span>Gửi bởi : {appointmentData.received_to} tới {appointmentData.total_number_user_send} người khác</span>
+            </>
+        )
+     }
+     return xml ; 
+  }
 
   const Content = ({children, appointmentData, classes, ...restProps }) => (
     <AppointmentTooltip.Content
@@ -221,7 +246,11 @@ const Calendar = (props) => {
         >
           <SpeakerNotesIcon style={{ marginRight: "20px", color: "#707070" }} />
           <span>{appointmentData.notes}</span>
+          
         </Grid>
+         <Grid item xs={12} display="flex" style={{marginTop:"20px",marginLeft:"18px"}}>
+            {renderShowPersonSend(appointmentData)}
+         </Grid>
       </Grid>
     </AppointmentTooltip.Content>
   );

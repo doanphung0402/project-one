@@ -15,6 +15,7 @@ const URL ={
    getAllScheduleSend:`${url}/scheduler/get-all-schedule-send`, 
    getAllScheduleReceived : `${url}/scheduler/get-all-schedule-received`, 
    getAllMySchedule :`${url}/scheduler/get-all-my-schedule`, 
-   changeStatusSchedule : `${url}/scheduler/change-status-schedule-received`
+   changeStatusSchedule : `${url}/scheduler/change-status-schedule-received`, 
+   showDetailScheduleSend :`${url}/scheduder/detail-schedule-send`
 }
 export default URL; 
