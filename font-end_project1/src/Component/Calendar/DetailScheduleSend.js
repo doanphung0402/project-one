@@ -11,10 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import GradeIcon from "@material-ui/icons/Grade";
 import SubjectIcon from "@material-ui/icons/Subject";
-import NoteIcon from "@material-ui/icons/Note";
 import TitleIcon from '@material-ui/icons/Title';
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { useHistory } from "react-router-dom";
 import TableSchedule from "./TableSchedule";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 const infoSchedule = (schedule) => {
@@ -32,7 +29,7 @@ const infoSchedule = (schedule) => {
       </Typography>
       <GradeIcon style={{ marginLeft: "6px", marginRight: "6px" }} />
       <Typography variant="subtitle1">
-        Gửi đi lúc {schedule.create_at}
+        Gửi đi lúc {new Date(schedule.create_at).toDateString()}
       </Typography>
     </Box>
   );
@@ -97,7 +94,7 @@ const DetailScheduleSend = () => {
                       variant="subtitle1"
                       style={{ fontSize: "20px", marginTop: "30px",marginLeft:"10px"}}
                     >
-                      {startDate.getHours()}:{endDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()}
+                      {startDate.getHours()}:{startDate.getMinutes()===0?"00":startDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()===0?"00":endDate.getMinutes()}
                     </Typography>
                   </Box>
                 </Box>

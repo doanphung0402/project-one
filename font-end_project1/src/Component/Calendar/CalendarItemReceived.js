@@ -175,7 +175,7 @@ const CalendarItem = (props) => {
         <AccessTimeIcon />
         
           <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
-             {startDate.getHours()}:{endDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()}
+             {startDate.getHours()}:{startDate.getMinutes()===0?"00":startDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()===0?"00":endDate.getMinutes()}
           </Typography>
         </Box>
         <Box display="flex" style={{ marginTop: "15px", marginLeft: "5px" }}>

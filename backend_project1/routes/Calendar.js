@@ -10,9 +10,9 @@ function  CalendarRoute(){
         const schedule = req.body ; 
         const rsCreate  =await ScheduleService.addSchedule(schedule); 
         if(!rsCreate){
-         res.status(200); 
+         res.status(200).json("Success"); 
         }else { 
-          res.status(404); 
+          res.status(404).json("Failse"); 
         }
     })
     route.post("/get-all-schedule-send",async(req,res)=>{
@@ -45,6 +45,15 @@ function  CalendarRoute(){
          } catch (error) {
              res.status(400); 
          }
+    })
+    route.post("/delete-schedule-by-id",async(req,res)=>{
+          const {id,email_user} = req.body ; 
+          try {
+               const rsDeleteSchedule = await ScheduleService.deleteScheduleById(id,email_user); 
+               res.status(200).json("Success"); 
+          } catch (error) {
+               res.status(400).json("Failse"); 
+          }
     })
     return route
 }

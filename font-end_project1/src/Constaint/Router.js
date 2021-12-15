@@ -85,5 +85,6 @@ export const Router1 = [
          exact : true , 
          path : "/scheduder/detail-schedule-send", 
          component :DetailScheduleSend
-    }
+    }, 
+   
 ]

@@ -160,8 +160,8 @@ const Calendar = (props) => {
         return data.email
       })
       const schedule1 = { id: Random.alphabet(8), ...added };
-     
-      setData([...data,schedule1]); 
+      const newData =  { id: Random.alphabet(8), ...added ,send_to :newListEmail };
+      setData([...data,newData]); 
       const schedule = {
         email_user: UserInfo.userInfo.email,
         scheduler: {...schedule1,send_to: newListEmail},
@@ -173,13 +173,10 @@ const Calendar = (props) => {
           data: schedule,
         })
         .then((data) => {
-            console.log("🚀 ~ file: Calendar.js ~ line 174 ~ .then ~ data", data)   
+           toast.success("Tạo thành công !")
         })
         .catch((error) => {
-          console.log(
-            "🚀 ~ file: Calendar.js ~ line 178 ~ commitChanges ~ error",
-            error
-          );
+            toast.error(error); 
         });
     }
     if (changed) {
@@ -195,10 +192,24 @@ const Calendar = (props) => {
       setData(data1)
     }
     if (deleted !== undefined) {
-      console.log(
-        "🚀 ~ file: Calendar.js ~ line 56 ~ commitChanges ~ deleted",
-        deleted
-      );
+    
+     
+     await axios({
+         url : URL.deleteScheduleById, 
+         method: "post", 
+         data : {
+            email_user :  UserInfo.userInfo.email,
+            id : deleted
+         }
+      }).then(data=>{
+           if(data.status===200){
+              toast.success("Xóa thành công !"); 
+           }else{
+              toast.warning("Xóa thất bại,Thử lại !")
+           }
+      }).catch(error=>{
+         toast.error("Có lỗi hệ thống,Xin vui lòng thử lại !")
+      })
       let data1 = data.filter((appointment) => appointment.id !== deleted);
       setData(data1);
     }
@@ -212,7 +223,7 @@ const Calendar = (props) => {
   const renderShowPersonSend =(appointmentData) =>{
     dispath(addDetailSchedule(appointmentData)); 
     let xml =""; 
-     if(appointmentData.send_to  &&  appointmentData.send_to.length !== 0){
+     if(appointmentData.send_to   &&  appointmentData.send_to.length >0){
             xml = (
                <>
                  <GroupAddIcon style={{ marginRight: "20px", color: "#707070" }} />
@@ -220,12 +231,19 @@ const Calendar = (props) => {
                  <Link to="/scheduder/detail-schedule-send">     Xem chi tiết ...</Link>
                 </>
             )
-     }else{
+     }else if(appointmentData.send_to &&  appointmentData.send_to.length === 0){
         xml = (
             <>
                <PersonIcon style={{ marginRight: "20px", color: "#707070" }} />
-               <span>Gửi bởi : {appointmentData.received_to} tới {appointmentData.total_number_user_send} người khác</span>
+               <span>Sự kiện này chưa được chia sẻ ? </span>
             </>
+        )
+     }else if(appointmentData.received_to){
+        xml =(
+          <>
+             <PersonIcon style={{ marginRight: "20px", color: "#707070" }} />
+            <span>Gửi bởi : {appointmentData.received_to} tới {appointmentData.total_number_user_send} người khác</span>
+          </>
         )
      }
      return xml ; 
