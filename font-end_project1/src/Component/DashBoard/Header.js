@@ -32,7 +32,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-    marginBottom: "10px",
+    marginBottom: "2px",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -192,7 +192,7 @@ const Header = () => {
 
   return (
     <Fragment >
-    <div style={{ marginBottom: "50px" }} className={classes.grow}>
+    <div style={{ marginBottom: "12px" }} className={classes.grow}>
    
         <AppBar position="static" style={{ background: "#2E3B55" }}>
           <Toolbar>

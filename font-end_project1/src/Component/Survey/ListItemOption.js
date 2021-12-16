@@ -16,7 +16,7 @@ const ListItemOption = (props) => {
         <ListItemIcon>{position+1}</ListItemIcon>
         <ListItemText primary={option} />
         <ListItemIcon>
-          <DeleteIcon onClick={()=>onDeleteOption(position)}  />
+           <DeleteIcon onClick={()=>onDeleteOption(position)}  />
         </ListItemIcon>
       </ListItem>
     </Fragment>

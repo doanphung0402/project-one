@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import { Button, Fab, TextField } from '@material-ui/core';
+import { Box, Button, Fab, TextField } from '@material-ui/core';
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch } from "react-redux";
 import { addListUser } from '../../features/UserToSend/UserToSend';
@@ -36,53 +36,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ModalUserSend() {
-  const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
   const [option,setOption] = useState(""); 
   const dispath = useDispatch(); 
-  const handleOpen = () => {
-   
-    setOpen(true);
-  };
   const  handleChangeOption =(event)=>{ 
        const {value} = event.target; 
        setOption(value); 
     
   }
-  const handleClose = () => {
-    
-    setOpen(false);
-  };
   const handleSubmitOption =() => {
      dispath(addListUser(option)); 
-     handleClose();      
+     setOption(""); 
   }
-
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <div className={classes.root}>
-      <TextField id="standard-basic" label="Nhập tên lựa chọn" name="option"  onChange={handleChangeOption}  />
-      <Button type="button" variant="contained" style={{marginTop:"30px"}} color="primary" onClick ={handleSubmitOption}>
-         Lưu
-      </Button>
-     </div>
-    </div>
-  );
 
   return (
     <div>
-      <Fab style={{ float: "right" }} color="secondary" aria-label="add">
-         <AddIcon onClick={handleOpen}/>
-      </Fab>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </Modal>
+      <Box style={{float:"left",marginTop:"30px"}} display="flex">
+        <TextField id="standard-basic" style={{width:"400px"}} value={option} onChange={handleChangeOption} label="Nhập lựa chon khảo sát ..." />
+        <Button variant="contained" style={{marginLeft:"40px",backgroundColor:"#6AE2FF"}}  onClick ={handleSubmitOption}>Lưu</Button>
+    </Box>
     </div>
   );
 }

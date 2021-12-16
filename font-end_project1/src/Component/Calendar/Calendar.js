@@ -46,6 +46,8 @@ import URL from "../../Config/URL";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { toast } from "react-toastify";
 import { addDetailSchedule } from "../../features/Calendar/DetailSchedule";
+import background1 from '../../asset/background1.gif'
+import { changeListEmailUserSend } from "../../features/Calendar/EmailUserSendSchedule";
 const Calendar = (props) => {
   const dispath = useDispatch();
   const userInfo = useSelector((state) => state.auth.userInfo);
@@ -84,15 +86,6 @@ const Calendar = (props) => {
 
   const CommandLayout = ({ ...restProps }) => (
     <AppointmentForm.CommandLayout {...restProps}>
-      <Button
-        style={{ marginLeft: "30px" }}
-        color="primary"
-        variant="contained"
-      
-        endIcon={<ShareIcon />}
-      >
-        Share
-      </Button>
     </AppointmentForm.CommandLayout>
   );
   const [checkedB, setCheckedB] = useState(false);
@@ -160,7 +153,13 @@ const Calendar = (props) => {
         return data.email
       })
       const schedule1 = { id: Random.alphabet(8), ...added };
-      const newData =  { id: Random.alphabet(8), ...added ,send_to :newListEmail };
+      let newData ; 
+      if(checkedB===true){
+        newData =  { id: Random.alphabet(8), ...added ,send_to :newListEmail };
+      }else {
+        newData =  { id: Random.alphabet(8), ...added ,send_to :[] };
+      }
+   
       setData([...data,newData]); 
       const schedule = {
         email_user: UserInfo.userInfo.email,
@@ -173,6 +172,10 @@ const Calendar = (props) => {
           data: schedule,
         })
         .then((data) => {
+           console.log("🚀 ~ file: Calendar.js ~ line 177 ~ .then ~ data", data);
+           const totalSend = data.data.length; 
+           const sendSuccess = totalSend.filter(rs=>rs===true)
+           dispath(changeListEmailUserSend([]))
            toast.success("Tạo thành công !")
         })
         .catch((error) => {
@@ -273,9 +276,9 @@ const Calendar = (props) => {
     </AppointmentTooltip.Content>
   );
 
-
   return (
     <>
+      <div>
       <Paper>
         <Scheduler data={data} height={660}>
           <ViewState
@@ -327,6 +330,7 @@ const Calendar = (props) => {
           /> */}
         </Scheduler>
       </Paper>
+      </div>
     </>
   );
 };

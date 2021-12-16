@@ -16,21 +16,20 @@ import { addListScheduleReceived } from "../../features/Calendar/ListScheduleRec
 const CalendarItem = (props) => {
   const dispath = useDispatch();
   const schedule = props.schedule ; 
-  const create_at = schedule.create_at ;
   const startDate = new Date(schedule.startDate); 
   const endDate =new Date(schedule.endDate); 
+  const status = schedule.status ; 
   const color = ["orange", "yellow", "blue", "pink", "red", "green"];
   const history = useHistory();
-  let title;
-//   const titleLength = title.length;
-//   const indexColor = Math.ceil(titleLength / color.length);
-//   const colorAvatar = color[indexColor];
-//   title = title.trim();
-//   const str1 = title.substring(title.length - 1, title.length);
-//   const str2 = title.substring(0, 1);
-//   const avataTitle = str2.concat(str1);
-    let avataTitle = "TR"
-    let colorAvatar = "yellow"
+  let title = schedule.title;
+  const titleLength = title.length;
+  const indexColor = Math.ceil(titleLength / color.length);
+  const colorAvatar = color[indexColor];
+  title = title.trim();
+  const str1 = title.substring(title.length - 1, title.length);
+  const str2 = title.substring(0, 1);
+  let avataTitle = str2.concat(str1);
+  avataTitle = avataTitle.toUpperCase();
   const showTime = (create_at) => {
     //ham tgian
     let xml;
@@ -40,19 +39,13 @@ const CalendarItem = (props) => {
     const d = new Date();
 
     const t = new Date(create_at);
-    console.log(
-      "🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ t",
-      t.getTime()
-    );
     let now = d.getTime() - t.getTime();
     xml = timeAgo.format(new Date() - now);
-    console.log("🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ xml", xml);
     return xml;
   };
   const userInfo = useSelector((state) => state.auth.userInfo);
   const schedule1= useSelector(state=>state.ListScheduleReceived.ListScheduleReceived); 
    const acceptSchedule = (schedule)=>{     
-    console.log("🚀 ~ file: CalendarItemReceived.js ~ line 77 ~ acceptSchedule ~ accept")
       axios({
         url : URL.changeStatusSchedule, 
         method : "POST", 
@@ -62,7 +55,6 @@ const CalendarItem = (props) => {
            schedule : schedule 
         }
       }).then(data=>{
-         console.log("🚀 ~ file: CalendarItemReceived.js ~ line 63 ~ acceptSchedule ~ data", data) 
          if(data.status === 200) {
           const newSchedule1 = schedule1.filter(schedule2=>{
             return schedule2.id !== schedule.id 
@@ -75,10 +67,32 @@ const CalendarItem = (props) => {
       })
    } 
      
-
+  const deleteSchedule =(schedule)=>{
+      const id = schedule.id ; 
+      const email = userInfo.email ; 
+      axios({
+         url : URL.deleteScheduleReceivedById , 
+         method :"post", 
+         data : { 
+           id:id , 
+           email : email 
+         }
+      }).then(data=>{
+         if(data.status===200){
+            const newScheduleList = schedule1.filter(schedule=>{
+              return schedule.id !== id 
+            })
+            dispath(addListScheduleReceived(newScheduleList)); 
+            toast.success("Xóa thành công !"); 
+         }else{ 
+           toast.warning("Xóa thất bại ! Thử lại!")
+         }
+      }).catch(error=>{
+         toast.error("Lỗi hệ thống ,Thử lại !")
+      })
+  }
    const cancerSchedule =(schedule) => {
-     const id = schedule.id ; 
-    console.log("🚀 ~ file: CalendarItemReceived.js ~ line 97 ~ cancerSchedule ~ cancer")
+     const id = schedule.id ;
     axios({
       url :URL.changeStatusSchedule, 
       method : "post", 
@@ -92,10 +106,6 @@ const CalendarItem = (props) => {
         const newSchedule1 = schedule1.find(schedule2=>{
           return schedule2.id === schedule.id 
        })
-        const IndexUpdate = schedule1.findIndex(schedule2=>{
-           return schedule2.id === schedule.id 
-        })
-        console.log("🚀 ~ file: CalendarItemReceived.js ~ line 97 ~ cancerSchedule ~ IndexUpdate", IndexUpdate)
         const updateSchedule  = {
           title : newSchedule1.title , 
           status : "CANCER" , 
@@ -111,14 +121,22 @@ const CalendarItem = (props) => {
         const updateListSchedule = schedule1.filter(schedule=>{
            return schedule.id  !== id
         })
-       dispath(addListScheduleReceived([...updateListSchedule,updateSchedule]));
+          dispath(addListScheduleReceived([...updateListSchedule,updateSchedule]));
           toast.success("Cap nhat thanh cong !")
        }else{ 
          toast.warning("Co loi ")
        }
     })
    }
-    
+    const renderButtonCancer =(status)=>{
+       let xml ; 
+       if(status==="RECEIVED"){
+          xml = <Button onClick={()=>cancerSchedule(schedule)} style={{float:"right",marginRight:"8px"}} variant ="contained" color="secondary">Hủy</Button>
+       }else{
+          xml = <Button onClick={()=>deleteSchedule(schedule)} style={{float:"right",marginRight:"8px"}} variant ="contained" color="secondary">Xóa</Button>
+       }
+       return xml ; 
+    }
   return (
       <Card style={{ height: "270px", width: "500px", border: "1px solid", marginTop:"10px",position:"relative" }}>
            <Typography
@@ -186,8 +204,8 @@ const CalendarItem = (props) => {
         </Box>
        
         <Box style ={{width:"100%",marginTop :"15px"}}>
-          <Button onClick={()=>cancerSchedule(schedule)} style={{float:"right",marginRight:"8px"}} variant ="contained" color="secondary">Từ chối</Button>
-          <Button onClick ={()=>acceptSchedule(schedule)} style={{float:"left",marginLeft:"8px"}} variant ="contained" color="primary">Đồng ý </Button>
+             {renderButtonCancer(status)}
+            <Button onClick ={()=>acceptSchedule(schedule)} style={{float:"left",marginLeft:"8px"}} variant ="contained" color="primary">Đồng ý </Button>
        
            
         </Box>

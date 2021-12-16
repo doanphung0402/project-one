@@ -6,20 +6,22 @@ export default function TableSchedule(props) {
    const accept = schedule.accept ; 
    const send_to =schedule.send_to ; 
    let refuse = []; 
-   for(let k =0;k<send_to.length;k++){
-     let rsFind = accept.find(acceptItem=>{
-        return acceptItem === send_to[k]
-      })
-     if(rsFind===null){
-        refuse.push(send_to[k]); 
-     }
-   }
+    if(accept !== undefined){
+      for(let k =0;k<send_to.length;k++){
+         let rsFind = accept.find(acceptItem=>{
+            return acceptItem === send_to[k]
+          })
+         if(rsFind===null){
+            refuse.push(send_to[k]); 
+         }
+       }
+    }
    const renderEmailAccept =(accept)=>{
       let xml =""; 
-      if(accept.length ===0){
+      if(  accept === undefined || accept.length ===0){
            xml ="Hiện chưa có người tham gia sự kiện này !"
       }else{
-         xml = accept ; 
+         xml = accept; 
       }
       return xml; 
    }

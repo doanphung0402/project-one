@@ -16,12 +16,17 @@ import CalendarItem from "./CalendarItemReceived";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addListScheduleReceived } from "../../features/Calendar/ListScheduleReceived";
-let scheduleArray = [];
+import background1 from '../../asset/background1.gif'
 const CalendarManager = () => {
  
   const userInfo = useSelector((state) => state.auth.userInfo);
- 
+  const [page,setPage] = useState(1); 
+  const [totalPage,setTotalPage] =useState(1); 
   const dispath = useDispatch(); 
+  const handlePaginationPage = (event, page) => {
+       setPage(page);
+  };
+  const [status,setStatus] = useState("RECEIVED"); // RECEIVED CANCER
   useEffect(() => {
     axios({
       url: URL.getAllScheduleReceived,
@@ -31,13 +36,21 @@ const CalendarManager = () => {
       },
     })
       .then((data) => {
-        console.log(
-          "🚀 ~ file: CalendarManager.js ~ line 27 ~ useEffect ~ data",
-          data
-        );
-        dispath(addListScheduleReceived(data.data)); 
+        //  setTotalPage(data.data.totalPage); 
         if (data.status === 200) {
-        
+          const perPage = 5 ; 
+          const scheduler = data.data.scheduler ; 
+          
+          const startSchedule = perPage * (page - 1);
+          const newSchedule = scheduler.filter(schedule => schedule.status === status); 
+          const totalPage = Math.ceil(newSchedule / perPage);
+          setTotalPage(totalPage);
+          const currentListSchedule = newSchedule.slice(
+            startSchedule,
+            startSchedule + perPage
+          );
+          dispath(addListScheduleReceived(currentListSchedule)); 
+          
         } else {
           toast.warning("Co loi , thu lai ");
         }
@@ -45,17 +58,14 @@ const CalendarManager = () => {
       .catch((error) => {
         toast.error(error);
       });
-  }, []);
+  },[page,status]);
 
-  const [status, setStatus] = useState("RECEIVED"); // RECEIVED CANCER
+ 
   const  schedule = useSelector(state=>state.ListScheduleReceived.ListScheduleReceived); 
-  console.log("🚀 ~ file: CalendarManager.js ~ line 53 ~ CalendarManager ~ schedule", schedule)
+
   const renderEventItem = (schedule) => {
     let xml;
-    const scheduleReceived = schedule.filter((schedule) => {
-      return schedule.status === status;
-    });
-    xml = scheduleReceived.map((schedule, index) => {
+    xml = schedule.map((schedule, index) => {
       return <CalendarItem schedule={schedule} key={index} />;
     });
     return xml;
@@ -66,7 +76,7 @@ const CalendarManager = () => {
   };
 
   return (
-    <div>
+    <div style={{backgroundImage:`url(${background1})`}}>
       <Container>
         <Card
           style={{
@@ -137,8 +147,8 @@ const CalendarManager = () => {
                   </Grid>
                   <Box style={{ marginTop: "50px" }}>
                     <Pagination
-                      // onChange={}
-                      // count={totalPage}
+                      onChange={handlePaginationPage}
+                      count={totalPage}
                       color="primary"
                     />
                   </Box>
@@ -147,6 +157,7 @@ const CalendarManager = () => {
               <CssBaseline />
             </Box>
           </Grid>
+         
           <Grid item xs={4}></Grid>
         </Grid>
       </Container>

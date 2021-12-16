@@ -146,9 +146,6 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
   }
 }
 
-
-
-
 export async function createDefaultReceivedSurvey(email_user) {
   try {
     const rscreateDefaultReceivedSurvey = await SurveyModelSend.create({

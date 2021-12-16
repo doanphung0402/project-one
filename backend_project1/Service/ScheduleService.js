@@ -73,6 +73,7 @@ export async function addSchedule(schedule) {
           scheduler: scheduler,
         }
       );
+      return rsSend ; 
     } catch (error) {
       throw error;
     }
@@ -120,12 +121,16 @@ export async function getAllScheduleSend(email_user) {
     return error;
   }
 }
-export async function getAllScheduleReceived(email) {
+export async function getAllScheduleReceived(email,page,status) {
+
   try {
     const schedule = await CalendarModelReceived.findOne({
       email_user: email,
     });
-    return schedule.scheduler;
+    if (schedule){
+     
+      return schedule;
+    }
   } catch (error) {
     return error;
   }
@@ -237,16 +242,16 @@ export async function changeStatusScheduleRecieved(
 export async function deleteScheduleById(id, email_user) {
   try {
     const scheduleSendFind = await CalendarModelSend.findOne({
-      email_user: email_user ,
+      email_user: email_user,
     });
     const scheduleReceivedFind = await CalendarModelReceived.findOne({
       email_user: email_user,
     });
     if (scheduleSendFind !== null) {
       const scheduleSend = scheduleSendFind.scheduler;
-      const updateScheduleSend = scheduleSend.filter(
-        (schedule) =>{return  schedule.id !== id}
-      );
+      const updateScheduleSend = scheduleSend.filter((schedule) => {
+        return schedule.id !== id;
+      });
       await CalendarModelSend.updateOne(
         {
           email_user: email_user,
@@ -259,11 +264,9 @@ export async function deleteScheduleById(id, email_user) {
     if (scheduleReceivedFind !== null) {
       const scheduleReceived = scheduleReceivedFind.scheduler;
 
-      const updateScheduleReceived = scheduleReceived.filter(
-        (schedule) => {
-           return schedule.id !== id
-        }
-      );
+      const updateScheduleReceived = scheduleReceived.filter((schedule) => {
+        return schedule.id !== id;
+      });
 
       await CalendarModelReceived.updateOne(
         {
@@ -277,4 +280,24 @@ export async function deleteScheduleById(id, email_user) {
   } catch (error) {
     return error;
   }
+}
+export async function deleteScheduleReceivedById(id,email){
+    try {
+        const schedulerReceived = await CalendarModelReceived.findOne({
+           email_user : email 
+        }); 
+        if (schedulerReceived!==null){
+           const scheduler = schedulerReceived.scheduler ; 
+           const updateSchedule = scheduler.filter(schedule=>schedule.id !== id); 
+           await CalendarModelReceived.updateOne({
+              email_user : email 
+           },{
+              scheduler : updateSchedule
+           })
+        }else{
+           throw error ; 
+        }
+    } catch (error) {
+      return error ; 
+    }
 }

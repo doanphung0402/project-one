@@ -27,8 +27,8 @@ import { Pagination } from "@material-ui/lab";
 import HttpCode from "../../Constaint/HttpCode";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getListSurvey } from "../../features/survey/ListSurveyItem";
 import { changeSplitButton } from "../../features/survey/SplitButton";
+import background1 from '../../asset/background1.gif'
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi"];
 
 const useStyles = makeStyles((theme) => ({
@@ -123,6 +123,7 @@ const SplitButton = () => {
   );
 };
 ///////////////////////////////////////////
+
 const Survey = () => {
   const history = useHistory();
   const classes = useStyles();
@@ -191,7 +192,7 @@ const Survey = () => {
   }, [page, status, userInfo]);
 
   return (
-    <div>
+    <div style={{backgroundImage:`url(${background1})`}}>
       <Container>
         <Card
           style={{

@@ -3,15 +3,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Calendar from "./Calendar";
 import { useHistory } from "react-router-dom";
-import HomeIcon from '@material-ui/icons/Home';
 import DetailsIcon from '@material-ui/icons/Details';
 const CalendarContainer = () => {
   const history = useHistory(); 
   const handleButtonGoDetail =() =>{
      history.push("/calendar/manager"); 
-  }
-  const handleButtonGoHome =()=>{
-     history.push("/home"); 
   }
   return (
     <>
@@ -25,9 +21,8 @@ const CalendarContainer = () => {
               >
                 Công việc của bạn
               </Typography>
-                <Box>
-                   <Button style={{marginRight:"30px"}} variant="contained" color="primary" onClick={handleButtonGoDetail} startIcon={<DetailsIcon/>}>Quản lí sự kiện</Button>
-                   <Button variant="contained" color="secondary"  onClick={handleButtonGoHome} startIcon={<HomeIcon/>}>Trang chủ </Button>
+                <Box style={{float:"left"}}>
+                   <Button style={{marginLeft:"22px",marginBottom:"30px",marginTop:"20px",backgroundColor:"#32DB81"}} variant="contained" onClick={handleButtonGoDetail} startIcon={<DetailsIcon/>}>Quản lí sự kiện</Button>
                 </Box>
               <Grid item xs={12}>
                   <Calendar />

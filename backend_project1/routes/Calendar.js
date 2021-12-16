@@ -8,12 +8,13 @@ function  CalendarRoute(){
     const route = express.Router(); 
     route.post("/create-schedule",async(req,res)=>{
         const schedule = req.body ; 
-        const rsCreate  =await ScheduleService.addSchedule(schedule); 
-        if(!rsCreate){
-         res.status(200).json("Success"); 
-        }else { 
-          res.status(404).json("Failse"); 
-        }
+        try {
+          const rsCreate  =await ScheduleService.addSchedule(schedule); 
+          res.status(200).json(rsCreate); 
+
+        } catch (error) {
+             res.status(404).json("failse"); 
+        } 
     })
     route.post("/get-all-schedule-send",async(req,res)=>{
          const email_user  = req.body.email; 
@@ -30,12 +31,13 @@ function  CalendarRoute(){
     })
     route.post("/get-all-schedule-received",async(req,res)=>{
         const email = req.body.email ; 
-        const scheduler = await ScheduleService.getAllScheduleReceived(email); 
-        if(scheduler){
-             res.status(200).json(scheduler); 
-        }else {
-             res.status(400); 
-        }
+        const page = req.query.page; 
+       try {
+          const paginationScheduleList = await ScheduleService.getAllScheduleReceived(email,page); 
+          res.status(200).json(paginationScheduleList); 
+       } catch (error) {
+          res.status(400).json("failse"); 
+       }
      })
     route.post("/change-status-schedule-received",async(req,res)=>{
          const {schedule,status,email_user} = req.body ; 
@@ -53,6 +55,15 @@ function  CalendarRoute(){
                res.status(200).json("Success"); 
           } catch (error) {
                res.status(400).json("Failse"); 
+          }
+    })
+    route.post("/delete-scheduler-received-by-id",async(req,res)=>{
+          const {id,email} = req.body; 
+          try {
+               await ScheduleService.deleteScheduleReceivedById(id,email); 
+               res.status(200).json("Success"); 
+          } catch (error) {
+               // res.status(404).json("FAILSE"); 
           }
     })
     return route

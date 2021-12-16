@@ -6,7 +6,7 @@ footer : {
         width: "100%", 
         color: "white", 
         textAlign: "center", 
-        marginTop : "75px"
+        marginTop : "20px"
     }, 
  
 }
