@@ -51,7 +51,7 @@ export default function ModalUserSend() {
   return (
     <div>
       <Box style={{float:"left",marginTop:"30px"}} display="flex">
-        <TextField id="standard-basic" style={{width:"400px"}} value={option} onChange={handleChangeOption} label="Nhập lựa chon khảo sát ..." />
+        <TextField id="standard-basic" style={{width:"400px"}} value={option} onChange={handleChangeOption} label="Nhập email người nhận khảo sát " />
         <Button variant="contained" style={{marginLeft:"40px",backgroundColor:"#6AE2FF"}}  onClick ={handleSubmitOption}>Lưu</Button>
     </Box>
     </div>

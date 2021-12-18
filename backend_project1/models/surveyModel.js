@@ -11,11 +11,13 @@ const surveySchema =new Schema({ //khao sat gui di
       survey_send : [{
         title:String , 
         option:[String] , 
+        schedule_survey : [{id_schedule_survey:String , endDate : Date , startDate : Date}], 
+        flag : {type :String, default : "SURVEY"} , //SURVEY || EVENT  
         vote_number :Number,   
         decription:String,
         send_to : [String], 
         note :String,
-        user_voted :[{email:String,option:Number}], 
+        user_voted :[{email:String,option:[Number]}], 
         create_at: { type: Date, default: Date.now },
         id_survey_send : String , 
       }]

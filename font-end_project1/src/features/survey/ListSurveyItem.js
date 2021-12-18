@@ -7,7 +7,7 @@ const ListSurvey = createSlice({
   },
   reducers: {
      getListSurvey : (state,action)=>{
-          state.getListSurvey = action.payload; 
+          state.ListSurvey = action.payload; 
      }
   },
 });

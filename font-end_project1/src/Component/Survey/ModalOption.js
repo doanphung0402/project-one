@@ -10,11 +10,11 @@ export default function OptionModal() {
   const  handleChangeOption =(event)=>{ 
        const {value} = event.target; 
        setOption(value); 
-    
   }
   const handleSubmitOption =() => {
-     setOption("");    
+   
      dispath(addListOption(option)); 
+     setOption("");    
     
   }
   return (

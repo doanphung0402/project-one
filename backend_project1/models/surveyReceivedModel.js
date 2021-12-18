@@ -14,12 +14,14 @@ const surveySchema = new Schema(
       {
         title: String,
         option: [String],
+        schedule_survey : [{id_schedule_survey:String , endDate : Date , startDate : Date}], 
+        flag : {type :String, default : "SURVEY"} , 
         vote_number: Number, //so luong nguoi da vote
         note: String,
         decription: String,
         received_to: String,
         id_survey_send: String,
-        user_voted: { type: Number, default: 0 }, //option chon
+        user_voted: [Number], //option chon
         create_at: { type: Date, default: Date.now },
         is_check: { type: String, default: StatusSurveyItem.NOT_DONE }, //kiem tra da xem chua //NOT SEEN //SEEN // NOT DONE
       },

@@ -79,7 +79,15 @@ export async function updateUserSendSurvey(newSurvey) {
 //////
 
 export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi dung chon 1 option
+  console.log("🚀 ~ file: SurveyService.js ~ line 82 ~ updateSurveyChoose ~ surveyCheck", surveyCheck)
   const {email_received,option,email_send,id_survey_send} = surveyCheck; 
+  let optionUpdate =[]; 
+   for (let k =0 ; k<option.length ; k++){
+      if(option[k]===true){
+          optionUpdate.push(k); 
+      }
+   }
+  console.log("🚀 ~ file: SurveyService.js ~ line 88 ~ optionUpdate ~ optionUpdate", optionUpdate)
   try {
       const surveySend = await SurveyModelSend.findOne({email_user:email_send}); //cap nhat cho nguoi gui
       if(!surveySend) {
@@ -102,12 +110,12 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
          if(user_voted_exist_index === -1){
               user_voted.push({
                    email  : email_received, 
-                   option : option
+                   option : optionUpdate
              })
          }else{
                user_voted[user_voted_exist_index] = {
                      email : email_received , 
-                     option : option 
+                     option : optionUpdate 
                }
          }
         
@@ -131,8 +139,8 @@ export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi 
          const positionSurveyReceivedItem = survey_received.findIndex((data,index)=>{
                 return data.id_survey_send === id_survey_send 
          })
-         surveyReceivedItem.user_voted = option ; 
-         survey_received[positionSurveyReceivedItem].user_voted =option ;
+         surveyReceivedItem.user_voted = optionUpdate ; 
+         survey_received[positionSurveyReceivedItem].user_voted =optionUpdate ;
          await SurveyModelReceived.updateOne({
               email_user : email_received
          },{

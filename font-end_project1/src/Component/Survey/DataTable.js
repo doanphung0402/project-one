@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 export default function DataTable(props) {
   const classes = useStyles();
   const survey = props.survey;
-
+  
   console.log("🚀 ~ file: DataTable.js ~ line 23 ~ DataTable ~ survey", survey);
   const renderOption = (survey) => {
     const option = survey.option;
@@ -51,6 +51,7 @@ export default function DataTable(props) {
 
   useEffect(() => {
     const option = survey.option;
+    console.log("🚀 ~ file: DataTable.js ~ line 54 ~ useEffect ~ survey", survey)
     dispath(cancerSurveyChoose());
 
     if (survey.send_to) {
@@ -61,7 +62,7 @@ export default function DataTable(props) {
         });
         if (flag) {
           let rs = option.map((data, index) => {
-            if (index + 1 === flag.option) return true;
+            if (index === flag.option[index]) return true;
             else return false;
           });
           let createData = { email: email, resultOption: rs };
@@ -76,33 +77,42 @@ export default function DataTable(props) {
       }
     } else {
       const emailReceivedTo = userInfo.email;
-      let optionChoose = [];
-      for (let k = 0; k < option.length; k++) {
-        if (survey.user_voted === k + 1) {
-          optionChoose.push(true);
-        } else {
-          optionChoose.push(false);
-        }
+      let optionChoose = survey.option.map(rs=>{
+         return false ; 
+      });
+      for (let k = 0; k < survey.user_voted.length; k++) {
+         optionChoose[survey.user_voted[k]] = true ; 
       }
+      console.log("🚀 ~ file: DataTable.js ~ line 83 ~ useEffect ~ optionChoose", optionChoose); 
       const createData = { email: emailReceivedTo, resultOption: optionChoose };
+      setChecked(optionChoose); 
       dispath(addSurveyChooseReceived([createData]));
     }
   }, []);
-  const [checked, setChecked] = useState([]);
-  const [isChecked, setIsChecked] = useState(true);
+  const defaultChecked = survey.option.map(survey=>{
+     return false ; 
+  })
+  const [checked, setChecked] = useState(defaultChecked);
+  console.log("🚀 ~ file: DataTable.js ~ line 92 ~ DataTable ~ checked", checked)
+
+
   const Check = (props) => {
     const status = props.status;
     const index = props.index;
     let statusCheckBox = survey.send_to ? true : false;
+    console.log("🚀 ~ file: DataTable.js ~ line 114 ~ Check ~ checked", checked)
     if (status === true) {
       return (
         <Checkbox
-          defaultChecked={isChecked}
+          // defaultChecked={isChecked}
           color="secondary"
           inputProps={{ "aria-label": "secondary checkbox" }}
           value={index}
           onChange={handleChange}
           disabled={statusCheckBox}
+          // defaultChecked={checked[index]}
+          checked={checked[index]}
+         
         />
       );
     } else {
@@ -112,8 +122,9 @@ export default function DataTable(props) {
           inputProps={{ "aria-label": "secondary checkbox" }}
           value={index}
           disabled={statusCheckBox}
-          checked={checked[index]}
           onChange={handleChange}
+          checked={checked[index]}
+          // defaultChecked={checked[index]}
         />
       );
     }
@@ -121,25 +132,28 @@ export default function DataTable(props) {
 
   const handleChange = (event) => {
     const value = event.target;
-    setIsChecked(false);
-    let checked = survey.option.map((value) => {
-      return false;
-    });
-    checked[value.value] = true;
-    setChecked(checked);
 
+    let checked1 = checked.map(rs=>{return rs})
+    checked1[value.value] = !checked[value.value];
+    setChecked(checked1);
+    console.log("🚀 ~ file: DataTable.js ~ line 141 ~ handleChange ~ checked", checked)
     const SurveyChoose = {
       email_received: userInfo.email,
-      option: value.value,
+      option: checked1
     };
+    
     dispath(addSurveyAfterChoose(SurveyChoose));
+
   };
 
   const rows = useSelector((state) => state.SurveyChoose.SurveyChoose);
-  console.log("🚀 ~ file: DataTable.js ~ line 80 ~ DataTable ~ rows", rows);
+
   const SurveyAfterChoose = useSelector(
     (state) => state.SurveyAfterChoose.SurveyAfterChoose
   );
+  console.log("🚀 ~ file: DataTable.js ~ line 143 ~ DataTable ~ SurveyAfterChoose", SurveyAfterChoose)
+
+
   const showChooseItem = (row) => {
     console.log(
       "🚀 ~ file: DataTable.js ~ line 134 ~ showChooseItem ~ row",
@@ -150,21 +164,25 @@ export default function DataTable(props) {
         return (
           <TableCell key={index} align="right">
             {" "}
-            <Check status={true} />{" "}
+            <Check index={index} status={true} />{" "}
           </TableCell>
         );
       } else {
         return (
           <TableCell key={index} align="right">
             {" "}
-            <Check index={index + 1} status={false} />{" "}
+            <Check index={index} status={false} />{" "}
           </TableCell>
         );
       }
     });
     return xml;
   };
+
+
+
   const renderShowOption = (rows) => {
+ 
     const xml = rows.map((row, index) => {
       return (
         <TableRow key={row.email}>
@@ -177,6 +195,9 @@ export default function DataTable(props) {
     });
     return xml;
   };
+
+
+
   const handleSendSurvey = () => {
     const SurveySendAfterCheck = {
       ...SurveyAfterChoose,
@@ -221,6 +242,9 @@ export default function DataTable(props) {
         toast.error("Có lỗi thử lại !");
       });
   };
+
+
+
   const renderButtonSend = (survey) => {
     let xml;
     if (survey.send_to) {

@@ -15,7 +15,8 @@ import EmailUserSendSchedule from '../features/Calendar/EmailUserSendSchedule';
 import ListScheduleSend from '../features/Calendar/ListScheduleSend'
 import ListScheduleReceived from '../features/Calendar/ListScheduleReceived'
 import DetailSchedule from '../features/Calendar/DetailSchedule'
-import page from '../features/Calendar/page'
+import page from '../features/Calendar/page'; 
+import SurveySchedule from '../features/Calendar/SurveySchedule'; 
 const rootReducer = {
   auth : authSlice, 
   listOption : listOption, 
@@ -33,7 +34,8 @@ const rootReducer = {
   ListScheduleSend :ListScheduleSend,
   ListScheduleReceived:ListScheduleReceived,
   DetailSchedule:DetailSchedule, 
-  page : page
+  page : page, 
+  SurveySchedule :SurveySchedule
 }
 export const store = configureStore({
   reducer: rootReducer

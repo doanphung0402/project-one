@@ -1,16 +1,18 @@
 import {
   Box,
+  Checkbox,
   Divider,
+  FormControlLabel,
   Grid,
   List,
   TextField,
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import CreateSurveyStyle from "../styleComponent/CreateSurveyStyle";
 import TitleIcon from "@material-ui/icons/Title";
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import SubjectIcon from "@material-ui/icons/Subject";
 import NoteIcon from "@material-ui/icons/Note";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,17 +25,40 @@ import { addSurveyInfo } from "../../features/survey/SurveyInfo";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import ScheduleSurvey from "./ScheduleSurveyOption";
 const CreateSurvey = (props) => {
   const classes = props.classes;
   const history = useHistory();
   const dispath = useDispatch();
   const optionList = useSelector((state) => state.listOption.ListOption);
-  const renderListItem = (listOption) => {
-    const xml = listOption.map((option, index) => {
-      return <ListItemOption key={index} position={index} option={option} />;
-    });
+  const ListSurveySchedule = useSelector(state=>state.SurveySchedule.ListSurveySchedule); 
+
+  const [checkedA,setCheckedA] = useState(false); 
+  const handleChange = (event) =>{
+     const status = event.target.checked ; 
+     setCheckedA(status); 
+  }
+  const [OptionList,setOptionList] = useState([]); 
+  console.log("🚀 ~ file: CreateSurvey.js ~ line 44 ~ CreateSurvey ~ OptionList", OptionList)
+
+  useEffect(()=>{
+    if(checkedA){
+      setOptionList(ListSurveySchedule)
+    }else{
+       setOptionList(optionList); 
+    }
+  },[checkedA,optionList,ListSurveySchedule])
+
+  const renderListItem = (OptionList) => {
+    let xml ; 
+      xml = OptionList.map((option, index) => {
+        return <ListItemOption key={index} flag={checkedA} position={index} option={option} />;
+      }); 
     return xml;
   };
+
+
   const validationSchema = yup.object().shape({
     title: yup.string("Tiêu đề").required("*Nhập tiêu đề khảo sát"),
     note: yup.string("Lưu ý"),
@@ -44,10 +69,21 @@ const CreateSurvey = (props) => {
   const SurveyDefaultValue = useSelector(
     (state) => state.SurveyInfo.SurveyInfo
   );
-  const goBack =()=>{
-     history.push("/survey/my-survey")
+  const goBack = () => {
+    history.push("/survey/my-survey");
+  };
+
+
+
+  const renderModalOption =()=>{
+     let xml; 
+     if (checkedA){
+        xml =(<ScheduleSurvey/>)
+     }else{
+        xml =(<OptionModal/>); 
+     }
+     return xml; 
   }
-  const ListOption = useSelector(state=>state.listOption.ListOption); 
   return (
     <Fragment>
       <Grid container className={classes.gridContainer}>
@@ -59,12 +95,12 @@ const CreateSurvey = (props) => {
               initialValues={{
                 title: SurveyDefaultValue.title,
                 decription: SurveyDefaultValue.decription,
-                note: SurveyDefaultValue.note ,
+                note: SurveyDefaultValue.note,
               }}
               onSubmit={(values) => {
-                if(ListOption.length===0){ 
-                  toast.error("Nhập ít nhất 1 lựa chon để tiếp tục ! ")
-                }else{
+                if (optionList.length === 0) {
+                  toast.error("Nhập ít nhất 1 lựa chon để tiếp tục ! ");
+                } else {
                   dispath(addSurveyInfo(values));
                   history.push("/survey/create-survey-send-to");
                 }
@@ -125,21 +161,41 @@ const CreateSurvey = (props) => {
                   <Typography style={{ margin: "30px" }} variant="h3">
                     Lựa chọn khảo sát :{" "}
                   </Typography>
+
+
+                  <FormControlLabel style={{marginLeft :""}}
+                   control={<Checkbox checked={checkedA} onChange={handleChange} name="checkedA" />}
+                   label="Khảo sát sự kiện"
+                  />
+
+                        
+
+
                   <Box>
-                    <List>{renderListItem(optionList)}</List>
+                    <List>{renderListItem(OptionList)}</List>
                   </Box>
                   <Box style={{ margin: "40px" }}>
-                    <OptionModal />
+                    {renderModalOption}
                   </Box>
 
                   <Box
-                    style={{ display: "flex", justifyContent: "space-between",marginTop: "50px"}}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginTop: "50px",
+                    }}
                   >
-                    <Button onClick={goBack} variant="contained" color="primary" style={{margin:"30px"}} startIcon={<ArrowBackIosIcon/>}>
+                    <Button
+                      onClick={goBack}
+                      variant="contained"
+                      color="primary"
+                      style={{ margin: "30px" }}
+                      startIcon={<ArrowBackIosIcon />}
+                    >
                       Quay lai
                     </Button>
                     <Button
-                      style={{margin:"30px"}}
+                      style={{ margin: "30px" }}
                       variant="contained"
                       color="secondary"
                       endIcon={<DoubleArrowIcon />}
