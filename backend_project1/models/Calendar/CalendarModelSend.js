@@ -10,17 +10,17 @@ const SchedulerSchema =new Schema({
      email_user : String, 
      scheduler : [
           {
-               title : {type:String , default : "Không có tiêu đề "} , 
+               title : {type:String , default : "Không có tiêu đề ..."} , 
                startDate : Date, 
                endDate : Date , 
-               allDay : Boolean, 
+               allDay : {type:Boolean,default:false}, 
                id : String , 
                create_at: { type: Date, default: Date.now },
-               notes : String , 
+               notes : {type:String,default:"Không có nội dung ..."} , 
                send_to :[String], 
                result_send :[Boolean],
-               accept : [String],  //true : tham gia , false : khong tham gia  
-              
+               accept : [String],    
+               
           }
      ]
     

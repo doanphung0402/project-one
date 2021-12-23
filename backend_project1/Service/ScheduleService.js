@@ -40,7 +40,7 @@ export async function addSchedule(schedule) {
               received_to: email_user,
             };
 
-            rsFindScheduleRecieved.scheduler.push(scheduler);
+            rsFindScheduleRecieved.scheduler.unshift(scheduler);
             await CalendarModelReceived.updateOne(
               {
                 email_user: send_to[k],

@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { changeSplitButton } from "../../features/survey/SplitButton";
 import background1 from '../../asset/background1.gif'
+import Cookies from "universal-cookie";
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi"];
 
 const useStyles = makeStyles((theme) => ({
@@ -171,25 +172,47 @@ const Survey = () => {
     return xml;
   };
   useEffect(() => {
-    async function fetchData() {
-      await axios({
-        url: `${URL.getPaginationPage}?page=${page}`,
-        method: "post",
-        data: {
-          email: userInfo.email,
-          status: status === 0 ? "RECEIVED" : "SEND",
-        },
-      }).then((data) => {
-        if (data.data.message === HttpCode.ERROR) {
-          toast.error("Lỗi hệ thống .Vui lòng thử lại ! ");
+    const cookies= new Cookies(); 
+    const token = cookies.get("user")
+       axios({
+          url :`${URL.getPaginationPage}?page=${page}`, 
+          data : 
+            {email: userInfo.email,
+            status: status === 0 ? "RECEIVED" : "SEND",
+            cookies : token 
+          },
+          
+          method:'POST', 
+          credentials :'include',
+          }).then(data => {
+          console.log("🚀 ~ file: Survey.js ~ line 185 ~ fetchData ~ data", data)
+        if (data.data.message === HttpCode.FAILSE) {
+          history.push("/login")
+          toast.error("Phiên làm việc của bạn đã hết !");
         } else {
-          setSurvey(data.data.payload.data.survey);
+          
+          let survey = data.data.payload.data.survey; 
+       
+          survey=survey.map((survey,index)=>{
+            let schedule_survey = survey.schedule_survey ; 
+            if (survey.option.length===0){
+              let option = schedule_survey.map((schedule,index)=>{
+                  return `option ${index}`; 
+              })
+             return {...survey,option : option}; 
+           }else{
+              return survey
+           }
+            
+          })
+          setSurvey(survey);
           setTotalPage(data.data.payload.data.totalPage);
         }
-      });
-    }
-    fetchData();
-  }, [page, status, userInfo]);
+       })
+       .catch((error) => {
+         console.error('Error:', error);
+       });
+     }, [page, status, userInfo]);
 
   return (
     <div style={{backgroundImage:`url(${background1})`}}>

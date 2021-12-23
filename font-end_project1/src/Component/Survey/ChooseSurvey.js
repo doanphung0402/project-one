@@ -17,6 +17,11 @@ import DataTable from "./DataTable";
 import ChartSurvey from "./ChartSurvey";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { useHistory } from "react-router-dom";
+import Random from "../../Config/random";
+import axios from "axios";
+import { toast } from "react-toastify";
+import URL from "../../Config/URL";
+import Cookies from "universal-cookie";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -94,6 +99,133 @@ const ChooseSurvey = () => {
   const goBack =()=>{
     history.push("/survey/my-survey"); 
  }
+ const UserInfo = useSelector((state) => state.auth);
+ const handleSendSchedule =(schedule)=>{
+ console.log("🚀 ~ file: ChooseSurvey.js ~ line 104 ~ handleSendSchedule ~ schedule", schedule)
+     let startDate = schedule.startDate ; 
+     let endDate = schedule.endDate ; 
+     const day = schedule.day ; 
+     let startDateString = `${day},${startDate}`; 
+     let startDateUpdate = new Date(startDateString); 
+     let endDateString = `${day},${endDate}`;
+     let endDateUpdate = new Date(endDateString); 
+     const scheduleSend = {
+      email_user: UserInfo.userInfo.email,
+      scheduler: {
+        id:  Random.alphabet(8),  
+        endDate : endDateUpdate, 
+        startDate : startDateUpdate , 
+        title : survey.title , 
+        notes : survey.notes , 
+        send_to : survey.send_to 
+      },
+    };
+    const cookies= new Cookies(); 
+    const token = cookies.get("user")
+      axios({
+      url: URL.createSchedule,
+      method: "Post",
+      data: {schedule : scheduleSend ,  cookies : token},
+     
+    })
+    .then((data) => {
+       if(data.status===200){
+        const totalSend = data.data; 
+        const sendSuccess = totalSend.filter(rs=>rs===true)
+        console.log("🚀 ~ file: ChooseSurvey.js ~ line 130 ~ .then ~ sendSuccess", sendSuccess)
+        toast.success(`Đã chia sẻ tới ${sendSuccess.length} người khác`)
+       }else if(data.status ===501){
+        toast.warning("Hết phiên làm việc!")
+        history.push("login"); 
+       }else{
+          toast.error("Thất bại !")
+       }
+    })
+    .catch((error) => {
+        toast.error(error); 
+    });
+    }
+  
+const renderButtonAccept=(schedule)=>{
+  console.log("🚀 ~ file: ChooseSurvey.js ~ line 153 ~ renderButtonAccept ~ survey", survey)
+   let xml ; 
+   if (survey.send_to){
+ 
+    xml = (<Button onClick={()=>handleSendSchedule(schedule)} style={{float:"left",marginTop:"20px"}} variant="contained" color="primary" >Accept</Button>
+            )      
+          
+          }else {
+      xml =""; 
+   }
+   return xml ;
+}
+ const renderScheduleItem =()=>{
+    const survey_schedule = survey.schedule_survey; 
+    const xml = survey_schedule.map((schedule,index)=>{
+       return (
+          <Card style={{ marginLeft:"80px",padding:"30px",marginBottom:"20px"}}>
+               <Typography
+        variant="subtitle1"
+        style={{
+          marginTop: "15px",
+       
+          fontSize: "20px",
+        
+        }}
+      >
+         Option {index} : {schedule.startDate} - {schedule.endDate}     {schedule.day}
+      </Typography>
+         {renderButtonAccept(schedule)}
+            </Card>
+       )
+    })
+    return xml ;
+ }
+ const renderInfoSchedule =()=>{
+    
+    let xml ; 
+    if (survey.option.length !==0 && survey.schedule_survey.length ===0 ){
+      xml = (
+        <Box style={{ display: "flex", alignItems: "baseline" }}>
+        <CheckCircleOutlineIcon className={classes.iconSurvey} />
+        <Typography
+                        variant="subtitle1"
+                        style={{
+                          marginTop: "30px",
+                          fontSize: "20px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Đánh dấu vào các hộp để chọn phiếu bầu .
+                      </Typography>
+      </Box>
+      )
+    }else {
+      xml = (
+         <>
+             <Box style={{ display: "flex", alignItems: "baseline" }}>
+        <CheckCircleOutlineIcon className={classes.iconSurvey} />
+                     <Typography
+                        variant="subtitle1"
+                        style={{
+                          marginTop: "30px",
+                          fontSize: "20px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                       Sự kiện : {survey.title}
+                      </Typography>
+                   
+                    
+                     
+      </Box>
+       {renderScheduleItem()}
+         </>
+      )
+    }
+   
+    return xml ;
+ }
   return (
     <Fragment>
       <Container style={{ backgroundColor: "",padding:"20px" }}>
@@ -143,19 +275,7 @@ const ChooseSurvey = () => {
                       {survey.note}
                     </Typography>
                   </Box>
-                  <Box style={{ display: "flex", alignItems: "baseline" }}>
-                    <CheckCircleOutlineIcon className={classes.iconSurvey} />
-                    <Typography
-                      variant="subtitle1"
-                      style={{
-                        marginTop: "30px",
-                        fontSize: "20px",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      Đánh dấu vào các hộp để chọn phiếu bầu .
-                    </Typography>
-                  </Box>
+                    {renderInfoSchedule()}
                 </Box>
                 <div
                   style={{

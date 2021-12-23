@@ -15,10 +15,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import URL from "../../Config/URL";
 import { Form } from "formik";
-import { Formik } from 'formik';
-import Cookies from 'universal-cookie';
+import { Formik } from "formik";
+import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
-import { login,loginFailse } from "../../features/auth/authSlice";
+import { login, loginFailse } from "../../features/auth/authSlice";
+import GoogleButton from "react-google-button";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -49,11 +50,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function SignIn(props) {
   const classes = useStyles();
-  const history = props.history;  
-  const dispath = useDispatch(); 
+  const history = props.history;
+  const dispath = useDispatch();
+ 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -64,84 +65,84 @@ export default function SignIn(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-       <Formik
-        initialValues={{
-          email : "",
-          password: ""
-        }}
-          onSubmit={ (values) => {
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          onSubmit={(values) => {
             axios({
-               method :"post", 
-               data : values, 
-               url :URL.login
-            }).then(data =>{
-              if(data.data.payload.token){
+              method: "post",
+              data: values,
+              url: URL.login,
+            }).then((data) => {
+              if (data.data.payload.token) {
                 const cookies = new Cookies();
-                cookies.set('user', data.data.payload.token, { path: '/' });
-                const user = data.data.payload.userInfo; 
-                sessionStorage.setItem("email",user.email); 
-                sessionStorage.setItem("first_name",user.first_name); 
-                sessionStorage.setItem("last_name",user.last_name); 
+                cookies.set("user", data.data.payload.token, { path: "/" });
+                const user = data.data.payload.userInfo;
+                sessionStorage.setItem("email", user.email);
+                sessionStorage.setItem("first_name", user.first_name);
+                sessionStorage.setItem("last_name", user.last_name);
                 dispath(login(data.data.payload.userInfo));
-                history.push("/home")
-              }else {
-                 console.log(data.data.payload.error);
-                 dispath(loginFailse(data.data.payload.error))
+                history.push("/home");
+              } else {
+                console.log(data.data.payload.error);
+                dispath(loginFailse(data.data.payload.error));
               }
-            })
-            
-          }}     
-       >
-        {(props)=>(
-       <Form className={classes.form} >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={props.handleChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={props.handleChange}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-         
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link to="#">Forgot password?</Link>
-            </Grid>
-            <Grid item>
-              <Link to="/signup">Don't have an account? Sign Up</Link>
-            </Grid>
-          </Grid>
-        </Form>
-       )}
-       </Formik>
-   
+            });
+          }}
+        >
+          {(props) => (
+            <Form className={classes.form}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={props.handleChange}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={props.handleChange}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+              <GoogleButton
+              
+              />
+              <Grid container>
+                <Grid item xs>
+                  <Link to="#">Forgot password?</Link>
+                </Grid>
+                <Grid item>
+                  <Link to="/signup">Don't have an account? Sign Up</Link>
+                </Grid>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
       </div>
       <Box mt={8}>
         <Copyright />

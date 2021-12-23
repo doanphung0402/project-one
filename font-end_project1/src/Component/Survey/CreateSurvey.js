@@ -27,6 +27,8 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import ScheduleSurvey from "./ScheduleSurveyOption";
+import { deleteAllOption } from "../../features/ListOption/ListOption";
+import { deleteAllSchedule } from "../../features/Calendar/SurveySchedule";
 const CreateSurvey = (props) => {
   const classes = props.classes;
   const history = useHistory();
@@ -37,6 +39,11 @@ const CreateSurvey = (props) => {
   const [checkedA,setCheckedA] = useState(false); 
   const handleChange = (event) =>{
      const status = event.target.checked ; 
+     if(status===true){
+        dispath(deleteAllOption())
+     }else{
+       dispath(deleteAllSchedule())
+     }
      setCheckedA(status); 
   }
   const [OptionList,setOptionList] = useState([]); 
@@ -98,7 +105,7 @@ const CreateSurvey = (props) => {
                 note: SurveyDefaultValue.note,
               }}
               onSubmit={(values) => {
-                if (optionList.length === 0) {
+                if (optionList.length === 0 && ListSurveySchedule.length ===0) {
                   toast.error("Nhập ít nhất 1 lựa chon để tiếp tục ! ");
                 } else {
                   dispath(addSurveyInfo(values));

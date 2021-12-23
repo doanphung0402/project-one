@@ -14,7 +14,7 @@ const surveySchema = new Schema(
       {
         title: String,
         option: [String],
-        schedule_survey : [{id_schedule_survey:String , endDate : Date , startDate : Date}], 
+        schedule_survey : [{ endDate : String , startDate : String , day: String }], 
         flag : {type :String, default : "SURVEY"} , 
         vote_number: Number, //so luong nguoi da vote
         note: String,

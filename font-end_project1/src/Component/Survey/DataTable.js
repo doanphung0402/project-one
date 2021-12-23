@@ -23,6 +23,7 @@ import {
 import axios from "axios";
 import URL from "../../Config/URL";
 import { toast } from "react-toastify";
+import Cookies from "universal-cookie";
 
 const useStyles = makeStyles({
   table: {
@@ -31,11 +32,20 @@ const useStyles = makeStyles({
 });
 export default function DataTable(props) {
   const classes = useStyles();
-  const survey = props.survey;
-  
+  let survey = props.survey;
+
+  let schedule_survey = survey.schedule_survey; 
+  if(survey.option.length ===0 ){
+       let option = schedule_survey.map((schedule,index)=>{
+          return `option ${index}`; 
+       })
+       survey = {...survey,option}
+  }
   console.log("🚀 ~ file: DataTable.js ~ line 23 ~ DataTable ~ survey", survey);
   const renderOption = (survey) => {
-    const option = survey.option;
+    let option = survey.option;
+    let schedule_survey = survey.schedule_survey ; 
+   
     const xml = option.map((option, index) => {
       return (
         <TableCell key={index} align="right">
@@ -51,7 +61,10 @@ export default function DataTable(props) {
 
   useEffect(() => {
     const option = survey.option;
-    console.log("🚀 ~ file: DataTable.js ~ line 54 ~ useEffect ~ survey", survey)
+    console.log(
+      "🚀 ~ file: DataTable.js ~ line 54 ~ useEffect ~ survey",
+      survey
+    );
     dispath(cancerSurveyChoose());
 
     if (survey.send_to) {
@@ -61,10 +74,21 @@ export default function DataTable(props) {
           return data.email === email;
         });
         if (flag) {
-          let rs = option.map((data, index) => {
-            if (index === flag.option[index]) return true;
-            else return false;
+          // let rs = option.map((data, index) => {
+          //   if (index === flag.option[index]) return true;
+          //   else return false;
+          // });
+          let rs = survey.option.map((rs) => {
+            return false;
           });
+          for (let k = 0; k < flag.option.length; k++) {
+            rs[flag.option[k]] = true;
+            console.log(
+              "🚀 ~ file: DataTable.js ~ line 73 ~ useEffect ~ rs",
+              rs
+            );
+          }
+          setChecked(rs);
           let createData = { email: email, resultOption: rs };
           dispath(addSurveyChooseSend(createData));
         } else {
@@ -77,30 +101,41 @@ export default function DataTable(props) {
       }
     } else {
       const emailReceivedTo = userInfo.email;
-      let optionChoose = survey.option.map(rs=>{
-         return false ; 
+      let optionChoose = survey.option.map((rs) => {
+        return false;
       });
       for (let k = 0; k < survey.user_voted.length; k++) {
-         optionChoose[survey.user_voted[k]] = true ; 
+        optionChoose[survey.user_voted[k]] = true;
       }
-      console.log("🚀 ~ file: DataTable.js ~ line 83 ~ useEffect ~ optionChoose", optionChoose); 
+      console.log(
+        "🚀 ~ file: DataTable.js ~ line 83 ~ useEffect ~ optionChoose",
+        optionChoose
+      );
       const createData = { email: emailReceivedTo, resultOption: optionChoose };
-      setChecked(optionChoose); 
+      setChecked(optionChoose);
       dispath(addSurveyChooseReceived([createData]));
     }
   }, []);
-  const defaultChecked = survey.option.map(survey=>{
-     return false ; 
-  })
-  const [checked, setChecked] = useState(defaultChecked);
-  console.log("🚀 ~ file: DataTable.js ~ line 92 ~ DataTable ~ checked", checked)
+  const defaultChecked = survey.option.map((survey) => {
+    return false;
+  });
+  console.log("🚀 ~ file: DataTable.js ~ line 112 ~ defaultChecked ~ defaultChecked", defaultChecked)
 
+  
+  const [checked, setChecked] = useState(defaultChecked);
+  console.log(
+    "🚀 ~ file: DataTable.js ~ line 92 ~ DataTable ~ checked",
+    checked
+  );
 
   const Check = (props) => {
     const status = props.status;
     const index = props.index;
     let statusCheckBox = survey.send_to ? true : false;
-    console.log("🚀 ~ file: DataTable.js ~ line 114 ~ Check ~ checked", checked)
+    console.log(
+      "🚀 ~ file: DataTable.js ~ line 114 ~ Check ~ checked",
+      checked
+    );
     if (status === true) {
       return (
         <Checkbox
@@ -112,7 +147,6 @@ export default function DataTable(props) {
           disabled={statusCheckBox}
           // defaultChecked={checked[index]}
           checked={checked[index]}
-         
         />
       );
     } else {
@@ -133,17 +167,21 @@ export default function DataTable(props) {
   const handleChange = (event) => {
     const value = event.target;
 
-    let checked1 = checked.map(rs=>{return rs})
+    let checked1 = checked.map((rs) => {
+      return rs;
+    });
     checked1[value.value] = !checked[value.value];
     setChecked(checked1);
-    console.log("🚀 ~ file: DataTable.js ~ line 141 ~ handleChange ~ checked", checked)
+    console.log(
+      "🚀 ~ file: DataTable.js ~ line 141 ~ handleChange ~ checked",
+      checked
+    );
     const SurveyChoose = {
       email_received: userInfo.email,
-      option: checked1
+      option: checked1,
     };
-    
-    dispath(addSurveyAfterChoose(SurveyChoose));
 
+    dispath(addSurveyAfterChoose(SurveyChoose));
   };
 
   const rows = useSelector((state) => state.SurveyChoose.SurveyChoose);
@@ -151,8 +189,10 @@ export default function DataTable(props) {
   const SurveyAfterChoose = useSelector(
     (state) => state.SurveyAfterChoose.SurveyAfterChoose
   );
-  console.log("🚀 ~ file: DataTable.js ~ line 143 ~ DataTable ~ SurveyAfterChoose", SurveyAfterChoose)
-
+  console.log(
+    "🚀 ~ file: DataTable.js ~ line 143 ~ DataTable ~ SurveyAfterChoose",
+    SurveyAfterChoose
+  );
 
   const showChooseItem = (row) => {
     console.log(
@@ -179,10 +219,7 @@ export default function DataTable(props) {
     return xml;
   };
 
-
-
   const renderShowOption = (rows) => {
- 
     const xml = rows.map((row, index) => {
       return (
         <TableRow key={row.email}>
@@ -196,8 +233,6 @@ export default function DataTable(props) {
     return xml;
   };
 
-
-
   const handleSendSurvey = () => {
     const SurveySendAfterCheck = {
       ...SurveyAfterChoose,
@@ -205,19 +240,23 @@ export default function DataTable(props) {
       id_survey_send: survey.id_survey_send,
     };
     dispath(showLoading());
+    const cookies= new Cookies(); 
+    const token = cookies.get("user")
     axios({
       url: URL.updateSurveyCheck,
       method: "Post",
-      data: SurveySendAfterCheck,
+      data: {SurveySendAfterCheck:SurveySendAfterCheck,cookies:token},
+     
     })
       .then((data) => {
         if (data.status === 200) {
           axios({
             url: URL.changeStatusSurveyItem,
             data: {
-              status: StatusSurveyItem.DONE,
+              payload:  { status: StatusSurveyItem.DONE,
               email: userInfo.email,
-              id_survey_send: survey.id_survey_send,
+              id_survey_send: survey.id_survey_send}, 
+              cookies:token
             },
             method: "post",
           })
@@ -242,8 +281,6 @@ export default function DataTable(props) {
         toast.error("Có lỗi thử lại !");
       });
   };
-
-
 
   const renderButtonSend = (survey) => {
     let xml;

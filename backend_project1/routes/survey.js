@@ -8,6 +8,7 @@ function  SurveyRoute(){
     route.post("/get-survey",async(req,res)=>{  //get survey //email // page  // status : string
         const page = req.query.page; 
         const email_user = req.body.email;
+        console.log("🚀 ~ file: survey.js ~ line 13 ~ route.post ~ req.body", req.body)
         console.log("🚀 ~ file: survey.js ~ line 10 ~ route.post ~ email_user", email_user)
         const status = req.body.status ;   // SEND || RECEIVED 
         console.log("🚀 ~ file: survey.js ~ line 11 ~ route.post ~ status", status)
@@ -19,7 +20,7 @@ function  SurveyRoute(){
         }
     });
     route.post("/create-send-survey", async(req,res)=>{
-         const resultReq = req.body;  
+         const resultReq = req.body.survey;  
          const id = Random.alphabet(8); 
          console.log("🚀 ~ file: survey.js ~ line 24 ~ route.post ~ id", id)
          let newSurvey = {          
@@ -29,7 +30,8 @@ function  SurveyRoute(){
               decription : resultReq.decription , 
               send_to : resultReq.send_to ,  
               note:resultReq.note, 
-              id_survey_send : id    
+              id_survey_send : id, 
+              schedule_survey : resultReq.schedule_survey
          }; 
          const surveySend = {
             email_user : resultReq.email_user, 
@@ -45,7 +47,8 @@ function  SurveyRoute(){
                 vote_number:newSurvey.vote_number, 
                 decription:newSurvey.decription, 
                 received_to : resultReq.email_user, 
-                id_survey_send : newSurvey.id_survey_send
+                id_survey_send : newSurvey.id_survey_send,
+                schedule_survey : newSurvey.schedule_survey
               }
               resultSend = await SurveyService.updateUserReceivedSurvey(newSurvey.send_to,surveySendTo) ;    
               res.json({status:HttpCode.SUCCESS,payload:resultSend}); 
@@ -72,7 +75,7 @@ function  SurveyRoute(){
 //      }
 // })
    route.post("/survey-choose/update-survey-user-choose",async (req,res)=>{   
-         const surveyCheck = req.body ; //
+         const surveyCheck = req.body.SurveySendAfterCheck; //
          await SurveyService.updateSurveyChoose(surveyCheck);     
          res.json(surveyCheck);    
    })
@@ -88,7 +91,7 @@ function  SurveyRoute(){
 //          }
 //    })
   route.post("/change-status-survey",async(req,res)=>{
-     const data = req.body ; 
+     const data = req.body.payload; 
      const rsUpdate = await SurveyService.handleCheckSurvey(data); 
      console.log("🚀 ~ file: survey.js ~ line 93 ~ route.post ~ rsUpdate", rsUpdate)  
   })

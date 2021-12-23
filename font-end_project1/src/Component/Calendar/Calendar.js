@@ -46,22 +46,33 @@ import URL from "../../Config/URL";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { toast } from "react-toastify";
 import { addDetailSchedule } from "../../features/Calendar/DetailSchedule";
-import background1 from '../../asset/background1.gif'
 import { changeListEmailUserSend } from "../../features/Calendar/EmailUserSendSchedule";
+import Cookies from "universal-cookie";
+import { useHistory } from "react-router-dom";
 const Calendar = (props) => {
   const dispath = useDispatch();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [data, setData] = useState([]);
   const [datadis,setDataDis] = useState([]); 
+
+  const history = useHistory(); 
   useEffect(()=>{
+    const cookies= new Cookies(); 
+    const token = cookies.get("user")
       const fetchData = async()=>{
         await axios({
           url : URL.getAllMySchedule, 
           method:"Post", 
-          data: {email:userInfo.email}
+          data: {email:userInfo.email,cookies:token}
        }).then(data=>{
-          console.log("🚀 ~ file: Calendar.js ~ line 57 ~ useEffect ~ data", data)
-          setData(data.data)
+          if(data.status===501){
+            toast.warning("Hết phiên làm việc Calendar!")
+            history.push("/login"); 
+          
+          }else{
+            console.log("🚀 ~ file: Calendar.js ~ line 57 ~ useEffect ~ data", data);
+            setData(data.data) 
+          }
        }).catch(error=>{
           toast.error(error)
        })
@@ -165,18 +176,25 @@ const Calendar = (props) => {
         email_user: UserInfo.userInfo.email,
         scheduler: {...schedule1,send_to: newListEmail},
       };
-       
+      const cookies= new Cookies(); 
+      const token = cookies.get("user")
        await axios({
           url: URL.createSchedule,
           method: "Post",
-          data: schedule,
+          data: {schedule : schedule, cookies : token },
         })
         .then((data) => {
-           console.log("🚀 ~ file: Calendar.js ~ line 177 ~ .then ~ data", data);
-           const totalSend = data.data.length; 
-           const sendSuccess = totalSend.filter(rs=>rs===true)
-           dispath(changeListEmailUserSend([]))
-           toast.success("Tạo thành công !")
+           if(data.status===200){
+            toast.success("Tạo thành công !")
+            console.log("🚀 ~ file: Calendar.js ~ line 177 ~ .then ~ data", data);
+            const totalSend = data.data.length; 
+            const sendSuccess = totalSend.filter(rs=>rs===true)
+            dispath(changeListEmailUserSend([]))
+           
+           }else{
+            toast.warning("Hết phiên làm việc!")
+             history.push("login"); 
+           }
         })
         .catch((error) => {
             toast.error(error); 
@@ -196,19 +214,22 @@ const Calendar = (props) => {
     }
     if (deleted !== undefined) {
     
-     
+      const cookies= new Cookies(); 
+      const token = cookies.get("user")
      await axios({
          url : URL.deleteScheduleById, 
          method: "post", 
          data : {
             email_user :  UserInfo.userInfo.email,
-            id : deleted
+            id : deleted, 
+            cookies : token
          }
       }).then(data=>{
            if(data.status===200){
               toast.success("Xóa thành công !"); 
-           }else{
-              toast.warning("Xóa thất bại,Thử lại !")
+           }else if (data.status===501){
+              toast.warning("Hết phiên làm việc!")
+              history.push("login"); 
            }
       }).catch(error=>{
          toast.error("Có lỗi hệ thống,Xin vui lòng thử lại !")

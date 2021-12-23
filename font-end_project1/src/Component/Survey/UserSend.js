@@ -14,6 +14,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import { useHistory } from "react-router-dom";
 import { addResultSend } from "../../features/resultSend/resultSend";
+import Cookies from "universal-cookie";
 const UserSend = (props) => {
   const classes = props.classes;
   const history = useHistory();
@@ -23,6 +24,7 @@ const UserSend = (props) => {
   const ListOption = useSelector((state) => state.listOption.ListOption);
   const ListUser = useSelector((state) => state.UserSendList.ListUser);
   const UserInfo = useSelector((state) => state.auth);
+  let ListSurveySchedule =  useSelector(state=>state.SurveySchedule.ListSurveySchedule); 
   const renderUserSend = (listOption) => {
     const xml = listOption.map((option, index) => {
       return <ListUserItem key={index} position={index} option={option}  />;
@@ -30,9 +32,13 @@ const UserSend = (props) => {
     return xml;
   };
   const onSendSurvey = () => {
+     
      if(ListUserSend.length ===0){
         toast.warning("Nhập ít nhất 1 email người gửi ! "); 
      }else{
+       if(ListOption.length !==0){
+        ListSurveySchedule =[]; 
+       }
       const Survey = {
         email_user: UserInfo.userInfo.email,
         title: SurveyInfo.title,
@@ -41,19 +47,28 @@ const UserSend = (props) => {
         decription: SurveyInfo.decription,
         note: SurveyInfo.note,      
         send_to: ListUser,      
+        schedule_survey :ListSurveySchedule
       };
+      console.log("🚀 ~ file: UserSend.js ~ line 48 ~ onSendSurvey ~ Survey", Survey)
+      const cookies= new Cookies(); 
+      const token = cookies.get("user")
       axios({
         url: URL.sendSurvey,
         method: "Post",
-        data: Survey,
+        data: {survey : Survey,cookies :token },
+      
       }).then((data) => {
         if (data.data.status === HttpCode.SUCCESS){
           const resultSend =  data.data.payload ;
           dispath(addResultSend(resultSend)); 
           history.push("/survey/send-survey-success");
          
-        }else{
-          toast.error("Có lỗi thử lại sau!")
+        }else if(data.status ===501){
+          toast.warning("Hết phiên làm việc!")
+          history.push("login"); 
+        }
+        else{
+          toast.error("Có lỗi thử lại sau !")
         }
       });
      }

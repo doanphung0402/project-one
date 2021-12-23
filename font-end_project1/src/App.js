@@ -7,7 +7,7 @@ import { Router1 } from "./Constaint/Router" ;
 import { ProtectedRoute } from "./Config/Protected.router";
 import {updateUserInfo} from './features/auth/authSlice'; 
 import { useDispatch } from "react-redux";
-
+import axios from 'axios'
 const renderRouterPageWithoutDB =(Router) =>{
   let xml =null ; 
   xml = Router.map((route,index) =>{
@@ -38,6 +38,9 @@ const renderRouterPageWithDB =(Router1) =>{
 function App() {
   const dispath = useDispatch(); 
   useEffect(()=>{
+    // axios({
+       
+    // })
      const email = sessionStorage.getItem("email"); 
      const first_name = sessionStorage.getItem("first_name"); 
      const last_name = sessionStorage.getItem("last_name"); 

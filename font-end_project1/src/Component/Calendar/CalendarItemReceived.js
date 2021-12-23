@@ -13,6 +13,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import URL from "../../Config/URL";
 import { addListScheduleReceived } from "../../features/Calendar/ListScheduleReceived";
+import Cookies from "universal-cookie";
 const CalendarItem = (props) => {
   const dispath = useDispatch();
   const schedule = props.schedule ; 
@@ -45,14 +46,18 @@ const CalendarItem = (props) => {
   };
   const userInfo = useSelector((state) => state.auth.userInfo);
   const schedule1= useSelector(state=>state.ListScheduleReceived.ListScheduleReceived); 
-   const acceptSchedule = (schedule)=>{     
+   const acceptSchedule = (schedule)=>{   
+    const cookies= new Cookies(); 
+    const token = cookies.get("user")
+
       axios({
         url : URL.changeStatusSchedule, 
         method : "POST", 
         data: { 
            email_user : userInfo.email, 
            status:"ACCEPT", 
-           schedule : schedule 
+           schedule : schedule ,
+           cookies :token
         }
       }).then(data=>{
          if(data.status === 200) {
@@ -62,7 +67,7 @@ const CalendarItem = (props) => {
          dispath(addListScheduleReceived(newSchedule1)); 
             toast.success("Cap nhat thanh cong !")
          }else{ 
-            toast.warning("Co loi ")
+            toast.warning("Phiên làm việc hết hạn! ")
          }
       })
    } 
@@ -70,12 +75,15 @@ const CalendarItem = (props) => {
   const deleteSchedule =(schedule)=>{
       const id = schedule.id ; 
       const email = userInfo.email ; 
+      const cookies= new Cookies(); 
+      const token = cookies.get("user")
       axios({
          url : URL.deleteScheduleReceivedById , 
          method :"post", 
          data : { 
            id:id , 
-           email : email 
+           email : email , 
+           cookies :token 
          }
       }).then(data=>{
          if(data.status===200){
@@ -84,6 +92,8 @@ const CalendarItem = (props) => {
             })
             dispath(addListScheduleReceived(newScheduleList)); 
             toast.success("Xóa thành công !"); 
+         }else if(data.status ===501){
+            toast.error("Phiên làm việc hết hạn !")
          }else{ 
            toast.warning("Xóa thất bại ! Thử lại!")
          }
@@ -91,15 +101,20 @@ const CalendarItem = (props) => {
          toast.error("Lỗi hệ thống ,Thử lại !")
       })
   }
+
+
    const cancerSchedule =(schedule) => {
      const id = schedule.id ;
+     const cookies= new Cookies(); 
+     const token = cookies.get("user")
     axios({
       url :URL.changeStatusSchedule, 
       method : "post", 
       data: { 
          email_user : userInfo.email, 
          status:"CANCER", 
-         schedule : schedule 
+         schedule : schedule , 
+         cookies:token 
       }
     }).then(data=>{
        if(data.status === 200) {
@@ -123,8 +138,12 @@ const CalendarItem = (props) => {
         })
           dispath(addListScheduleReceived([...updateListSchedule,updateSchedule]));
           toast.success("Cap nhat thanh cong !")
-       }else{ 
-         toast.warning("Co loi ")
+       }else if(data.status===501){
+           toast.warning("Hết phiên làm việc !")
+           history.push("/login"); 
+       }
+       else{ 
+         toast.warning("Có lỗi thử lại  ! ")
        }
     })
    }

@@ -17,8 +17,9 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addListScheduleReceived } from "../../features/Calendar/ListScheduleReceived";
 import background1 from '../../asset/background1.gif'
+import Cookies from "universal-cookie";
 const CalendarManager = () => {
- 
+  const history = useHistory(); 
   const userInfo = useSelector((state) => state.auth.userInfo);
   const [page,setPage] = useState(1); 
   const [totalPage,setTotalPage] =useState(1); 
@@ -28,11 +29,15 @@ const CalendarManager = () => {
   };
   const [status,setStatus] = useState("RECEIVED"); // RECEIVED CANCER
   useEffect(() => {
+    const cookies= new Cookies(); 
+    const token = cookies.get("user")
+
     axios({
       url: URL.getAllScheduleReceived,
       method: "post",
       data: {
         email: userInfo.email,
+        cookies:token
       },
     })
       .then((data) => {
@@ -51,8 +56,11 @@ const CalendarManager = () => {
           );
           dispath(addListScheduleReceived(currentListSchedule)); 
           
+        }else if(data.status === 501){
+          toast.warning("Hết phiên làm việc!")
+          history.push("login"); 
         } else {
-          toast.warning("Co loi , thu lai ");
+           toast.error("Có lỗi ,thử lại !")
         }
       })
       .catch((error) => {

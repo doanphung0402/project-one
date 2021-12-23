@@ -7,9 +7,11 @@ import * as ScheduleService from '../Service/ScheduleService'
 function  CalendarRoute(){
     const route = express.Router(); 
     route.post("/create-schedule",async(req,res)=>{
-        const schedule = req.body ; 
+        const schedule = req.body.schedule; 
+        console.log("🚀 ~ file: Calendar.js ~ line 11 ~ route.post ~ schedule", schedule)
         try {
           const rsCreate  =await ScheduleService.addSchedule(schedule); 
+          console.log("🚀 ~ file: Calendar.js ~ line 14 ~ route.post ~ rsCreate", rsCreate)
           res.status(200).json(rsCreate); 
 
         } catch (error) {
