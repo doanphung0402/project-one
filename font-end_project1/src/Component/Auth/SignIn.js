@@ -54,7 +54,10 @@ export default function SignIn(props) {
   const classes = useStyles();
   const history = props.history;
   const dispath = useDispatch();
- 
+   const LoginGoogle = ()=>{
+     window.open("http://localhost:3000/auth/google","_self");
+
+   }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -129,9 +132,6 @@ export default function SignIn(props) {
               >
                 Sign In
               </Button>
-              <GoogleButton
-              
-              />
               <Grid container>
                 <Grid item xs>
                   <Link to="#">Forgot password?</Link>

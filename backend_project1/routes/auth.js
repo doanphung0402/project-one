@@ -6,6 +6,8 @@ const auth =  () =>  {
     router1.use((req, res , next) => {
       console.log("hello"); 
       const body = req.body ; 
+      const user = req.user ; 
+      console.log("🚀 ~ file: auth.js ~ line 10 ~ router1.use ~ user", user)
       const cookies = req.body.cookies;
       try {
         const cookies = req.body.cookies;
@@ -14,7 +16,7 @@ const auth =  () =>  {
           next();
         }
       } catch (error) {
-            res.json({message:HttpCode.FAILSE})
+           res.status(404).json("FAILSE"); 
       }
     });
    return router1 ; 

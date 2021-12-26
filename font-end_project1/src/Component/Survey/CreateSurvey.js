@@ -34,44 +34,52 @@ const CreateSurvey = (props) => {
   const history = useHistory();
   const dispath = useDispatch();
   const optionList = useSelector((state) => state.listOption.ListOption);
-  const ListSurveySchedule = useSelector(state=>state.SurveySchedule.ListSurveySchedule); 
+  const ListSurveySchedule = useSelector(
+    (state) => state.SurveySchedule.ListSurveySchedule
+  );
 
-  const [checkedA,setCheckedA] = useState(false); 
-  const handleChange = (event) =>{
-     const status = event.target.checked ; 
-     if(status===true){
-        dispath(deleteAllOption())
-     }else{
-       dispath(deleteAllSchedule())
-     }
-     setCheckedA(status); 
-  }
-  const [OptionList,setOptionList] = useState([]); 
-  console.log("🚀 ~ file: CreateSurvey.js ~ line 44 ~ CreateSurvey ~ OptionList", OptionList)
-
-  useEffect(()=>{
-    if(checkedA){
-      setOptionList(ListSurveySchedule)
-    }else{
-       setOptionList(optionList); 
+  const [checkedA, setCheckedA] = useState(false);
+  const handleChange = (event) => {
+    const status = event.target.checked;
+    if (status === true) {
+      dispath(deleteAllOption());
+    } else {
+      dispath(deleteAllSchedule());
     }
-  },[checkedA,optionList,ListSurveySchedule])
+    setCheckedA(status);
+  };
+  const [OptionList, setOptionList] = useState([]);
+  console.log(
+    "🚀 ~ file: CreateSurvey.js ~ line 44 ~ CreateSurvey ~ OptionList",
+    OptionList
+  );
+
+  useEffect(() => {
+    if (checkedA) {
+      setOptionList(ListSurveySchedule);
+    } else {
+      setOptionList(optionList);
+    }
+  }, [checkedA, optionList, ListSurveySchedule]);
 
   const renderListItem = (OptionList) => {
-    let xml ; 
-      xml = OptionList.map((option, index) => {
-        return <ListItemOption key={index} flag={checkedA} position={index} option={option} />;
-      }); 
+    let xml;
+    xml = OptionList.map((option, index) => {
+      return (
+        <ListItemOption
+          key={index}
+          flag={checkedA}
+          position={index}
+          option={option}
+        />
+      );
+    });
     return xml;
   };
-
 
   const validationSchema = yup.object().shape({
     title: yup.string("Tiêu đề").required("*Nhập tiêu đề khảo sát"),
     note: yup.string("Lưu ý"),
-    decription: yup
-      .string("Nhập mô tả khảo sát")
-      .required("*Nhập mô tả khảo sát "),
   });
   const SurveyDefaultValue = useSelector(
     (state) => state.SurveyInfo.SurveyInfo
@@ -80,17 +88,15 @@ const CreateSurvey = (props) => {
     history.push("/survey/my-survey");
   };
 
-
-
-  const renderModalOption =()=>{
-     let xml; 
-     if (checkedA){
-        xml =(<ScheduleSurvey/>)
-     }else{
-        xml =(<OptionModal/>); 
-     }
-     return xml; 
-  }
+  const renderModalOption = () => {
+    let xml;
+    if (checkedA) {
+      xml = <ScheduleSurvey />;
+    } else {
+      xml = <OptionModal />;
+    }
+    return xml;
+  };
   return (
     <Fragment>
       <Grid container className={classes.gridContainer}>
@@ -105,7 +111,10 @@ const CreateSurvey = (props) => {
                 note: SurveyDefaultValue.note,
               }}
               onSubmit={(values) => {
-                if (optionList.length === 0 && ListSurveySchedule.length ===0) {
+                if (
+                  optionList.length === 0 &&
+                  ListSurveySchedule.length === 0
+                ) {
                   toast.error("Nhập ít nhất 1 lựa chon để tiếp tục ! ");
                 } else {
                   dispath(addSurveyInfo(values));
@@ -169,21 +178,22 @@ const CreateSurvey = (props) => {
                     Lựa chọn khảo sát :{" "}
                   </Typography>
 
-
-                  <FormControlLabel style={{marginLeft :""}}
-                   control={<Checkbox checked={checkedA} onChange={handleChange} name="checkedA" />}
-                   label="Khảo sát sự kiện"
+                  <FormControlLabel
+                    style={{ marginLeft: "" }}
+                    control={
+                      <Checkbox
+                        checked={checkedA}
+                        onChange={handleChange}
+                        name="checkedA"
+                      />
+                    }
+                    label="Khảo sát sự kiện"
                   />
-
-                        
-
 
                   <Box>
                     <List>{renderListItem(OptionList)}</List>
                   </Box>
-                  <Box style={{ margin: "40px" }}>
-                    {renderModalOption}
-                  </Box>
+                  <Box style={{ margin: "40px" }}>{renderModalOption}</Box>
 
                   <Box
                     style={{

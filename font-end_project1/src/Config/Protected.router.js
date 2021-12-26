@@ -11,7 +11,7 @@ export const ProtectedRoute = ({component: Component,parentComponent:ParentCompo
      return (
           <Route {...rest} render={
                (routeProps)=>{
-                   if(token ){
+                   if(1===1 ){
                        return  (<ParentComponent>
                                    <Component {...routeProps} />
                                 </ParentComponent> )

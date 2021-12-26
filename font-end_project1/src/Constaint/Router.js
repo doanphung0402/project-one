@@ -1,7 +1,7 @@
 import Survey from '../Component/Survey/Survey'
 import SignIn from '../Component/Auth/SignIn'
 import SignUp from '../Component/Auth/SignUp'
-import home from '../page/home'
+import Home from '../page/home'
 import CreateSurvey from '../Component/Survey/CreateSurvey'
 import UserSend from '../Component/Survey/UserSend'; 
 import SendSucessSurvey from '../Component/Survey/SendSucessSurvey'
@@ -9,41 +9,23 @@ import ChooseSurvey from '../Component/Survey/ChooseSurvey'
 import CalendarContainer from '../Component/Calendar/CalendarContainer'
 import CalendarManager from '../Component/Calendar/CalendarManager'
 import DetailScheduleSend from '../Component/Calendar/DetailScheduleSend'
+import SignInWithGoogle from '../Component/Auth/SignInWithGoogle'
 export const Router = [
     {
              name :"Đăng nhập",
              path : '/login', 
              component: SignIn, 
              exact :false
-            
-    }, 
-    {
-             name :"đăng kí", 
-             path:'/signup', 
-             exact :false, 
-             component:SignUp 
-    },
-  
+    }
 ]
  
 export const Router1 = [
     {
-        name :"home", 
-        path:'/home', 
-        exact :false, 
-        component: home
-    }, 
-    {
          name:'survey', 
          path:'/survey/my-survey', 
-         component: Survey
+         component: Survey,
+         exact :false
     }, 
-    {
-        name :"", 
-        path:'/', 
-        exact:true,
-        component:home 
-    },
     {
          name :"create-survey", 
          exact:false ,
@@ -87,4 +69,18 @@ export const Router1 = [
          component :DetailScheduleSend
     }, 
    
+]
+export const Router3 =[ 
+    {
+        name :"", 
+        path:'/', 
+        exact:true,
+        component:Home 
+    },
+    {
+        name :"home", 
+        path:'/home', 
+        exact :false, 
+        component: Home
+    }
 ]
