@@ -10,13 +10,7 @@ var router = express.Router();
 router.use("/signup",SignupRouter);
 router.use("/login",SigninRouter); 
 
-
-router.use("/auth",oauth)
-
-
 router.use(auth) ; 
-
-
 
 router.use("/survey",SurveyRoute); 
 router.use("/scheduler",CalendarRoute);

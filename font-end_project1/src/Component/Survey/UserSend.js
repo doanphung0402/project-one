@@ -62,14 +62,13 @@ const UserSend = (props) => {
           const resultSend =  data.data.payload ;
           dispath(addResultSend(resultSend)); 
           history.push("/survey/send-survey-success");
-         
-        }else if(data.status ===501){
-          toast.warning("Hết phiên làm việc!")
-          history.push("login"); 
         }
         else{
           toast.error("Có lỗi thử lại sau !")
         }
+      }).catch(error=>{
+        toast.warning("Hết phiên làm việc Calendar!")
+        history.push("/login"); 
       });
      }
   };

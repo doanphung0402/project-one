@@ -4,19 +4,15 @@ import HttpCode from "../helper/HttpCode";
 const auth =  () =>  {
     const router1 = express.Router();
     router1.use((req, res , next) => {
-      console.log("hello"); 
       const body = req.body ; 
       const user = req.user ; 
-      console.log("🚀 ~ file: auth.js ~ line 10 ~ router1.use ~ user", user)
-      const cookies = req.body.cookies;
       try {
-        const cookies = req.body.cookies;
-        const result = jwt.verify(cookies, "ak47");
-        if (result) {
-          next();
-        }
+        const cookies = req.body.cookies ;
+        console.log("🚀 ~ file: auth.js ~ line 13 ~ router1.use ~ cookies", cookies)
+        jwt.verify(cookies, "ak47");
+        next()
       } catch (error) {
-           res.status(404).json("FAILSE"); 
+           res.status(501).json("FAILSE"); 
       }
     });
    return router1 ; 

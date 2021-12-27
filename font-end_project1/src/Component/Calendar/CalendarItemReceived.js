@@ -60,15 +60,14 @@ const CalendarItem = (props) => {
            cookies :token
         }
       }).then(data=>{
-         if(data.status === 200) {
           const newSchedule1 = schedule1.filter(schedule2=>{
             return schedule2.id !== schedule.id 
          })
          dispath(addListScheduleReceived(newSchedule1)); 
             toast.success("Cap nhat thanh cong !")
-         }else{ 
-            toast.warning("Phiên làm việc hết hạn! ")
-         }
+      }).catch(error=>{
+        toast.warning("Hết phiên làm việc!")
+        history.push("login"); 
       })
    } 
      
@@ -92,13 +91,12 @@ const CalendarItem = (props) => {
             })
             dispath(addListScheduleReceived(newScheduleList)); 
             toast.success("Xóa thành công !"); 
-         }else if(data.status ===501){
-            toast.error("Phiên làm việc hết hạn !")
          }else{ 
-           toast.warning("Xóa thất bại ! Thử lại!")
+            toast.warning("Xóa thất bại ! Thử lại!")
          }
       }).catch(error=>{
-         toast.error("Lỗi hệ thống ,Thử lại !")
+        toast.warning("Hết phiên làm việc!")
+        history.push("login"); 
       })
   }
 

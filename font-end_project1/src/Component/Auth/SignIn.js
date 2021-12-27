@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import URL from "../../Config/URL";
 import { Form } from "formik";
@@ -20,6 +20,7 @@ import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { login, loginFailse } from "../../features/auth/authSlice";
 import GoogleButton from "react-google-button";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn(props) {
   const classes = useStyles();
-  const history = props.history;
+  const history =  useHistory(); 
   const dispath = useDispatch();
    const LoginGoogle = ()=>{
      window.open("http://localhost:3000/auth/google","_self");

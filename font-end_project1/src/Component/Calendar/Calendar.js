@@ -65,16 +65,12 @@ const Calendar = (props) => {
           method:"Post", 
           data: {email:userInfo.email,cookies:token}
        }).then(data=>{
-          if(data.status===501){
-            toast.warning("Hết phiên làm việc Calendar!")
-            history.push("/login"); 
-          
-          }else{
             console.log("🚀 ~ file: Calendar.js ~ line 57 ~ useEffect ~ data", data);
             setData(data.data) 
-          }
        }).catch(error=>{
-          toast.error(error)
+     
+        toast.warning("Hết phiên làm việc Calendar!")
+        history.push("/login"); 
        })
       }
       fetchData(); 
@@ -190,14 +186,11 @@ const Calendar = (props) => {
             const totalSend = data.data.length; 
             const sendSuccess = totalSend.filter(rs=>rs===true)
             dispath(changeListEmailUserSend([]))
-           
-           }else{
-            toast.warning("Hết phiên làm việc!")
-             history.push("login"); 
            }
         })
         .catch((error) => {
-            toast.error(error); 
+          toast.warning("Hết phiên làm việc!")
+          history.push("login"); 
         });
     }
     if (changed) {
@@ -227,12 +220,10 @@ const Calendar = (props) => {
       }).then(data=>{
            if(data.status===200){
               toast.success("Xóa thành công !"); 
-           }else if (data.status===501){
-              toast.warning("Hết phiên làm việc!")
-              history.push("login"); 
            }
       }).catch(error=>{
-         toast.error("Có lỗi hệ thống,Xin vui lòng thử lại !")
+        toast.error("Hết phiên làm việc!")
+        history.push("login"); 
       })
       let data1 = data.filter((appointment) => appointment.id !== deleted);
       setData(data1);

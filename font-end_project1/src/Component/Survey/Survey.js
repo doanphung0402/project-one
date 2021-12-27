@@ -185,11 +185,6 @@ const Survey = () => {
           method:'POST', 
           credentials :'include',
           }).then(data => {
-          console.log("🚀 ~ file: Survey.js ~ line 185 ~ fetchData ~ data", data)
-        if (data.data.message === HttpCode.FAILSE) {
-          history.push("/login")
-          toast.error("Phiên làm việc của bạn đã hết !");
-        } else {
           
           let survey = data.data.payload.data.survey; 
        
@@ -207,10 +202,10 @@ const Survey = () => {
           })
           setSurvey(survey);
           setTotalPage(data.data.payload.data.totalPage);
-        }
        })
        .catch((error) => {
-         console.error('Error:', error);
+        history.push("/login")
+        toast.error("Phiên làm việc của bạn đã hết !");
        });
      }, [page, status, userInfo]);
 
