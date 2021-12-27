@@ -279,8 +279,8 @@ export async function handleCheckSurvey(data){ //thay doi is_check
          survey_received[updateSurveyPosititon] = updateSurvey ; 
          const rsUpdate =  await SurveyModelReceived.updateOne({
             email_user : email
-         }, {
-            survey_received : survey_received
+         },{
+             survey_received : survey_received
          })
          console.log("🚀 ~ file: SurveyService.js ~ line 271 ~ handleCheckSurvey ~ rsUpdate", rsUpdate)
          return rsUpdate ; 

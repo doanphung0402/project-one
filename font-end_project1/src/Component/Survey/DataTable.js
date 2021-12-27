@@ -24,6 +24,7 @@ import axios from "axios";
 import URL from "../../Config/URL";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   table: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
 export default function DataTable(props) {
   const classes = useStyles();
   let survey = props.survey;
-
+  const history = useHistory(); 
   let schedule_survey = survey.schedule_survey; 
   if(survey.option.length ===0 ){
        let option = schedule_survey.map((schedule,index)=>{
@@ -250,6 +251,8 @@ export default function DataTable(props) {
     })
       .then((data) => {
         if (data.status === 200) {
+          const cookies= new Cookies(); 
+          const token = cookies.get("user")
           axios({
             url: URL.changeStatusSurveyItem,
             data: {
@@ -270,7 +273,8 @@ export default function DataTable(props) {
             })
             .catch((error) => {
               dispath(disableShowLoading());
-              toast.error("Lỗi hệ thống , thử lại !");
+              toast.warning("Hết phiên làm việc Calendar!")
+              history.push("/login"); 
             });
         }
         dispath(disableShowLoading());
@@ -278,7 +282,8 @@ export default function DataTable(props) {
       })
       .catch((error) => {
         dispath(disableShowLoading());
-        toast.error("Có lỗi thử lại !");
+        toast.warning("Hết phiên làm việc Calendar!")
+        history.push("/login"); 
       });
   };
 

@@ -23,7 +23,7 @@ function  CalendarRoute(){
       
          const ListSchedule = await ScheduleService.getAllScheduleSend(email_user); 
        
-         res.json(ListSchedule) ; 
+         res.status(200).json(ListSchedule) ; 
     })
     route.post("/get-all-my-schedule",async(req,res)=>{
          const email_user = req.body.email ; 
@@ -47,7 +47,7 @@ function  CalendarRoute(){
             await ScheduleService.changeStatusScheduleRecieved(schedule,status,email_user)
             res.status(200).json("SUCCESS"); 
          } catch (error) {
-             res.status(400); 
+             res.status(404).json(); 
          }
     })
     route.post("/delete-schedule-by-id",async(req,res)=>{
@@ -56,7 +56,7 @@ function  CalendarRoute(){
                const rsDeleteSchedule = await ScheduleService.deleteScheduleById(id,email_user); 
                res.status(200).json("Success"); 
           } catch (error) {
-               res.status(400).json("Failse"); 
+               res.status(404).json("Failse"); 
           }
     })
     route.post("/delete-scheduler-received-by-id",async(req,res)=>{

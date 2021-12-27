@@ -77,7 +77,7 @@ function  SurveyRoute(){
    route.post("/survey-choose/update-survey-user-choose",async (req,res)=>{   
          const surveyCheck = req.body.SurveySendAfterCheck; //
          await SurveyService.updateSurveyChoose(surveyCheck);     
-         res.json(surveyCheck);    
+         res.status(200).json(surveyCheck);    
    })
 //    route.post("/fetch-survey-received",async(req,res)=>{
 //          const survey_received_info = req.body ; 
@@ -93,7 +93,7 @@ function  SurveyRoute(){
   route.post("/change-status-survey",async(req,res)=>{
      const data = req.body.payload; 
      const rsUpdate = await SurveyService.handleCheckSurvey(data); 
-     console.log("🚀 ~ file: survey.js ~ line 93 ~ route.post ~ rsUpdate", rsUpdate)  
+     res.status(200).json("suceess"); 
   })
   
  

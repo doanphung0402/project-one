@@ -142,15 +142,13 @@ const ChooseSurvey = () => {
             sendSuccess
           );
           toast.success(`Đã chia sẻ tới ${sendSuccess.length} người khác`);
-        } else if (data.status === 501) {
-          toast.warning("Hết phiên làm việc!");
-          history.push("login");
         } else {
           toast.error("Thất bại !");
         }
       })
       .catch((error) => {
-        toast.error(error);
+        toast.warning("Hết phiên làm việc!");
+        history.push("/login");
       });
   };
 
