@@ -12,11 +12,17 @@ import DetailScheduleSend from '../Component/Calendar/DetailScheduleSend'
 import SignInWithGoogle from '../Component/Auth/SignInWithGoogle'
 export const Router = [
     {
-             name :"Đăng nhập",
-             path : '/login', 
-             component: SignIn, 
-             exact :false
-    }
+        name :"Đăng nhập",
+        path : '/login', 
+        component: SignIn, 
+        exact :false
+    },
+    {
+        name :"Đăng ki",
+        path : '/signup', 
+        component:SignUp, 
+        exact :false
+}
 ]
  
 export const Router1 = [
