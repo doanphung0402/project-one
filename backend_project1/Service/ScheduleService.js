@@ -1,6 +1,7 @@
 import HttpCode from "../helper/HttpCode";
 import CalendarModelReceived from "../models/Calendar/CalendarModelReceived";
 import CalendarModelSend from "../models/Calendar/CalendarModelSend";
+import SurveyModelSend from "../models/surveyModel";
 export async function createDefaultSchedule(email) {
   try {
     await CalendarModelSend.create({
@@ -16,10 +17,49 @@ export async function createDefaultSchedule(email) {
     return error;
   }
 }
-export async function addSchedule(schedule) {
+export async function addSchedule(schedule,schedule_survey_send,id_survey_send) {
+console.log("🚀 ~ file: ScheduleService.js ~ line 21 ~ addSchedule ~ schedule_survey_send", schedule_survey_send)
+ 
+  const email_user = schedule.email_user;
+  const send_to = schedule.scheduler.send_to;
+  
   try {
-    const email_user = schedule.email_user;
-    const send_to = schedule.scheduler.send_to;
+    const SurveySend =  await SurveyModelSend.findOne({
+      email_user : email_user
+   })
+    if(!SurveySend) {
+       return error ; 
+    }else {
+       let survey = SurveySend.survey_send ; 
+       const indexSurveyUpdate = survey.findIndex((rs=>{
+          return rs.id_survey_send = id_survey_send 
+       })); 
+       const surveyNeedUpdate = survey[indexSurveyUpdate]; 
+    
+       
+       const schedule_update = {
+          option:surveyNeedUpdate.option,
+          schedule_survey_send:schedule_survey_send, 
+          flag:surveyNeedUpdate.flag, 
+          send_to:surveyNeedUpdate.send_to,
+          title:surveyNeedUpdate.title, 
+          vote_number:surveyNeedUpdate.vote_number, 
+          decription:surveyNeedUpdate.decription, 
+          note:surveyNeedUpdate.note,
+          id_survey_send:surveyNeedUpdate.id_survey_send, 
+          schedule_survey:surveyNeedUpdate.schedule_survey, 
+          user_voted:surveyNeedUpdate.user_voted 
+       }
+      survey[indexSurveyUpdate] = schedule_update ;
+      console.log("🚀 ~ file: ScheduleService.js ~ line 54 ~ addSchedule ~ survey[indexSurveyUpdate] ", survey[indexSurveyUpdate] )
+
+      await SurveyModelSend.updateOne({
+         email_user : email_user 
+      },{
+        survey_send : survey 
+      })
+
+    }
     let rsSend = [];
     if (send_to.length !== 0) {
       for (let k = 0; k < send_to.length; k++) {
@@ -80,6 +120,7 @@ export async function addSchedule(schedule) {
   } catch (error) {
     return error;
   }
+  
 }
 export const updateSchedule = async (schedule) => {
   const id = schedule.id;

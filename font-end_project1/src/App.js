@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { toast } from "react-toastify";
 import URL from "./Config/URL";
+import NotFound from "./page/NotFound/NotFound";
 const renderRouterPageWithoutDB =(Router) =>{
   let xml =null ; 
   xml = Router.map((route,index) =>{
@@ -72,6 +73,7 @@ function App() {
              {renderRouterPageWithDB(Router1)}
              {renderRouterPageWithoutDB(Router)}
              {renderRouterPageWithDBNonProtected(Router3)}
+             <Route component={NotFound}  />
          </Switch>
          
       </div>

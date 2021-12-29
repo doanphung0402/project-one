@@ -42,7 +42,7 @@ export default function DataTable(props) {
        })
        survey = {...survey,option}
   }
-  console.log("🚀 ~ file: DataTable.js ~ line 23 ~ DataTable ~ survey", survey);
+  
   const renderOption = (survey) => {
     let option = survey.option;
     let schedule_survey = survey.schedule_survey ; 
@@ -282,7 +282,7 @@ export default function DataTable(props) {
       })
       .catch((error) => {
         dispath(disableShowLoading());
-        toast.warning("Hết phiên làm việc Calendar!")
+        toast.warning("Hết phiên làm việc !")
         history.push("/login"); 
       });
   };

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment ,  useEffect, useState   } from "react";
 import {
   Grid,
   Typography,
@@ -22,6 +22,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import URL from "../../Config/URL";
 import Cookies from "universal-cookie";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -103,11 +104,23 @@ const ChooseSurvey = () => {
     history.push("/survey/my-survey");
   };
   const UserInfo = useSelector((state) => state.auth);
-  const handleSendSchedule = (schedule) => {
+  const handleSendSchedule = (schedule,index) => {
     console.log(
       "🚀 ~ file: ChooseSurvey.js ~ line 104 ~ handleSendSchedule ~ schedule",
       schedule
     );
+    const schedule_survey = survey.schedule_survey ; 
+    let schedule_survey_send = survey.schedule_survey_send ; 
+    let schedule_survey_send_update = [...schedule_survey_send]; 
+     if(schedule_survey_send.length===0){
+      schedule_survey_send_update = schedule_survey.map(rs=>{
+            return  false ; 
+         })
+         schedule_survey_send_update[index] =true ; 
+     }else {
+      schedule_survey_send_update[index] =true ;
+     }
+
     let startDate = schedule.startDate;
     let endDate = schedule.endDate;
     const day = schedule.day;
@@ -115,6 +128,7 @@ const ChooseSurvey = () => {
     let startDateUpdate = new Date(startDateString);
     let endDateString = `${day},${endDate}`;
     let endDateUpdate = new Date(endDateString);
+    
     const scheduleSend = {
       email_user: UserInfo.userInfo.email,
       scheduler: {
@@ -124,14 +138,17 @@ const ChooseSurvey = () => {
         title: survey.title,
         notes: survey.notes,
         send_to: survey.send_to,
+        
       },
     };
     const cookies = new Cookies();
     const token = cookies.get("user");
+
     axios({
       url: URL.createSchedule,
       method: "Post",
-      data: { schedule: scheduleSend, cookies: token },
+      data: { schedule: scheduleSend, cookies: token, schedule_survey_send :schedule_survey_send_update,
+        id_survey_send : survey.id_survey_send}
     })
       .then((data) => {
         if (data.status === 200) {
@@ -151,16 +168,18 @@ const ChooseSurvey = () => {
         history.push("/login");
       });
   };
-
-  const renderButtonAccept = (schedule) => {
+  const [statusButton,setStatusButton] = useState(true); 
+  const renderButtonAccept = (schedule,index) => {
     let xml;
+    let schedule_survey_send =survey.schedule_survey_send ; 
     if (survey.send_to) {
       xml = (
         <Button
-          onClick={() => handleSendSchedule(schedule)}
+          onClick={() => handleSendSchedule(schedule,index)}
           style={{ float: "left", marginTop: "20px" }}
           variant="contained"
           color="primary"
+          disabled ={schedule_survey_send[index]}
         >
           Accept
         </Button>
@@ -188,7 +207,7 @@ const ChooseSurvey = () => {
             Option {index} : {schedule.startDate} - {schedule.endDate}{" "}
             {schedule.day}
           </Typography>
-          {renderButtonAccept(schedule)}
+          {renderButtonAccept(schedule,index)}
         </Card>
       );
     });

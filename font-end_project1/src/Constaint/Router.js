@@ -10,19 +10,20 @@ import CalendarContainer from '../Component/Calendar/CalendarContainer'
 import CalendarManager from '../Component/Calendar/CalendarManager'
 import DetailScheduleSend from '../Component/Calendar/DetailScheduleSend'
 import SignInWithGoogle from '../Component/Auth/SignInWithGoogle'
+import NotFound from '../page/NotFound/NotFound'
 export const Router = [
     {
         name :"Đăng nhập",
         path : '/login', 
         component: SignIn, 
-        exact :false
+        exact :true
     },
     {
         name :"Đăng ki",
         path : '/signup', 
         component:SignUp, 
-        exact :false
-}
+        exact :true
+}, 
 ]
  
 export const Router1 = [
@@ -30,11 +31,11 @@ export const Router1 = [
          name:'survey', 
          path:'/survey/my-survey', 
          component: Survey,
-         exact :false
+         exact :true
     }, 
     {
          name :"create-survey", 
-         exact:false ,
+         exact:true ,
          path:"/survey/create-survey", 
          component:CreateSurvey
     }, 
@@ -73,8 +74,7 @@ export const Router1 = [
          exact : true , 
          path : "/scheduder/detail-schedule-send", 
          component :DetailScheduleSend
-    }, 
-   
+    }
 ]
 export const Router3 =[ 
     {
@@ -86,7 +86,7 @@ export const Router3 =[
     {
         name :"home", 
         path:'/home', 
-        exact :false, 
+        exact :true, 
         component: Home
     }
 ]
