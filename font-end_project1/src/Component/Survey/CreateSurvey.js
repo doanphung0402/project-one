@@ -87,7 +87,6 @@ const CreateSurvey = (props) => {
   const goBack = () => {
     history.push("/survey/my-survey");
   };
-
   const renderModalOption = () => {
     let xml;
     if (checkedA) {
@@ -149,7 +148,6 @@ const CreateSurvey = (props) => {
                       label="Decription"
                       name="decription"
                       defaultValue={SurveyDefaultValue.decription}
-                      required
                       error={
                         props.touched.decription &&
                         Boolean(props.errors.decription)
@@ -177,7 +175,6 @@ const CreateSurvey = (props) => {
                   <Typography style={{ margin: "30px" }} variant="h3">
                     Lựa chọn khảo sát :{" "}
                   </Typography>
-
                   <FormControlLabel
                     style={{ marginLeft: "" }}
                     control={
@@ -189,7 +186,6 @@ const CreateSurvey = (props) => {
                     }
                     label="Khảo sát sự kiện"
                   />
-
                   <Box>
                     <List>{renderListItem(OptionList)}</List>
                   </Box>
