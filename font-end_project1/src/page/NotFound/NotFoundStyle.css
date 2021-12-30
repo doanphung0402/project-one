@@ -1,6 +1,4 @@
-body {
-    background-color: #95c2de;
-  }
+
   
   .mainbox {
     background-color: #95c2de;
@@ -48,7 +46,7 @@ body {
   
   a {
     text-decoration: none;
-    color: white;
+   
   }
   
   a:hover {

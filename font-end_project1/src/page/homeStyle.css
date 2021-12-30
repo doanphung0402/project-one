@@ -1,0 +1,54 @@
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+.container{
+     color : #2F3740 ; 
+     background-color: #FFFFFF;
+     background-image: url("https://accounts.sapo.vn/images/background-bottom-pos-app.svg"); 
+     height: 100%;
+     width: 100%;
+     background-position: center;
+     background-size: cover;
+}
+.header-container{
+    border-radius: 5px;
+    width : 50%; 
+    margin-left: 40px;
+    margin-top : 40px ; 
+    margin-bottom :30px ; 
+    color : #2F3740 ; 
+    height :250px ; 
+    justify-content: center;
+    align-items: center;
+    
+}
+.header-container h2 {
+   margin-top : 20px ; 
+   margin-bottom : auto    
+}
+.header-title-1{
+     text-align: left;
+     font-size: 51px;
+}
+.header-title-2{
+     text-align: left;
+     margin-top : 26px ;
+     color : #2F3740 ; 
+}
+.header-container {
+     letter-spacing : "2px"
+}
+.container-button{
+     text-align: left;
+     margin-left :40px; 
+     margin-bottom :100px
+     
+}
+.container-button button{
+    background-color: #F25B36;
+    color:white ; 
+    font-size: 20px;
+    padding :10px 20px; 
+    margin-bottom: 50px;
+}

@@ -64,7 +64,7 @@ const SendSucessSurvey = () => {
                 {(listFalse.length ===0)?"":<Typography style={{marginRight:"10px"}} variant="p">Không thể gửi cho :</Typography>}
                 {renderResultSend(listFalse)}
            </Box>
-          <Grid container style={{ textAlign: "right", marginTop: "50px" }}>
+          <Grid container style={{ textAlign: "right", marginTop: "50px" , marginBottom :"100px" }}>
             <Grid item xs={6} style={{ textAlign: "right" }}>
               <Button
                 onClick={goBackHome}

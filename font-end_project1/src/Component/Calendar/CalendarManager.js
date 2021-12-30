@@ -84,7 +84,7 @@ const CalendarManager = () => {
   };
 
   return (
-    <div style={{backgroundImage:`url(${background1})`}}>
+    <div style={{backgroundImage:`url(https://accounts.sapo.vn/images/background-bottom-pos-app.svg)`}}>
       <Container>
         <Card
           style={{

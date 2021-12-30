@@ -73,7 +73,7 @@ function App() {
              {renderRouterPageWithDB(Router1)}
              {renderRouterPageWithoutDB(Router)}
              {renderRouterPageWithDBNonProtected(Router3)}
-             <Route component={NotFound}  />
+             <Route component={NotFound} path=""  />
          </Switch>
          
       </div>
