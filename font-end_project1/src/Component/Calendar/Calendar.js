@@ -155,7 +155,6 @@ const Calendar = (props) => {
    
   
     if (added) {
-     
       const newListEmail = ListEmail.map(data=>{
         return data.email
       })
@@ -183,14 +182,15 @@ const Calendar = (props) => {
            if(data.status===200){
             toast.success("Tạo thành công !")
             console.log("🚀 ~ file: Calendar.js ~ line 177 ~ .then ~ data", data);
-            const totalSend = data.data.length; 
+            const totalSend = data.data; 
             const sendSuccess = totalSend.filter(rs=>rs===true)
+            console.log("🚀 ~ file: Calendar.js ~ line 187 ~ .then ~ sendSuccess", sendSuccess)
             dispath(changeListEmailUserSend([]))
            }
         })
         .catch((error) => {
           toast.warning("Hết phiên làm việc!")
-          history.push("login"); 
+          history.push("/login"); 
         });
     }
     if (changed) {

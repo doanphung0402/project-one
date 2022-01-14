@@ -140,9 +140,9 @@ export default function SignUp(props) {
                       props.touched.first_name && props.errors.first_name
                     }
                   />
-                  <Typography variant="caption" style={{ color: "red" }}>
+                  {/* <Typography variant="caption" style={{ color: "red" }}>
                     <ErrorMessage name="first_name" />
-                  </Typography>
+                  </Typography> */}
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
@@ -161,9 +161,9 @@ export default function SignUp(props) {
                       props.touched.last_name && props.errors.last_name
                     }
                   />
-                  <Typography variant="caption" style={{ color: "red" }}>
+                  {/* <Typography variant="caption" style={{ color: "red" }}>
                     <ErrorMessage name="last_name" />
-                  </Typography>
+                  </Typography> */}
                 </Grid>
               </Grid>
 

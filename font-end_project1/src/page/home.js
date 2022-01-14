@@ -10,10 +10,8 @@ import URL from "../Config/URL";
 import { login, updateUserInfo } from "../features/auth/authSlice";
 import "./homeStyle.css";
 const Home = () => {
-  const dispath = useDispatch();
   const history = useHistory();
 
- 
   const handleClickButton =()=>{
        history.push("/login")
   }

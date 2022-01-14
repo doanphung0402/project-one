@@ -17,48 +17,61 @@ export async function createDefaultSchedule(email) {
     return error;
   }
 }
-export async function addSchedule(schedule,schedule_survey_send,id_survey_send) {
-console.log("🚀 ~ file: ScheduleService.js ~ line 21 ~ addSchedule ~ schedule_survey_send", schedule_survey_send)
- 
+export async function addSchedule(
+  schedule,
+  schedule_survey_send,
+  id_survey_send
+) {
+  console.log(
+    "🚀 ~ file: ScheduleService.js ~ line 21 ~ addSchedule ~ schedule_survey_send",
+    schedule_survey_send
+  );
+
   const email_user = schedule.email_user;
   const send_to = schedule.scheduler.send_to;
-  
+
   try {
-    const SurveySend =  await SurveyModelSend.findOne({
-      email_user : email_user
-   })
-    if(!SurveySend) {
-       return error ; 
-    }else {
-       let survey = SurveySend.survey_send ; 
-       const indexSurveyUpdate = survey.findIndex((rs=>{
-          return rs.id_survey_send = id_survey_send 
-       })); 
-       const surveyNeedUpdate = survey[indexSurveyUpdate]; 
-    
-       
-       const schedule_update = {
-          option:surveyNeedUpdate.option,
-          schedule_survey_send:schedule_survey_send, 
-          flag:surveyNeedUpdate.flag, 
-          send_to:surveyNeedUpdate.send_to,
-          title:surveyNeedUpdate.title, 
-          vote_number:surveyNeedUpdate.vote_number, 
-          decription:surveyNeedUpdate.decription, 
-          note:surveyNeedUpdate.note,
-          id_survey_send:surveyNeedUpdate.id_survey_send, 
-          schedule_survey:surveyNeedUpdate.schedule_survey, 
-          user_voted:surveyNeedUpdate.user_voted 
-       }
-      survey[indexSurveyUpdate] = schedule_update ;
-      console.log("🚀 ~ file: ScheduleService.js ~ line 54 ~ addSchedule ~ survey[indexSurveyUpdate] ", survey[indexSurveyUpdate] )
+    if (schedule_survey_send === !undefined && id_survey_send === !undefined) {
+      const SurveySend = await SurveyModelSend.findOne({
+        email_user: email_user,
+      });
+      if (!SurveySend) {
+        return error;
+      } else {
+        let survey = SurveySend.survey_send;
+        const indexSurveyUpdate = survey.findIndex((rs) => {
+          return (rs.id_survey_send = id_survey_send);
+        });
+        const surveyNeedUpdate = survey[indexSurveyUpdate];
 
-      await SurveyModelSend.updateOne({
-         email_user : email_user 
-      },{
-        survey_send : survey 
-      })
+        const schedule_update = {
+          option: surveyNeedUpdate.option,
+          schedule_survey_send: schedule_survey_send,
+          flag: surveyNeedUpdate.flag,
+          send_to: surveyNeedUpdate.send_to,
+          title: surveyNeedUpdate.title,
+          vote_number: surveyNeedUpdate.vote_number,
+          decription: surveyNeedUpdate.decription,
+          note: surveyNeedUpdate.note,
+          id_survey_send: surveyNeedUpdate.id_survey_send,
+          schedule_survey: surveyNeedUpdate.schedule_survey,
+          user_voted: surveyNeedUpdate.user_voted,
+        };
+        survey[indexSurveyUpdate] = schedule_update;
+        console.log(
+          "🚀 ~ file: ScheduleService.js ~ line 54 ~ addSchedule ~ survey[indexSurveyUpdate] ",
+          survey[indexSurveyUpdate]
+        );
 
+        await SurveyModelSend.updateOne(
+          {
+            email_user: email_user,
+          },
+          {
+            survey_send: survey,
+          }
+        );
+      }
     }
     let rsSend = [];
     if (send_to.length !== 0) {
@@ -97,6 +110,7 @@ console.log("🚀 ~ file: ScheduleService.js ~ line 21 ~ addSchedule ~ schedule_
           rsSend.push(false);
         }
       } //end for
+      
     }
     try {
       const scheduleSend = await CalendarModelSend.findOne({
@@ -113,14 +127,13 @@ console.log("🚀 ~ file: ScheduleService.js ~ line 21 ~ addSchedule ~ schedule_
           scheduler: scheduler,
         }
       );
-      return rsSend ; 
+      return rsSend;
     } catch (error) {
       throw error;
     }
   } catch (error) {
     return error;
   }
-  
 }
 export const updateSchedule = async (schedule) => {
   const id = schedule.id;
@@ -162,14 +175,12 @@ export async function getAllScheduleSend(email_user) {
     return error;
   }
 }
-export async function getAllScheduleReceived(email,page,status) {
-
+export async function getAllScheduleReceived(email, page, status) {
   try {
     const schedule = await CalendarModelReceived.findOne({
       email_user: email,
     });
-    if (schedule){
-     
+    if (schedule) {
       return schedule;
     }
   } catch (error) {
@@ -322,23 +333,26 @@ export async function deleteScheduleById(id, email_user) {
     return error;
   }
 }
-export async function deleteScheduleReceivedById(id,email){
-    try {
-        const schedulerReceived = await CalendarModelReceived.findOne({
-           email_user : email 
-        }); 
-        if (schedulerReceived!==null){
-           const scheduler = schedulerReceived.scheduler ; 
-           const updateSchedule = scheduler.filter(schedule=>schedule.id !== id); 
-           await CalendarModelReceived.updateOne({
-              email_user : email 
-           },{
-              scheduler : updateSchedule
-           })
-        }else{
-           throw error ; 
+export async function deleteScheduleReceivedById(id, email) {
+  try {
+    const schedulerReceived = await CalendarModelReceived.findOne({
+      email_user: email,
+    });
+    if (schedulerReceived !== null) {
+      const scheduler = schedulerReceived.scheduler;
+      const updateSchedule = scheduler.filter((schedule) => schedule.id !== id);
+      await CalendarModelReceived.updateOne(
+        {
+          email_user: email,
+        },
+        {
+          scheduler: updateSchedule,
         }
-    } catch (error) {
-      return error ; 
+      );
+    } else {
+      throw error;
     }
+  } catch (error) {
+    return error;
+  }
 }

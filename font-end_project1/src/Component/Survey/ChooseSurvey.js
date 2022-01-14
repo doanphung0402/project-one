@@ -151,6 +151,7 @@ const ChooseSurvey = () => {
         id_survey_send : survey.id_survey_send}
     })
       .then((data) => {
+        console.log("🚀 ~ file: ChooseSurvey.js ~ line 154 ~ .then ~ data", data)
         if (data.status === 200) {
           const totalSend = data.data;
           const sendSuccess = totalSend.filter((rs) => rs === true);
@@ -164,7 +165,7 @@ const ChooseSurvey = () => {
         }
       })
       .catch((error) => {
-        toast.warning("Hết phiên làm việc!");
+        toast.warning("Hết phiên làm việc survey!");
         history.push("/login");
       });
   };

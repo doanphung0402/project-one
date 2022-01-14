@@ -11,7 +11,6 @@ import cookieSession from 'cookie-session';
 import  './Service/oauth'; 
 import session from 'express-session';
 
-
 var app = express();
 
 app.use(cors());

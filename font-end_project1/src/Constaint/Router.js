@@ -9,8 +9,6 @@ import ChooseSurvey from '../Component/Survey/ChooseSurvey'
 import CalendarContainer from '../Component/Calendar/CalendarContainer'
 import CalendarManager from '../Component/Calendar/CalendarManager'
 import DetailScheduleSend from '../Component/Calendar/DetailScheduleSend'
-import SignInWithGoogle from '../Component/Auth/SignInWithGoogle'
-import NotFound from '../page/NotFound/NotFound'
 export const Router = [
     {
         name :"Đăng nhập",
