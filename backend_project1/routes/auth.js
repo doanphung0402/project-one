@@ -7,10 +7,9 @@ const auth =  () =>  {
       const body = req.body ; 
       const user = req.user ; 
       try {
-        const cookies = req.body.cookies ;
-        console.log("🚀 ~ file: auth.js ~ line 13 ~ router1.use ~ cookies", cookies)
+        const cookies = req.body.cookies ; 
         jwt.verify(cookies, "ak47");
-        next()
+        next(); 
       } catch (error) {
            res.status(501).json("FAILSE"); 
       }

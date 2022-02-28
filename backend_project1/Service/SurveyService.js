@@ -81,19 +81,21 @@ export async function updateUserSendSurvey(newSurvey) {
 export async function updateSurveyChoose(surveyCheck){  //cap nhat db khi nguoi dung chon 1 option
   console.log("🚀 ~ file: SurveyService.js ~ line 82 ~ updateSurveyChoose ~ surveyCheck", surveyCheck)
   const {email_received,option,email_send,id_survey_send} = surveyCheck; 
-  let optionUpdate =[]; 
+
+  let optionUpdate =[];  
    for (let k =0 ; k<option.length ; k++){
       if(option[k]===true){
           optionUpdate.push(k); 
       }
    }
-  console.log("🚀 ~ file: SurveyService.js ~ line 88 ~ optionUpdate ~ optionUpdate", optionUpdate)
+   
   try {
       const surveySend = await SurveyModelSend.findOne({email_user:email_send}); //cap nhat cho nguoi gui
+      console.log("🚀 ~ file: SurveyService.js ~ line 94 ~ updateSurveyChoose ~ surveySend", surveySend)
       if(!surveySend) {
             throw error
       }else {
-         const survey_send =  surveySend.survey_send;  //array
+         const survey_send =  surveySend.survey_send; 
          let surveySendItem ; 
          let positionSurveySendItem ; 
          for (let i = 0 ;i< survey_send.length; i++){

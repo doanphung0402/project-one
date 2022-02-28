@@ -7,18 +7,14 @@ import * as ScheduleService from '../Service/ScheduleService'
 function  CalendarRoute(){
     const route = express.Router(); 
     route.post("/create-schedule",async(req,res)=>{
-         const id_survey_send = req.body.id_survey_send ; 
-         console.log("🚀 ~ file: Calendar.js ~ line 11 ~ route.post ~ id_survey_send", id_survey_send)
+        const id_survey_send = req.body.id_survey_send ; 
         const schedule = req.body.schedule; 
         const schedule_survey_send =req.body.schedule_survey_send; 
-        console.log("🚀 ~ file: Calendar.js ~ line 13 ~ route.post ~ schedule_survey_send", schedule_survey_send)
-        console.log("🚀 ~ file: Calendar.js ~ line 11 ~ route.post ~ schedule", schedule)
         try {
           const rsCreate  =await ScheduleService.addSchedule(schedule,schedule_survey_send,id_survey_send); 
-          console.log("🚀 ~ file: Calendar.js ~ line 14 ~ route.post ~ rsCreate", rsCreate)
           res.status(200).json(rsCreate); 
 
-        } catch (error) {
+        }catch (error) {
              res.status(404).json("failse"); 
         } 
     })
@@ -32,14 +28,14 @@ function  CalendarRoute(){
     route.post("/get-all-my-schedule",async(req,res)=>{
          const email_user = req.body.email ; 
          const ListSchedule = await ScheduleService.getAllMySchedule(email_user); 
-        //  console.log("🚀 ~ file: Calendar.js ~ line 28 ~ route.post ~ ListSchedule", ListSchedule)
          res.status(200).json(ListSchedule); 
     })
-    route.post("/get-all-schedule-received",async(req,res)=>{
+    route.post("/get-scheduler-with-pagination",async(req,res)=>{
         const email = req.body.email ; 
         const page = req.query.page; 
+        const status = req.body.status; 
        try {
-          const paginationScheduleList = await ScheduleService.getAllScheduleReceived(email,page); 
+          const paginationScheduleList = await ScheduleService.paginationPageSchedule(email,page,status); 
           res.status(200).json(paginationScheduleList); 
        } catch (error) {
           res.status(400).json("failse"); 
@@ -51,7 +47,7 @@ function  CalendarRoute(){
             await ScheduleService.changeStatusScheduleRecieved(schedule,status,email_user)
             res.status(200).json("SUCCESS"); 
          } catch (error) {
-             res.status(404).json(); 
+             res.status(404).json("failse"); 
          }
     })
     route.post("/delete-schedule-by-id",async(req,res)=>{
@@ -69,9 +65,10 @@ function  CalendarRoute(){
                await ScheduleService.deleteScheduleReceivedById(id,email); 
                res.status(200).json("Success"); 
           } catch (error) {
-               // res.status(404).json("FAILSE"); 
+               res.status(404).json("FAILSE"); 
           }
     })
-    return route
+   
+    return route ; 
 }
 export default CalendarRoute(); 

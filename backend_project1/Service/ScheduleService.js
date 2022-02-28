@@ -22,16 +22,12 @@ export async function addSchedule(
   schedule_survey_send,
   id_survey_send
 ) {
-  console.log(
-    "🚀 ~ file: ScheduleService.js ~ line 21 ~ addSchedule ~ schedule_survey_send",
-    schedule_survey_send
-  );
 
   const email_user = schedule.email_user;
   const send_to = schedule.scheduler.send_to;
 
   try {
-    if (schedule_survey_send === !undefined && id_survey_send === !undefined) {
+    if (schedule_survey_send !== undefined && id_survey_send !== undefined) {
       const SurveySend = await SurveyModelSend.findOne({
         email_user: email_user,
       });
@@ -58,10 +54,6 @@ export async function addSchedule(
           user_voted: surveyNeedUpdate.user_voted,
         };
         survey[indexSurveyUpdate] = schedule_update;
-        console.log(
-          "🚀 ~ file: ScheduleService.js ~ line 54 ~ addSchedule ~ survey[indexSurveyUpdate] ",
-          survey[indexSurveyUpdate]
-        );
 
         await SurveyModelSend.updateOne(
           {
@@ -175,12 +167,14 @@ export async function getAllScheduleSend(email_user) {
     return error;
   }
 }
-export async function getAllScheduleReceived(email, page, status) {
+export async function getAllScheduleReceived(email,page,status) {
+
   try {
     const schedule = await CalendarModelReceived.findOne({
       email_user: email,
     });
-    if (schedule) {
+    if (schedule){
+     
       return schedule;
     }
   } catch (error) {
@@ -351,6 +345,36 @@ export async function deleteScheduleReceivedById(id, email) {
       );
     } else {
       throw error;
+    }
+  } catch (error) {
+    return error;
+  }
+}
+export async function paginationPageSchedule(email,page,status) { 
+  let perPage = 5; ///
+  let totalSurvey ;
+  try {
+       let rs =  await CalendarModelReceived.findOne({
+                  email_user: email,
+             });
+       const ListScheduler = rs.scheduler ; 
+    if (ListScheduler) {
+      const ListScheduleWithStatus = ListScheduler.filter(schedule=>{
+          if(schedule.status===status){
+             return schedule 
+          }
+      })
+      console.log("🚀 ~ file: ScheduleService.js ~ line 367 ~ paginationPageSchedule ~ ListScheduleWithStatus", ListScheduleWithStatus)
+      const totalScheduler = ListScheduleWithStatus.length;
+      const totalPage = Math.ceil(totalScheduler / perPage);
+      const startSurvey = perPage * (page - 1);
+      const currentListSchedulerAfterPagination = ListScheduleWithStatus.slice(
+        startSurvey,
+        startSurvey + perPage
+      );
+      return { scheduler: currentListSchedulerAfterPagination, totalPage: totalPage };
+    } else {
+      return { scheduler : [], totalPage: 1 };
     }
   } catch (error) {
     return error;
