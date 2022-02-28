@@ -67,11 +67,11 @@ const CalendarItem = (props) => {
           return schedule2.id !== schedule.id;
         });
         dispath(addListScheduleReceived(newSchedule1));
-        toast.success("Cap nhat thanh cong !");
+        toast.success("Cập nhật thành công !");
       })
       .catch((error) => {
         toast.warning("Hết phiên làm việc!");
-        history.push("login");
+        history.push("/login");
       });
   };
 
@@ -102,7 +102,7 @@ const CalendarItem = (props) => {
       })
       .catch((error) => {
         toast.warning("Hết phiên làm việc!");
-        history.push("login");
+        history.push("/login");
       });
   };
 
@@ -121,28 +121,13 @@ const CalendarItem = (props) => {
       },
     }).then((data) => {
       if (data.status === 200) {
-        const newSchedule1 = schedule1.find((schedule2) => {
-          return schedule2.id === schedule.id;
-        });
-        const updateSchedule = {
-          title: newSchedule1.title,
-          status: "CANCER",
-          total_number_user_send: newSchedule1.total_number_user_send,
-          id: newSchedule1.id,
-          startDate: newSchedule1.startDate,
-          endDate: newSchedule1.endDate,
-          allDay: newSchedule1.allDay,
-          notes: newSchedule1.notes,
-          received_to: newSchedule1.received_to,
-          create_at: newSchedule1.create_at,
-        };
         const updateListSchedule = schedule1.filter((schedule) => {
           return schedule.id !== id;
         });
         dispath(
-          addListScheduleReceived([...updateListSchedule, updateSchedule])
+          addListScheduleReceived(updateListSchedule)
         );
-        toast.success("Cap nhat thanh cong !");
+        toast.success("Cập nhật thành công  !");
       } else if (data.status === 501) {
         toast.warning("Hết phiên làm việc !");
         history.push("/login");

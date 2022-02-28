@@ -27,9 +27,8 @@ function Copyright() {
       {"Copyright © Project1"}
       <Link to="#" color="inherit">
         Your Website
-      </Link>{" "}
+      </Link>
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }
@@ -111,7 +110,6 @@ export default function SignUp(props) {
                   sessionStorage.setItem("last_name",user.last_name); 
                   history.push("/home");
                 } else {
-                  console.log("error");
                   dispath(signupFailse(data.data.payload.error));
                 }
               })

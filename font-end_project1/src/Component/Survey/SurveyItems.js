@@ -83,11 +83,8 @@ const SurveyItems = (props) => {
   const showTime = (survey) => {
     //ham tgian
     let xml;
-
     const timeAgo = new TimeAgo("vn");
-
     const d = new Date();
-
     const t = new Date(survey.create_at);
     let now = d.getTime() - t.getTime();
     xml = timeAgo.format(new Date() - now);

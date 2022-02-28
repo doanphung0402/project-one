@@ -55,10 +55,7 @@ export default function SignIn(props) {
   const classes = useStyles();
   const history =  useHistory(); 
   const dispath = useDispatch();
-   const LoginGoogle = ()=>{
-     window.open("http://localhost:3000/auth/google","_self");
-
-   }
+  
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -90,7 +87,6 @@ export default function SignIn(props) {
                 dispath(login(data.data.payload.userInfo));
                 history.push("/home");
               } else {
-                console.log(data.data.payload.error);
                 dispath(loginFailse(data.data.payload.error));
               }
             });
