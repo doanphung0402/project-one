@@ -13,25 +13,21 @@ const Home = () => {
   const history = useHistory();
 
   const handleClickButton =()=>{
-       history.push("/login")
+       history.push("/survey/my-survey")
   }
   return (
     <div className="container">
       <div className="header-container">
       
           <h2 className="header-title-1">
-           
               <font>
-                Tổ chức các cuộc họp,tạo khảo sát <br/> một cách dễ dàng
+                Tổ chức các cuộc họp <br></br>Tạo khảo sát một cách dễ dàng
               </font>
-          
           </h2>
           <h3 className="header-title-2">
-          
               <font >
                 Sắp xếp ngày của bạn và tiết kiệm thời gian 
-              </font>
-           
+              </font>  
           </h3>
         </div>  
        <div className="container-button">

@@ -28,7 +28,7 @@ import HttpCode from "../../Constaint/HttpCode";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { changeSplitButton } from "../../features/survey/SplitButton";
-import background1 from '../../asset/background1.gif'
+import background1 from "../../asset/background1.gif";
 import Cookies from "universal-cookie";
 const options = ["Khảo sát đã nhận", "Khảo sát đã gửi"];
 
@@ -131,7 +131,7 @@ const Survey = () => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [survey, setSurvey] = useState([]);
-  console.log("🚀 ~ file: Survey.js ~ line 134 ~ Survey ~ survey", survey);
+
 
   const userInfo = useSelector((state) => state.auth.userInfo);
   const status = useSelector((state) => state.SplitButton.SplitButton);
@@ -172,45 +172,46 @@ const Survey = () => {
     return xml;
   };
   useEffect(() => {
-    const cookies= new Cookies(); 
-    const token = cookies.get("user")
-       axios({
-          url :`${URL.getPaginationPage}?page=${page}`, 
-          data : 
-            {email: userInfo.email,
-            status: status === 0 ? "RECEIVED" : "SEND",
-            cookies : token 
-          },
-          
-          method:'POST', 
-          credentials :'include',
-          }).then(data => {
-          
-          let survey = data.data.payload.data.survey; 
-       
-          survey=survey.map((survey,index)=>{
-            let schedule_survey = survey.schedule_survey ; 
-            if (survey.option.length===0){
-              let option = schedule_survey.map((schedule,index)=>{
-                  return `option ${index}`; 
-              })
-             return {...survey,option : option}; 
-           }else{
-              return survey
-           }
-            
-          })
-          setSurvey(survey);
-          setTotalPage(data.data.payload.data.totalPage);
-       })
-       .catch((error) => {
-        history.push("/login")
+    const cookies = new Cookies();
+    const token = cookies.get("user");
+    axios({
+      url: `${URL.getPaginationPage}?page=${page}`,
+      data: {
+        email: userInfo.email,
+        status: status === 0 ? "RECEIVED" : "SEND",
+        cookies: token,
+      },
+      method: "POST",
+      credentials: "include",
+    })
+      .then((data) => {
+        let survey = data.data.payload.data.survey;
+        survey = survey.map((survey, index) => {
+          let schedule_survey = survey.schedule_survey;
+          if (survey.option.length === 0) {
+            let option = schedule_survey.map((schedule, index) => {
+              return `option ${index}`;
+            });
+            return { ...survey, option: option };
+          } else {
+            return survey;
+          }
+        });
+        setSurvey(survey);
+        setTotalPage(data.data.payload.data.totalPage);
+      })
+      .catch((error) => {
+        history.push("/login");
         toast.error("Phiên làm việc của bạn đã hết !");
-       });
-     }, [page, status, userInfo]);
+      });
+  }, [page, status, userInfo]);
 
   return (
-    <div style={{backgroundImage:`url(https://accounts.sapo.vn/images/background-bottom-pos-app.svg)`}}>
+    <div
+      style={{
+        backgroundImage: `url(https://accounts.sapo.vn/images/background-bottom-pos-app.svg)`,
+      }}
+    >
       <Container>
         <Card
           style={{

@@ -1,4 +1,4 @@
-import React, { Fragment ,  useEffect, useState   } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Grid,
   Typography,
@@ -55,11 +55,12 @@ const ChooseSurvey = () => {
   const classes = useStyles();
   const history = useHistory();
   let survey = useSelector((state) => state.DetailSurvey.DetailSurvey);
-  console.log(
-    "🚀 ~ file: ChooseSurvey.js ~ line 40 ~ ChooseSurvey ~ survey",
-    survey
+  const [schedule_survey_send, setScheduleSurveySend] = useState(
+    survey.schedule_survey_send
   );
   const infoSurvey = (survey) => {
+    const create_at = survey.create_at;
+    const create_at_time = new Date(create_at);
     let xml;
     if (survey.send_to) {
       xml = (
@@ -74,9 +75,17 @@ const ChooseSurvey = () => {
             Được gửi đi tới {survey.send_to.length} người khác
           </Typography>
           <GradeIcon style={{ marginLeft: "6px", marginRight: "6px" }} />
-          <Typography variant="subtitle1">
-            Gửi đi lúc {survey.create_at}
-          </Typography>
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            <Typography style={{ marginRight: "10px" }} variant="subtitle1">
+              Gửi đi lúc : {create_at_time.getFullYear()}-
+              {create_at_time.getMonth() + 1}-{create_at_time.getDate()}
+            </Typography>
+            <Typography>
+              {" "}
+              {create_at_time.getHours()}:{create_at_time.getMinutes()}:
+              {create_at_time.getSeconds()}
+            </Typography>
+          </Box>
         </Box>
       );
     } else {
@@ -92,9 +101,17 @@ const ChooseSurvey = () => {
             Nhận được từ :{survey.received_to} *
           </Typography>
           <GradeIcon style={{ marginLeft: "6px", marginRight: "6px" }} />
-          <Typography variant="subtitle1">
-            Nhận được lúc : {survey.create_at}
-          </Typography>
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            <Typography style={{ marginRight: "10px" }} variant="subtitle1">
+              Nhận được lúc : {create_at_time.getFullYear()}-
+              {create_at_time.getMonth() + 1}-{create_at_time.getDate()}
+            </Typography>
+            <Typography>
+              {" "}
+              {create_at_time.getHours()}:{create_at_time.getMinutes()}:
+              {create_at_time.getSeconds()}
+            </Typography>
+          </Box>
         </Box>
       );
     }
@@ -104,23 +121,19 @@ const ChooseSurvey = () => {
     history.push("/survey/my-survey");
   };
   const UserInfo = useSelector((state) => state.auth);
-  const handleSendSchedule = (schedule,index) => {
-    console.log(
-      "🚀 ~ file: ChooseSurvey.js ~ line 104 ~ handleSendSchedule ~ schedule",
-      schedule
-    );
-    const schedule_survey = survey.schedule_survey ; 
-    let schedule_survey_send = survey.schedule_survey_send ; 
-    let schedule_survey_send_update = [...schedule_survey_send]; 
-     if(schedule_survey_send.length===0){
-      schedule_survey_send_update = schedule_survey.map(rs=>{
-            return  false ; 
-         })
-         schedule_survey_send_update[index] =true ; 
-     }else {
-      schedule_survey_send_update[index] =true ;
-     }
 
+  const handleSendSchedule = (schedule, index) => {
+    const schedule_survey = survey.schedule_survey;
+    let schedule_survey_send_update = [...schedule_survey_send];
+    if (schedule_survey_send.length === 0) {
+      schedule_survey_send_update = schedule_survey.map((rs) => {
+        return false;
+      });
+      schedule_survey_send_update[index] = true;
+    } else {
+      schedule_survey_send_update[index] = true;
+    }
+    setScheduleSurveySend(schedule_survey_send_update);
     let startDate = schedule.startDate;
     let endDate = schedule.endDate;
     const day = schedule.day;
@@ -128,7 +141,7 @@ const ChooseSurvey = () => {
     let startDateUpdate = new Date(startDateString);
     let endDateString = `${day},${endDate}`;
     let endDateUpdate = new Date(endDateString);
-    
+
     const scheduleSend = {
       email_user: UserInfo.userInfo.email,
       scheduler: {
@@ -138,7 +151,6 @@ const ChooseSurvey = () => {
         title: survey.title,
         notes: survey.notes,
         send_to: survey.send_to,
-        
       },
     };
     const cookies = new Cookies();
@@ -147,18 +159,17 @@ const ChooseSurvey = () => {
     axios({
       url: URL.createSchedule,
       method: "Post",
-      data: { schedule: scheduleSend, cookies: token, schedule_survey_send :schedule_survey_send_update,
-        id_survey_send : survey.id_survey_send}
+      data: {
+        schedule: scheduleSend,
+        cookies: token,
+        schedule_survey_send: schedule_survey_send_update,
+        id_survey_send: survey.id_survey_send,
+      },
     })
       .then((data) => {
-        console.log("🚀 ~ file: ChooseSurvey.js ~ line 154 ~ .then ~ data", data)
         if (data.status === 200) {
           const totalSend = data.data;
           const sendSuccess = totalSend.filter((rs) => rs === true);
-          console.log(
-            "🚀 ~ file: ChooseSurvey.js ~ line 130 ~ .then ~ sendSuccess",
-            sendSuccess
-          );
           toast.success(`Đã chia sẻ tới ${sendSuccess.length} người khác`);
         } else {
           toast.error("Thất bại !");
@@ -169,18 +180,18 @@ const ChooseSurvey = () => {
         history.push("/login");
       });
   };
-  const [statusButton,setStatusButton] = useState(true); 
-  const renderButtonAccept = (schedule,index) => {
+  const [statusButton, setStatusButton] = useState(true);
+  const renderButtonAccept = (schedule, index) => {
     let xml;
-    let schedule_survey_send =survey.schedule_survey_send ; 
+
     if (survey.send_to) {
       xml = (
         <Button
-          onClick={() => handleSendSchedule(schedule,index)}
+          onClick={() => handleSendSchedule(schedule, index)}
           style={{ float: "left", marginTop: "20px" }}
           variant="contained"
           color="primary"
-          disabled ={schedule_survey_send[index]}
+          disabled={schedule_survey_send[index]}
         >
           Accept
         </Button>
@@ -192,24 +203,31 @@ const ChooseSurvey = () => {
   };
   const renderScheduleItem = () => {
     const survey_schedule = survey.schedule_survey;
+
     const xml = survey_schedule.map((schedule, index) => {
       return (
-        <Card
-          style={{ marginLeft: "80px", padding: "30px", marginBottom: "20px" }}
-        >
-          <Typography
-            variant="subtitle1"
+        <Grid item xs={4}>
+          <Card
             style={{
-              marginTop: "15px",
-
-              fontSize: "20px",
+              marginRight: "5px",
+              padding: "5px",
+              marginBottom: "20px",
+              marginTop: "20px",
             }}
           >
-            Option {index} : {schedule.startDate} - {schedule.endDate}{" "}
-            {schedule.day}
-          </Typography>
-          {renderButtonAccept(schedule,index)}
-        </Card>
+            <Typography
+              variant="subtitle1"
+              style={{
+                marginTop: "15px",
+                fontSize: "17px",
+              }}
+            >
+              Option {index} : {schedule.startDate} - {schedule.endDate}{" "}
+              {schedule.day}
+            </Typography>
+            {renderButtonAccept(schedule, index)}
+          </Card>
+        </Grid>
       );
     });
     return xml;
@@ -248,7 +266,9 @@ const ChooseSurvey = () => {
               Sự kiện : {survey.title}
             </Typography>
           </Box>
-          {renderScheduleItem()}
+          <Grid container spacing={1}>
+            {renderScheduleItem()}
+          </Grid>
         </>
       );
     }

@@ -49,10 +49,6 @@ const CreateSurvey = (props) => {
     setCheckedA(status);
   };
   const [OptionList, setOptionList] = useState([]);
-  console.log(
-    "🚀 ~ file: CreateSurvey.js ~ line 44 ~ CreateSurvey ~ OptionList",
-    OptionList
-  );
 
   useEffect(() => {
     if (checkedA) {

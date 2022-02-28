@@ -54,19 +54,6 @@ const renderRouterPageWithDBNonProtected = (Router3)=>{
   return xml;    
 }
 function App() {
-  
-  // useEffect(()=>{
-   
-  //    const email = sessionStorage.getItem("email"); 
-  //    const first_name = sessionStorage.getItem("first_name"); 
-  //    const last_name = sessionStorage.getItem("last_name"); 
-  //    const userInfo1 = {
-  //       email : email ,
-  //       first_name : first_name , 
-  //       last_name : last_name, 
-  //    }
-  //    dispath(updateUserInfo(userInfo1)); 
-  //   }); 
   return (
       <div className="App">
          <Switch>

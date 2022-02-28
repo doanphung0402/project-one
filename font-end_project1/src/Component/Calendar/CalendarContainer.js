@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
 import Calendar from "./Calendar";
 import { useHistory } from "react-router-dom";
 import DetailsIcon from '@material-ui/icons/Details';

@@ -10,22 +10,12 @@ import StatusSurveyItem from "../../Constaint/StatusSurveyItem";
 import TimeAgo from "javascript-time-ago";
 import vi from "javascript-time-ago/locale/vi.json";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
-
-TimeAgo.addDefaultLocale(vi);
-// let RandomColor = () => {
-//   const color = ["orange", "yellow", "blue", "pink", "red", "green"];
-//   let randomColor = Math.floor(Math.random() * color.length);
-//   return color[randomColor];
-// };
-
+TimeAgo.addDefaultLocale(vi)
 const SurveyItems = (props) => {
   const dispath = useDispatch();
   const color = ["orange", "yellow", "blue", "pink", "red", "green"];
   let survey = props.survey;
-  console.log(
-    "🚀 ~ file: SurveyItems.js ~ line 18 ~ SurveyItems ~ survey",
-    survey
-  );
+ 
   const index = props.index;
   const history = useHistory();
   let title = survey.title;
@@ -84,7 +74,7 @@ const SurveyItems = (props) => {
               color: "blue",
             }}
           >
-            ĐÃ Hoàn Thành
+            Đã Hoàn Thành
           </Typography>
         );
       }
@@ -99,13 +89,8 @@ const SurveyItems = (props) => {
     const d = new Date();
 
     const t = new Date(survey.create_at);
-    console.log(
-      "🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ t",
-      t.getTime()
-    );
     let now = d.getTime() - t.getTime();
     xml = timeAgo.format(new Date() - now);
-    console.log("🚀 ~ file: SurveyItems.js ~ line 136 ~ showTime ~ xml", xml);
     return xml;
   };
   return (

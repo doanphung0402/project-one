@@ -13,8 +13,10 @@ const URL ={
    changeStatusSurveyItem :`${url}/survey/change-status-survey`, 
    createSchedule : `${url}/scheduler/create-schedule`, 
    getAllScheduleSend:`${url}/scheduler/get-all-schedule-send`, 
-   getAllScheduleReceived : `${url}/scheduler/get-all-schedule-received`, 
    getAllMySchedule :`${url}/scheduler/get-all-my-schedule`, 
+   getSchedulePagination : `${url}/scheduler/get-scheduler-with-pagination`,
+   getAllScheduleReceived : `${url}/scheduler/get-all-schedule-received`, 
+
    changeStatusSchedule : `${url}/scheduler/change-status-schedule-received`, 
    showDetailScheduleSend :`${url}/scheduder/detail-schedule-send`,
    deleteScheduleById : `${url}/scheduler/delete-schedule-by-id`, 

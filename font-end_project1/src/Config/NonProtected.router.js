@@ -10,8 +10,6 @@ const NonProtected = ({component: Component,parentComponent:ParentComponent, ...
                          return  (<ParentComponent>
                                      <Component />
                                   </ParentComponent> )
-
-                 
             } }/>
         
    )

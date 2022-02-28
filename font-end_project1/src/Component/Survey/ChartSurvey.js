@@ -10,7 +10,7 @@ import PieChart, {
     Connector,
     Export,
   } from 'devextreme-react/pie-chart';
-import { Box, Card, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
   const customizeTooltip = (arg) => {
     return {
       text: `${arg.valueText} vote`
@@ -18,19 +18,14 @@ import { Box, Card, Typography } from "@material-ui/core";
   }
 const ChartSurvey = (props)=>{
     const survey = props.survey ; 
-    console.log("🚀 ~ file: ChartSurvey.js ~ line 22 ~ ChartSurvey ~ survey", survey)
     const [optionNumberChoose,setOptionNumberChoose] =useState([]); 
     useEffect (()=>{
         
         let totalVoted =survey.option.map(data=>{
              return 0 ; 
         }); 
-        // for(let k =0 ;k<survey.user_voted.length;k++){
-        //     const vote = survey.user_voted[k].option -1 ; 
-        //     totalVoted[vote] = totalVoted[vote] + 1; 
-        // };  
+       
         for (let k =0 ; k < survey.user_voted.length ; k++){
-           console.log("🚀 ~ file: ChartSurvey.js ~ line 33 ~ useEffect ~ user_voted", survey.user_voted)
            const option = survey.user_voted[k].option; 
        
            for (let i= 0; i<option.length; i++){
@@ -43,7 +38,6 @@ const ChartSurvey = (props)=>{
                      val: totalVoted[index],
                   }
        })
-        console.log("🚀 ~ file: ChartSurvey.js ~ line 55 ~ optionNumberChoose ~ optionNumberChoose", optionNumberChoose)
        setOptionNumberChoose(optionNumberChoose)
     },[])
     return (

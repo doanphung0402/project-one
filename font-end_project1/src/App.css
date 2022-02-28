@@ -40,3 +40,6 @@
 .MuiFormControlLabel-root:nth-child(2){
    display: none;
 }
+.MuiPaper-rounded {
+   color : black !important
+}

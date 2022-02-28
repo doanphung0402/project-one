@@ -49,7 +49,6 @@ const UserSend = (props) => {
         send_to: ListUser,      
         schedule_survey :ListSurveySchedule
       };
-      console.log("🚀 ~ file: UserSend.js ~ line 48 ~ onSendSurvey ~ Survey", Survey)
       const cookies= new Cookies(); 
       const token = cookies.get("user")
       axios({

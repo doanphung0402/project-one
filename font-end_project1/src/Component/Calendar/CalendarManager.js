@@ -31,34 +31,26 @@ const CalendarManager = () => {
   useEffect(() => {
     const cookies= new Cookies(); 
     const token = cookies.get("user")
-
+  
     axios({
-      url: URL.getAllScheduleReceived,
+      url: `${URL.getSchedulePagination}?page=${page}`,
       method: "post",
       data: {
         email: userInfo.email,
+        status : status , 
         cookies:token
       },
     })
       .then((data) => {
-        //  setTotalPage(data.data.totalPage); 
         if (data.status === 200) {
-          const perPage = 5 ; 
+
           const scheduler = data.data.scheduler ; 
-          
-          const startSchedule = perPage * (page - 1);
-          const newSchedule = scheduler.filter(schedule => schedule.status === status); 
-          const totalPage = Math.ceil(newSchedule / perPage);
-          setTotalPage(totalPage);
-          const currentListSchedule = newSchedule.slice(
-            startSchedule,
-            startSchedule + perPage
-          );
-          dispath(addListScheduleReceived(currentListSchedule)); 
+          setTotalPage(data.data.totalPage);
+          dispath(addListScheduleReceived(scheduler)); 
           
         }else if(data.status === 501){
           toast.warning("Hết phiên làm việc!")
-          history.push("login"); 
+          history.push("/login"); 
         } else {
            toast.error("Có lỗi ,thử lại !")
         }
@@ -72,10 +64,14 @@ const CalendarManager = () => {
   const  schedule = useSelector(state=>state.ListScheduleReceived.ListScheduleReceived); 
 
   const renderEventItem = (schedule) => {
-    let xml;
-    xml = schedule.map((schedule, index) => {
-      return <CalendarItem schedule={schedule} key={index} />;
-    });
+    let xml = null ;
+    if(schedule.length >0 ){
+      xml = schedule.map((schedule, index) => {
+        return <CalendarItem schedule={schedule} key={index} />;
+      });
+    }else{ 
+      xml = null ; 
+    }
     return xml;
   };
 
@@ -96,7 +92,7 @@ const CalendarManager = () => {
           }}
         >
           <Typography variant="h4" style={{ margin: "33px" }}>
-            Sự kiện của bạn{" "}
+            Sự kiện của bạn
           </Typography>
           <Typography variant="h5">Quản lí các sự kiện của bạn !</Typography>
         </Card>

@@ -21,7 +21,7 @@ export default function TableSchedule(props) {
       if(  accept === undefined || accept.length ===0){
            xml ="Hiện chưa có người tham gia sự kiện này !"
       }else{
-         xml = accept; 
+           xml = accept; 
       }
       return xml; 
    }

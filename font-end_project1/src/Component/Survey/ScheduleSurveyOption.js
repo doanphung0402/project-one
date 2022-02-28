@@ -8,13 +8,6 @@ const ScheduleSurvey = () => {
   const [startDate, setStartDate] = useState("");
   const [day,setDay] = useState(""); 
   const dispath = useDispatch();
-  let ListSurveySchedule = useSelector(
-    (state) => state.SurveySchedule.ListSurveySchedule
-  );
-  console.log(
-    "🚀 ~ file: ScheduleSurvey.js ~ line 11 ~ ScheduleSurvey ~ ListSurveySchedule",
-    ListSurveySchedule
-  );
   const now = new Date();
   const handleStartDate = (event) => {
     const time = event.target.value;
@@ -26,7 +19,6 @@ const ScheduleSurvey = () => {
   };
   const handleDay =(event)=>{
      const time = event.target.value ; 
-     console.log("🚀 ~ file: ScheduleSurveyOption.js ~ line 29 ~ handleDay ~ time", time)
      setDay(time)
   }
   const handleSubmitOption = () => {
@@ -35,10 +27,6 @@ const ScheduleSurvey = () => {
       endDate: endDate,
       day : day 
     };
-    console.log(
-      "🚀 ~ file: ScheduleSurvey.js ~ line 26 ~ handleSubmitOption ~ time",
-      time
-    );
     dispath(addListSurveySchedule(time));
   };
   return (

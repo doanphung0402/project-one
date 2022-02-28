@@ -8,7 +8,7 @@ import Random from "../../Config/random";
 import TimeAgo from "javascript-time-ago";
 import vi from "javascript-time-ago/locale/vi.json";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import SubjectIcon from '@material-ui/icons/Subject';
+import SubjectIcon from "@material-ui/icons/Subject";
 import axios from "axios";
 import { toast } from "react-toastify";
 import URL from "../../Config/URL";
@@ -16,10 +16,10 @@ import { addListScheduleReceived } from "../../features/Calendar/ListScheduleRec
 import Cookies from "universal-cookie";
 const CalendarItem = (props) => {
   const dispath = useDispatch();
-  const schedule = props.schedule ; 
-  const startDate = new Date(schedule.startDate); 
-  const endDate =new Date(schedule.endDate); 
-  const status = schedule.status ; 
+  const schedule = props.schedule;
+  const startDate = new Date(schedule.startDate);
+  const endDate = new Date(schedule.endDate);
+  const status = schedule.status;
   const color = ["orange", "yellow", "blue", "pink", "red", "green"];
   const history = useHistory();
   let title = schedule.title;
@@ -45,189 +45,224 @@ const CalendarItem = (props) => {
     return xml;
   };
   const userInfo = useSelector((state) => state.auth.userInfo);
-  const schedule1= useSelector(state=>state.ListScheduleReceived.ListScheduleReceived); 
-   const acceptSchedule = (schedule)=>{   
-    const cookies= new Cookies(); 
-    const token = cookies.get("user")
+  const schedule1 = useSelector(
+    (state) => state.ListScheduleReceived.ListScheduleReceived
+  );
+  const acceptSchedule = (schedule) => {
+    const cookies = new Cookies();
+    const token = cookies.get("user");
 
-      axios({
-        url : URL.changeStatusSchedule, 
-        method : "POST", 
-        data: { 
-           email_user : userInfo.email, 
-           status:"ACCEPT", 
-           schedule : schedule ,
-           cookies :token
-        }
-      }).then(data=>{
-          const newSchedule1 = schedule1.filter(schedule2=>{
-            return schedule2.id !== schedule.id 
-         })
-         dispath(addListScheduleReceived(newSchedule1)); 
-            toast.success("Cap nhat thanh cong !")
-      }).catch(error=>{
-        toast.warning("Hết phiên làm việc!")
-        history.push("login"); 
-      })
-   } 
-     
-  const deleteSchedule =(schedule)=>{
-      const id = schedule.id ; 
-      const email = userInfo.email ; 
-      const cookies= new Cookies(); 
-      const token = cookies.get("user")
-      axios({
-         url : URL.deleteScheduleReceivedById , 
-         method :"post", 
-         data : { 
-           id:id , 
-           email : email , 
-           cookies :token 
-         }
-      }).then(data=>{
-         if(data.status===200){
-            const newScheduleList = schedule1.filter(schedule=>{
-              return schedule.id !== id 
-            })
-            dispath(addListScheduleReceived(newScheduleList)); 
-            toast.success("Xóa thành công !"); 
-         }else{ 
-            toast.warning("Xóa thất bại ! Thử lại!")
-         }
-      }).catch(error=>{
-        toast.warning("Hết phiên làm việc!")
-        history.push("login"); 
-      })
-  }
-
-
-   const cancerSchedule =(schedule) => {
-     const id = schedule.id ;
-     const cookies= new Cookies(); 
-     const token = cookies.get("user")
     axios({
-      url :URL.changeStatusSchedule, 
-      method : "post", 
-      data: { 
-         email_user : userInfo.email, 
-         status:"CANCER", 
-         schedule : schedule , 
-         cookies:token 
-      }
-    }).then(data=>{
-       if(data.status === 200) {
-        const newSchedule1 = schedule1.find(schedule2=>{
-          return schedule2.id === schedule.id 
-       })
-        const updateSchedule  = {
-          title : newSchedule1.title , 
-          status : "CANCER" , 
-          total_number_user_send :newSchedule1.total_number_user_send , 
-          id:newSchedule1.id  ,
-          startDate :newSchedule1.startDate, 
-          endDate : newSchedule1.endDate , 
-          allDay : newSchedule1.allDay , 
-          notes : newSchedule1.notes , 
-          received_to : newSchedule1.received_to , 
-          create_at : newSchedule1.create_at 
-        }
-        const updateListSchedule = schedule1.filter(schedule=>{
-           return schedule.id  !== id
-        })
-          dispath(addListScheduleReceived([...updateListSchedule,updateSchedule]));
-          toast.success("Cap nhat thanh cong !")
-       }else if(data.status===501){
-           toast.warning("Hết phiên làm việc !")
-           history.push("/login"); 
-       }
-       else{ 
-         toast.warning("Có lỗi thử lại  ! ")
-       }
+      url: URL.changeStatusSchedule,
+      method: "POST",
+      data: {
+        email_user: userInfo.email,
+        status: "ACCEPT",
+        schedule: schedule,
+        cookies: token,
+      },
     })
-   }
-    const renderButtonCancer =(status)=>{
-       let xml ; 
-       if(status==="RECEIVED"){
-          xml = <Button onClick={()=>cancerSchedule(schedule)} style={{float:"right",marginRight:"8px"}} variant ="contained" color="secondary">Hủy</Button>
-       }else{
-          xml = <Button onClick={()=>deleteSchedule(schedule)} style={{float:"right",marginRight:"8px"}} variant ="contained" color="secondary">Xóa</Button>
-       }
-       return xml ; 
+      .then((data) => {
+        const newSchedule1 = schedule1.filter((schedule2) => {
+          return schedule2.id !== schedule.id;
+        });
+        dispath(addListScheduleReceived(newSchedule1));
+        toast.success("Cap nhat thanh cong !");
+      })
+      .catch((error) => {
+        toast.warning("Hết phiên làm việc!");
+        history.push("login");
+      });
+  };
+
+  const deleteSchedule = (schedule) => {
+    const id = schedule.id;
+    const email = userInfo.email;
+    const cookies = new Cookies();
+    const token = cookies.get("user");
+    axios({
+      url: URL.deleteScheduleReceivedById,
+      method: "post",
+      data: {
+        id: id,
+        email: email,
+        cookies: token,
+      },
+    })
+      .then((data) => {
+        if (data.status === 200) {
+          const newScheduleList = schedule1.filter((schedule) => {
+            return schedule.id !== id;
+          });
+          dispath(addListScheduleReceived(newScheduleList));
+          toast.success("Xóa thành công !");
+        } else {
+          toast.warning("Xóa thất bại ! Thử lại!");
+        }
+      })
+      .catch((error) => {
+        toast.warning("Hết phiên làm việc!");
+        history.push("login");
+      });
+  };
+
+  const cancerSchedule = (schedule) => {
+    const id = schedule.id;
+    const cookies = new Cookies();
+    const token = cookies.get("user");
+    axios({
+      url: URL.changeStatusSchedule,
+      method: "post",
+      data: {
+        email_user: userInfo.email,
+        status: "CANCER",
+        schedule: schedule,
+        cookies: token,
+      },
+    }).then((data) => {
+      if (data.status === 200) {
+        const newSchedule1 = schedule1.find((schedule2) => {
+          return schedule2.id === schedule.id;
+        });
+        const updateSchedule = {
+          title: newSchedule1.title,
+          status: "CANCER",
+          total_number_user_send: newSchedule1.total_number_user_send,
+          id: newSchedule1.id,
+          startDate: newSchedule1.startDate,
+          endDate: newSchedule1.endDate,
+          allDay: newSchedule1.allDay,
+          notes: newSchedule1.notes,
+          received_to: newSchedule1.received_to,
+          create_at: newSchedule1.create_at,
+        };
+        const updateListSchedule = schedule1.filter((schedule) => {
+          return schedule.id !== id;
+        });
+        dispath(
+          addListScheduleReceived([...updateListSchedule, updateSchedule])
+        );
+        toast.success("Cap nhat thanh cong !");
+      } else if (data.status === 501) {
+        toast.warning("Hết phiên làm việc !");
+        history.push("/login");
+      } else {
+        toast.warning("Có lỗi thử lại  ! ");
+      }
+    });
+  };
+  const renderButtonCancer = (status) => {
+    let xml;
+    if (status === "RECEIVED") {
+      xml = (
+        <Button
+          onClick={() => cancerSchedule(schedule)}
+          style={{ float: "right", marginRight: "8px" }}
+          variant="contained"
+          color="secondary"
+        >
+          Hủy
+        </Button>
+      );
+    } else {
+      xml = (
+        <Button
+          onClick={() => deleteSchedule(schedule)}
+          style={{ float: "right", marginRight: "8px" }}
+          variant="contained"
+          color="secondary"
+        >
+          Xóa
+        </Button>
+      );
     }
+    return xml;
+  };
   return (
-      <Card style={{ height: "270px", width: "500px", border: "1px solid", marginTop:"10px",position:"relative" }}>
-           <Typography
-                style={{
-                top: 0,
-                right: 0,
-                position: "absolute",
-                margin: "10px",
-                color: "blue",
-                }}
-           >
-             {showTime(schedule.create_at)}
-          </Typography>
-        <Box style={{ margin: "5px" }} display="flex">
-          <Box style={{ display: "flex" }}>
-            <Avatar
-              style={{ marginRight: "2px", backgroundColor: colorAvatar }}
-            >
-              {avataTitle}
-            </Avatar>
-          </Box>
-          <Box>
-            {" "}
-            <Typography
-              variant="subtitle1"
-              style={{ marginLeft: "12px", marginTop: "2px",textAlign:"left"}}
-            
-            >
-              {schedule.title}
-            </Typography>
-            <Typography
-              variant="caption"
-              style={{ marginLeft: "12px", marginTop: "2px" }}
-            >
-              {startDate.toDateString()}
-            </Typography> <br></br>
-           
-          </Box>
-          
+    <Card
+      style={{
+        height: "270px",
+        width: "500px",
+        border: "1px solid",
+        marginTop: "10px",
+        position: "relative",
+      }}
+    >
+      <Typography
+        style={{
+          top: 0,
+          right: 0,
+          position: "absolute",
+          margin: "10px",
+          color: "blue",
+        }}
+      >
+        {showTime(schedule.create_at)}
+      </Typography>
+      <Box style={{ margin: "5px" }} display="flex">
+        <Box style={{ display: "flex" }}>
+          <Avatar style={{ marginRight: "2px", backgroundColor: colorAvatar }}>
+            {avataTitle}
+          </Avatar>
         </Box>
-             <Typography
-                 variant="caption"
-                style={{ marginLeft: "12px", marginTop: "2px",float:"left"}}
-              >
-                {schedule.received_to}
-             </Typography>
-         <Box display="flex" style={{ marginTop: "45px", marginLeft: "5px" }}>
-          <SubjectIcon />
-                <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
-                  {schedule.notes}
-                </Typography>
-         </Box>
-        <Box style={{ marginTop: "15px", marginLeft: "5px" }} display="flex">
+        <Box>
+          {" "}
+          <Typography
+            variant="subtitle1"
+            style={{ marginLeft: "12px", marginTop: "2px", textAlign: "left" }}
+          >
+            {schedule.title}
+          </Typography>
+          <Typography
+            variant="caption"
+            style={{ marginLeft: "12px", marginTop: "2px" }}
+          >
+            {startDate.toDateString()}
+          </Typography>{" "}
+          <br></br>
+        </Box>
+      </Box>
+      <Typography
+        variant="caption"
+        style={{ marginLeft: "12px", marginTop: "2px", float: "left" }}
+      >
+        {schedule.received_to}
+      </Typography>
+      <Box display="flex" style={{ marginTop: "45px", marginLeft: "5px" }}>
+        <SubjectIcon />
+        <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
+          {schedule.notes}
+        </Typography>
+      </Box>
+      <Box style={{ marginTop: "15px", marginLeft: "5px" }} display="flex">
         <AccessTimeIcon />
-        
-          <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
-             {startDate.getHours()}:{startDate.getMinutes()===0?"00":startDate.getMinutes()} - {endDate.getHours()}:{endDate.getMinutes()===0?"00":endDate.getMinutes()}
-          </Typography>
-        </Box>
-        <Box display="flex" style={{ marginTop: "15px", marginLeft: "5px" }}>
-          <GroupIcon />
-                <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
-                  {schedule.total_number_user_send} người tham gia 
-                </Typography>
-        </Box>
-       
-        <Box style ={{width:"100%",marginTop :"15px"}}>
-             {renderButtonCancer(status)}
-            <Button onClick ={()=>acceptSchedule(schedule)} style={{float:"left",marginLeft:"8px"}} variant ="contained" color="primary">Đồng ý </Button>
-       
-           
-        </Box>
-      </Card>
-    
+
+        <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
+          {startDate.getHours()}:
+          {startDate.getMinutes() === 0 ? "00" : startDate.getMinutes()} -{" "}
+          {endDate.getHours()}:
+          {endDate.getMinutes() === 0 ? "00" : endDate.getMinutes()}
+        </Typography>
+      </Box>
+      <Box display="flex" style={{ marginTop: "15px", marginLeft: "5px" }}>
+        <GroupIcon />
+        <Typography style={{ marginLeft: "23px" }} variant="subtitle2">
+          {schedule.total_number_user_send} người tham gia
+        </Typography>
+      </Box>
+
+      <Box style={{ width: "100%", marginTop: "15px" }}>
+        {renderButtonCancer(status)}
+        <Button
+          onClick={() => acceptSchedule(schedule)}
+          style={{ float: "left", marginLeft: "8px" }}
+          variant="contained"
+          color="primary"
+        >
+          Đồng ý{" "}
+        </Button>
+      </Box>
+    </Card>
   );
 };
 

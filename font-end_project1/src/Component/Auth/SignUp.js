@@ -13,10 +13,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link ,useHistory} from "react-router-dom";
 import URL from "../../Config/URL";
 import { Form, ErrorMessage } from "formik";
 import axios from "axios";
+
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { signupFailse, signupSuccess } from "../../features/auth/authSlice";
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp(props) {
-  const history = props.history;
+  const history = useHistory(); 
   const classes = useStyles();
   const dispath = useDispatch();
   const validationSchema = yup.object().shape({

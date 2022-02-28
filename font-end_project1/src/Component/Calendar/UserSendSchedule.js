@@ -8,13 +8,8 @@ import ChipsShareButton from "./ChipsShareButton";
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 const UserSendSchedule = () => {
-  console.log("render");
   const dispath = useDispatch();
   const [user, setEmail] = useState({email:"",key:null});
-  console.log(
-    "🚀 ~ file: ChipsShareButton.js ~ line 70 ~ UserSendSchedule ~ email",
-    user
-  );
   const handleChangeInput = (event) => {
     const emailEvent = event.target.value;
     setEmail({ email: emailEvent, key: emailEvent });
