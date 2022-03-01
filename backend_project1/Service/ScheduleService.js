@@ -257,6 +257,12 @@ export async function changeStatusScheduleRecieved(
       const scheduleSend = scheduler.find((schedule) => {
         return schedule.id === id;
       });
+      let accept ; 
+      if (status === "ACCEPT"){
+        accept = [...scheduleSend.accept, email_user ];  
+      }else{ 
+        accept = [...scheduleSend.accept]; 
+      }
       const scheduleSendUpdate = {
         title: scheduleSend.title,
         startDate: scheduleSend.startDate,
@@ -267,7 +273,7 @@ export async function changeStatusScheduleRecieved(
         notes: scheduleSend.notes,
         send_to: scheduleSend.send_to,
         result_send: scheduleSend.result_send,
-        accept: [...scheduleSend.accept, email_user],
+        accept: accept ,
       };
       scheduler[scheduleSendIndex] = scheduleSendUpdate;
       await CalendarModelSend.updateOne(
