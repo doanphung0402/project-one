@@ -60,10 +60,11 @@ const Calendar = (props) => {
     const cookies = new Cookies();
     const token = cookies.get("user");
     const fetchData = async () => {
+      const email_user = sessionStorage.getItem("email"); 
       await axios({
         url: URL.getAllMySchedule,
         method: "Post",
-        data: { email: userInfo.email, cookies: token },
+        data: { email: email_user, cookies: token },
       })
         .then((data) => {
           setData(data.data);
@@ -153,8 +154,9 @@ const Calendar = (props) => {
       }
 
       setData([...data, newData]);
+      const email_user = sessionStorage.getItem("email"); 
       const schedule = {
-        email_user: UserInfo.userInfo.email,
+        email_user:email_user,
         scheduler: { ...schedule1, send_to: newListEmail },
       };
       const cookies = new Cookies();
@@ -166,9 +168,11 @@ const Calendar = (props) => {
       })
         .then((data) => {
           if (data.status === 200) {
-            toast.success("Tạo thành công !");
             const totalSend = data.data;
             const sendSuccess = totalSend.filter((rs) => rs === true);
+            console.log("🚀 ~ file: Calendar.js ~ line 173 ~ .then ~ sendSuccess", sendSuccess)
+            toast.success("Tạo thành công !");
+            toast.success("guir")
             dispath(changeListEmailUserSend([]));
           }
         })
@@ -188,11 +192,12 @@ const Calendar = (props) => {
     if (deleted !== undefined) {
       const cookies = new Cookies();
       const token = cookies.get("user");
+      const email_user = sessionStorage.getItem("email"); 
       await axios({
         url: URL.deleteScheduleById,
         method: "post",
         data: {
-          email_user: UserInfo.userInfo.email,
+          email_user: email_user,
           id: deleted,
           cookies: token,
         },
@@ -279,7 +284,7 @@ const Calendar = (props) => {
 
   return (
     <>
-      <div>
+      <div style={{backgroundImage: `url(https://accounts.sapo.vn/images/background-bottom-pos-app.svg)`, padding: "20px" }}>
         <Paper>
           <Scheduler data={data} height={660}>
             <ViewState
@@ -292,8 +297,8 @@ const Calendar = (props) => {
               name="work-week"
               displayName="Week"
               excludedDays={[]}
-              startDayHour={5}
-              endDayHour={24}
+              startDayHour={6}
+              endDayHour={23}
             />
 
             <EditingState

@@ -5,9 +5,6 @@ import { Box, Button, Fab, TextField } from '@material-ui/core';
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch } from "react-redux";
 import { addListUser } from '../../features/UserToSend/UserToSend';
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 export default function ModalUserSend() {
   const [option,setOption] = useState(""); 

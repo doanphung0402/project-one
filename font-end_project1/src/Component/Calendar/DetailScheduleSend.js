@@ -28,9 +28,20 @@ const infoSchedule = (schedule) => {
         Được gửi đi tới {schedule.send_to.length} người khác
       </Typography>
       <GradeIcon style={{ marginLeft: "6px", marginRight: "6px" }} />
-      <Typography variant="subtitle1">
-        Gửi đi lúc {new Date(schedule.create_at).toDateString()}
-      </Typography>
+      
+        <Typography style={{ marginRight: "10px" }} variant="subtitle1">
+          {new Date(schedule.create_at).getFullYear()}-
+          {new Date(schedule.create_at).getMonth() + 1}-{new Date(schedule.create_at).getDate()} {`\u00A0\u00A0`} 
+
+          {new Date(schedule.create_at).getHours()>9?new Date(schedule.create_at).getHours():`0${new Date(schedule.create_at).getHours()}`}:
+          {new Date(schedule.create_at).getMinutes()>9?new Date(schedule.create_at).getMinutes():`0${new Date(schedule.create_at).getMinutes()}`}:
+          {new Date(schedule.create_at).getSeconds()>9?new Date(schedule.create_at).getSeconds():`0${new Date(schedule.create_at).getSeconds()}`}
+         </Typography>
+         <Typography>
+          
+              
+          </Typography>
+      
     </Box>
   );
   return xml;
@@ -41,7 +52,7 @@ const DetailScheduleSend = () => {
   const endDate =new Date(schedule.endDate); 
   return (
     <Fragment>
-      <Container style={{ backgroundColor: "", padding: "20px" }}>
+      <Container style={{backgroundImage: `url(https://accounts.sapo.vn/images/background-bottom-pos-app.svg)`, padding: "20px" }}>
         <Grid container>
           <Grid item xs={1}></Grid>
           <Grid

@@ -51,12 +51,12 @@ const CalendarItem = (props) => {
   const acceptSchedule = (schedule) => {
     const cookies = new Cookies();
     const token = cookies.get("user");
-
+    const email_user = sessionStorage.getItem("email"); 
     axios({
       url: URL.changeStatusSchedule,
       method: "POST",
       data: {
-        email_user: userInfo.email,
+        email_user: email_user,
         status: "ACCEPT",
         schedule: schedule,
         cookies: token,
@@ -77,7 +77,7 @@ const CalendarItem = (props) => {
 
   const deleteSchedule = (schedule) => {
     const id = schedule.id;
-    const email = userInfo.email;
+    const email_user = sessionStorage.getItem("email"); 
     const cookies = new Cookies();
     const token = cookies.get("user");
     axios({
@@ -85,7 +85,7 @@ const CalendarItem = (props) => {
       method: "post",
       data: {
         id: id,
-        email: email,
+        email: email_user,
         cookies: token,
       },
     })
@@ -110,11 +110,12 @@ const CalendarItem = (props) => {
     const id = schedule.id;
     const cookies = new Cookies();
     const token = cookies.get("user");
+    const email_user = sessionStorage.getItem("email"); 
     axios({
       url: URL.changeStatusSchedule,
       method: "post",
       data: {
-        email_user: userInfo.email,
+        email_user: email_user,
         status: "CANCER",
         schedule: schedule,
         cookies: token,
@@ -244,7 +245,7 @@ const CalendarItem = (props) => {
           variant="contained"
           color="primary"
         >
-          Đồng ý{" "}
+          Đồng ý
         </Button>
       </Box>
     </Card>

@@ -39,8 +39,9 @@ const UserSend = (props) => {
        if(ListOption.length !==0){
         ListSurveySchedule =[]; 
        }
+       const email_user = sessionStorage.getItem("email"); 
       const Survey = {
-        email_user: UserInfo.userInfo.email,
+        email_user: email_user,
         title: SurveyInfo.title,
         option: ListOption,
         vote_number: ListUser.length,   //so luong nguoi gui 

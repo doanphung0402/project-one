@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import './NotFoundStyle.css'
 const NotFound = () => {
   return (
-    <div className="mainbox">
-      <div className="err">4</div>
-      <i className="far fa-question-circle fa-spin"></i>
-      <div className="err2">4</div>
+    <div className="mainbox"style={{width:"100%"}}>
+      <div className="err">404</div>
       <div className="msg">
          Có vẻ trang bạn truy cập không tồn tại 
         <p>

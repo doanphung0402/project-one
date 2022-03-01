@@ -8,7 +8,6 @@ const ScheduleSurvey = () => {
   const [startDate, setStartDate] = useState("");
   const [day,setDay] = useState(""); 
   const dispath = useDispatch();
-  const now = new Date();
   const handleStartDate = (event) => {
     const time = event.target.value;
     setStartDate(time);
@@ -17,7 +16,7 @@ const ScheduleSurvey = () => {
     const time = event.target.value;
     setEndDate(time);
   };
-  const handleDay =(event)=>{
+  const handleChangeDay =(event)=>{
      const time = event.target.value ; 
      setDay(time)
   }
@@ -29,6 +28,7 @@ const ScheduleSurvey = () => {
     };
     dispath(addListSurveySchedule(time));
   };
+  
   return (
     <div>
       <Box style={{ marginTop: "60px" }}>
@@ -38,18 +38,17 @@ const ScheduleSurvey = () => {
             id="date"
             label="Ngày diễn ra"
             type="date"
-            defaultValue={now}
             InputLabelProps={{
               shrink: true,
             }}
-            onClick={handleDay}
+            onChange={handleChangeDay}
           />
           <TextField
             id="time"
             style={{marginRight:"40px"}}
             label="Bắt đầu lúc"
             type="time"
-            defaultValue={`${now.getHours()}:${now.getMinutes()}`}
+            
             InputLabelProps={{
               shrink: true,
             }}
@@ -63,7 +62,7 @@ const ScheduleSurvey = () => {
             style={{marginRight:"40px"}}
             label="Kết thúc lúc"
             type="time"
-            defaultValue={`${now.getHours()}:${now.getMinutes()}`}
+           
             InputLabelProps={{
               shrink: true,
             }}

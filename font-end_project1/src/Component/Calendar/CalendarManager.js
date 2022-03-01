@@ -31,12 +31,12 @@ const CalendarManager = () => {
   useEffect(() => {
     const cookies= new Cookies(); 
     const token = cookies.get("user")
-  
+    const email_user = sessionStorage.getItem("email"); 
     axios({
       url: `${URL.getSchedulePagination}?page=${page}`,
       method: "post",
       data: {
-        email: userInfo.email,
+        email: email_user,
         status : status , 
         cookies:token
       },

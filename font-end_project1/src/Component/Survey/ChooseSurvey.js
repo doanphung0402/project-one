@@ -107,7 +107,6 @@ const ChooseSurvey = () => {
               {create_at_time.getMonth() + 1}-{create_at_time.getDate()}
             </Typography>
             <Typography>
-              {" "}
               {create_at_time.getHours()}:{create_at_time.getMinutes()}:
               {create_at_time.getSeconds()}
             </Typography>
@@ -120,8 +119,6 @@ const ChooseSurvey = () => {
   const goBack = () => {
     history.push("/survey/my-survey");
   };
-  const UserInfo = useSelector((state) => state.auth);
-
   const handleSendSchedule = (schedule, index) => {
     const schedule_survey = survey.schedule_survey;
     let schedule_survey_send_update = [...schedule_survey_send];
@@ -141,9 +138,9 @@ const ChooseSurvey = () => {
     let startDateUpdate = new Date(startDateString);
     let endDateString = `${day},${endDate}`;
     let endDateUpdate = new Date(endDateString);
-
+    const email_user = sessionStorage.getItem("email"); 
     const scheduleSend = {
-      email_user: UserInfo.userInfo.email,
+      email_user: email_user,
       scheduler: {
         id: Random.alphabet(8),
         endDate: endDateUpdate,
@@ -155,7 +152,7 @@ const ChooseSurvey = () => {
     };
     const cookies = new Cookies();
     const token = cookies.get("user");
-
+     
     axios({
       url: URL.createSchedule,
       method: "Post",
@@ -180,7 +177,6 @@ const ChooseSurvey = () => {
         history.push("/login");
       });
   };
-  const [statusButton, setStatusButton] = useState(true);
   const renderButtonAccept = (schedule, index) => {
     let xml;
 
@@ -352,7 +348,6 @@ const ChooseSurvey = () => {
                   </Button>
                 </Box>
               </Box>
-
               {renderChartSurvey(survey)}
             </Card>
           </Grid>

@@ -11,8 +11,8 @@ export default function TableSchedule(props) {
          let rsFind = accept.find(acceptItem=>{
             return acceptItem === send_to[k]
           })
-         if(rsFind===null){
-            refuse.push(send_to[k]); 
+         if(rsFind===undefined){
+            refuse.unshift(send_to[k]); 
          }
        }
     }
@@ -21,22 +21,33 @@ export default function TableSchedule(props) {
       if(  accept === undefined || accept.length ===0){
            xml ="Hiện chưa có người tham gia sự kiện này !"
       }else{
-           xml = accept; 
+         let ListAccept=""; 
+          accept.map(email=>{
+             ListAccept += email +"  ,   "
+         })
+         xml =ListAccept ; 
       }
       return xml; 
    }
+   const renderEmailCancer = (refuse)=>{
+       let mess = ""; 
+       refuse.map(email=>{
+          mess=mess+email+"  ,  "; 
+       })
+       return mess; 
+   }
   return (
-     <Card>
-        <Box display="flex"> 
+     <Card >
+        <Box style={{margin:"30px"}} display="flex"> 
               <Typography style={{marginRight:"30px"}} variant="h5">Đồng ý tham gia       :</Typography>
               <Typography style={{marginTop:"8px",marginLeft:"5px",color:"blue"}} variant="subtitle2"> {renderEmailAccept(accept)} </Typography>
         </Box>
-        <Box display="flex" style={{marginTop:"30px"}}> 
+        <Box  display="flex" style={{marginTop:"30px" ,margin:"30px"}}> 
              <Typography variant="h5">Những người còn lại :</Typography>
-             <Typography style={{marginTop:"8px",marginLeft:"5px",color:"red"}} variant="subtitle2"> {refuse}  </Typography>
+             <Typography style={{marginTop:"8px",marginLeft:"5px",color:"red"}} variant="subtitle2"> {renderEmailCancer(refuse)}  </Typography>
         </Box>
         <Box style={{marginTop:"50px"}}>
-            <Typography variant="subtitle1">Tổng người đã gửi :{schedule.send_to.length} </Typography>
+            <Typography variant="subtitle1">Số người đồng ý tham gia :{accept.length}/{schedule.send_to.length} </Typography>
         </Box>
      </Card>
   );

@@ -54,10 +54,8 @@ export default function DataTable(props) {
     });
     return xml;
   };
-
-  const userInfo = useSelector((state) => state.auth.userInfo);
+  
   const dispath = useDispatch();
-
   useEffect(() => {
     const option = survey.option;
     dispath(cancerSurveyChoose());
@@ -86,7 +84,7 @@ export default function DataTable(props) {
         }
       }
     } else {
-      const emailReceivedTo = userInfo.email;
+      const emailReceivedTo =  sessionStorage.getItem("email"); ;
       let optionChoose = survey.option.map((rs) => {
         return false;
       });
@@ -106,11 +104,9 @@ export default function DataTable(props) {
   const [checked, setChecked] = useState(defaultChecked);
 
   const Check = (props) => {
-    const status = props.status;
     const index = props.index;
     let statusCheckBox = survey.send_to ? true : false;
     const option = props.option ; 
-    if (status === true) {
       return (
         <Checkbox
           color="secondary"
@@ -121,18 +117,6 @@ export default function DataTable(props) {
           checked={statusCheckBox!==true?checked[index]:option[index]}
         />
       );
-    } else {
-      return (
-        <Checkbox
-          color="secondary"
-          inputProps={{ "aria-label": "secondary checkbox" }}
-          value={index}
-          disabled={statusCheckBox}
-          onChange={handleChange}
-          checked={statusCheckBox!==true?checked[index]:option[index]}
-        />
-      );
-    }
   };
 
   const handleChange = (event) => {
@@ -143,9 +127,9 @@ export default function DataTable(props) {
     });
     checked1[value.value] = !checked[value.value];
     setChecked(checked1);
-  
+    const email_user = sessionStorage.getItem("email"); 
     const SurveyChoose = {
-      email_received: userInfo.email,
+      email_received: email_user,
       option: checked1,
     };
 
@@ -163,13 +147,13 @@ export default function DataTable(props) {
       if (option === true) {
         return (
           <TableCell key={index} align="right">
-            <Check index={index} status={true} option ={row.resultOption} />
+            <Check index={index}  option ={row.resultOption} />
           </TableCell>
         );
       } else {
         return (
           <TableCell key={index} align="right">
-            <Check index={index} status={false} option={row.resultOption} />
+            <Check index={index}  option={row.resultOption} />
           </TableCell>
         );
       }
@@ -210,11 +194,12 @@ export default function DataTable(props) {
         if (data.status === 200) {
           const cookies= new Cookies(); 
           const token = cookies.get("user")
+          const email_user = sessionStorage.getItem("email"); 
           axios({
             url: URL.changeStatusSurveyItem,
             data: {
               payload:  { status: StatusSurveyItem.DONE,
-              email: userInfo.email,
+              email: email_user,
               id_survey_send: survey.id_survey_send}, 
               cookies:token
             },
@@ -245,7 +230,7 @@ export default function DataTable(props) {
       xml = "";
     } else {
       xml = (
-        <Box style={{ float: "right", marginTop: "50px" }}>
+        <Box style={{ float: "right", marginTop: "80px" }}>
           <Button
             style={{ marginRight: "30px", marginBottom: "30px" }}
             onClick={handleSendSurvey}

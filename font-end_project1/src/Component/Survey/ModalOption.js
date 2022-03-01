@@ -8,14 +8,12 @@ export default function OptionModal() {
   const dispath = useDispatch(); 
  
   const  handleChangeOption =(event)=>{ 
-       const {value} = event.target; 
-       setOption(value); 
+       const {value} = event.target ; 
+       setOption(value) ; 
   }
   const handleSubmitOption =() => {
-   
      dispath(addListOption(option)); 
      setOption("");    
-    
   }
   return (
     <div>

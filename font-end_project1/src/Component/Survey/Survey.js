@@ -174,10 +174,11 @@ const Survey = () => {
   useEffect(() => {
     const cookies = new Cookies();
     const token = cookies.get("user");
+    const email_user = sessionStorage.getItem("email"); 
     axios({
       url: `${URL.getPaginationPage}?page=${page}`,
       data: {
-        email: userInfo.email,
+        email: email_user,
         status: status === 0 ? "RECEIVED" : "SEND",
         cookies: token,
       },

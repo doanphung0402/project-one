@@ -19,7 +19,6 @@ import { Formik } from "formik";
 import Cookies from "universal-cookie";
 import { useDispatch } from "react-redux";
 import { login, loginFailse } from "../../features/auth/authSlice";
-import GoogleButton from "react-google-button";
 
 function Copyright() {
   return (
